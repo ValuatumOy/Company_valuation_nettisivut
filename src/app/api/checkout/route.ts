@@ -1,7 +1,9 @@
 import { randomUUID } from 'crypto'
 import { NextResponse } from 'next/server'
 import { getStripe, siteUrl } from '@/lib/stripe'
-import { quote, eur, type ReportKind } from '@/lib/pricing'
+import { quote, type ReportKind } from '@/lib/pricing'
+
+const STRIPE_AI_REPORT_PRODUCT_ID = 'prod_Uy4ZOabwcH4Rhk'
 
 interface CheckoutBody {
   kind: ReportKind
@@ -93,22 +95,13 @@ export async function POST(req: Request) {
           price_data: {
             currency: 'eur',
             unit_amount: q.total,
+            product: STRIPE_AI_REPORT_PRODUCT_ID,
             // Pre-tax amount; Stripe Tax adds VAT on top when enabled.
             ...(taxEnabled ? { tax_behavior: 'exclusive' as const } : {}),
-            product_data: {
-              name:
-                kind === 'import'
-                  ? `Tilinpäätösten tuonti + arvonmääritysraportti — ${companyName}`
-                  : kind === 'creditsafe'
-                    ? `Tietojen haku + arvonmääritysraportti — ${companyName}`
-                    : `Arvonmääritysraportti — ${companyName}`,
-              description: shareData
-                ? `Sisältää ${eur(q.discount)} alennuksen tietojen jakamisesta`
-                : undefined,
-            },
           },
         },
       ],
+      allow_promotion_codes: true,
       metadata: {
         kind,
         companyId: body.companyId ?? '',
