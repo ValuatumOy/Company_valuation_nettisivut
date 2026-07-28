@@ -1,6 +1,8 @@
 import Stripe from 'stripe'
 
 let cached: Stripe | null = null
+const DEFAULT_PUBLIC_SITE_URL = 'https://company-valuation-site.vercel.app'
+const LEGACY_PUBLIC_SITE_HOSTS = new Set(['valuation.fi', 'www.valuation.fi'])
 
 /**
  * Returns a configured Stripe client, or null when STRIPE_SECRET_KEY is not set.
@@ -19,14 +21,16 @@ export function getStripe(): Stripe | null {
 
 export function siteUrl(): string {
   const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim()
-  if (configuredUrl) return configuredUrl.replace(/\/$/, '')
-
-  if (process.env.VERCEL_ENV === 'production') return 'https://valuation.fi'
+  if (configuredUrl) {
+    const normalizedUrl = configuredUrl.replace(/\/$/, '')
+    const host = normalizedUrl.replace(/^https?:\/\//, '').split('/')[0]
+    if (!LEGACY_PUBLIC_SITE_HOSTS.has(host)) return normalizedUrl
+  }
 
   const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL
   if (vercelUrl) return `https://${vercelUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}`
 
-  if (process.env.NODE_ENV === 'production') return 'https://valuation.fi'
+  if (process.env.NODE_ENV === 'production') return DEFAULT_PUBLIC_SITE_URL
 
   return 'http://localhost:3000'
 }

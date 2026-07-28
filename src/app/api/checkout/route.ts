@@ -54,6 +54,14 @@ export async function POST(req: Request) {
 
   // --- Demo mode: no Stripe key configured -----------------------------------
   if (!stripe) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('stripe checkout unavailable: STRIPE_SECRET_KEY is not configured')
+      return NextResponse.json(
+        { error: 'Maksut eivät ole juuri nyt käytössä. Yritä hetken kuluttua uudelleen.' },
+        { status: 503 },
+      )
+    }
+
     // A real Stripe session id is unique per checkout, which is what makes
     // /kassa/valmis's "idempotent on session id, safe to reload" behavior
     // correct. Without a nonce here, the demo-mode session id (built from
