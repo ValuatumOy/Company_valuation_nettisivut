@@ -1,7 +1,7 @@
 import Stripe from 'stripe'
 
 let cached: Stripe | null = null
-const DEFAULT_PUBLIC_SITE_URL = 'https://company-valuation-site.vercel.app'
+const DEFAULT_PUBLIC_SITE_URL = 'https://www.arvonmaaritys.fi'
 const LEGACY_PUBLIC_SITE_HOSTS = new Set(['valuation.fi', 'www.valuation.fi'])
 
 /**
