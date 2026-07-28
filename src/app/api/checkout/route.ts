@@ -3,7 +3,8 @@ import { NextResponse } from 'next/server'
 import { getStripe, siteUrl } from '@/lib/stripe'
 import { quote, type ReportKind } from '@/lib/pricing'
 
-const STRIPE_AI_REPORT_PRODUCT_ID = 'prod_Uy4ZOabwcH4Rhk'
+const STRIPE_AI_REPORT_PRICE_ID =
+  process.env.STRIPE_AI_REPORT_PRICE_ID ?? 'price_1Ty8Pt2FVkKDgcuUD2fzJ8Fk'
 
 interface CheckoutBody {
   kind: ReportKind
@@ -91,14 +92,8 @@ export async function POST(req: Request) {
         : {}),
       line_items: [
         {
+          price: STRIPE_AI_REPORT_PRICE_ID,
           quantity: 1,
-          price_data: {
-            currency: 'eur',
-            unit_amount: q.total,
-            product: STRIPE_AI_REPORT_PRODUCT_ID,
-            // Pre-tax amount; Stripe Tax adds VAT on top when enabled.
-            ...(taxEnabled ? { tax_behavior: 'exclusive' as const } : {}),
-          },
         },
       ],
       allow_promotion_codes: true,
