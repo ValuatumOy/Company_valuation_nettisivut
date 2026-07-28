@@ -17,6 +17,8 @@ export const metadata: Metadata = {
 // this page. Survives only this server instance — a Stripe webhook is the
 // durable fix and is listed as follow-up for the integrator.
 const postedSessions = new Set<string>()
+const DEMO_CHECKOUT_ENABLED =
+  process.env.NODE_ENV !== 'production' || process.env.STRIPE_DEMO_CHECKOUT === '1'
 
 type Search = Record<string, string | string[] | undefined>
 
@@ -126,6 +128,10 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
   }
 
   // --- Demo flow: no Stripe key or explicit ?demo=1 --------------------------
+  if (!DEMO_CHECKOUT_ENABLED) {
+    throw new Error('demo checkout is disabled in production')
+  }
+
   const kind = asKind(param(sp, 'kind'))
   const companyName = param(sp, 'company')
   const businessId = param(sp, 'businessId')

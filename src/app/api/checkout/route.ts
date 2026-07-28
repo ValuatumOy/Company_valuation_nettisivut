@@ -5,6 +5,8 @@ import { quote, type ReportKind } from '@/lib/pricing'
 
 const STRIPE_AI_REPORT_PRICE_ID =
   process.env.STRIPE_AI_REPORT_PRICE_ID ?? 'price_1Ty8Pt2FVkKDgcuUD2fzJ8Fk'
+const DEMO_CHECKOUT_ENABLED =
+  process.env.NODE_ENV !== 'production' || process.env.STRIPE_DEMO_CHECKOUT === '1'
 
 interface CheckoutBody {
   kind: ReportKind
@@ -55,6 +57,14 @@ export async function POST(req: Request) {
 
   // --- Demo mode: no Stripe key configured -----------------------------------
   if (!stripe) {
+    if (!DEMO_CHECKOUT_ENABLED) {
+      console.error('stripe checkout unavailable: STRIPE_SECRET_KEY is not configured')
+      return NextResponse.json(
+        { error: 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.' },
+        { status: 500 },
+      )
+    }
+
     // A real Stripe session id is unique per checkout, which is what makes
     // /kassa/valmis's "idempotent on session id, safe to reload" behavior
     // correct. Without a nonce here, the demo-mode session id (built from
