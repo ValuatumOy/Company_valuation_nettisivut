@@ -58,7 +58,7 @@ export async function POST(req: Request) {
   // --- Demo mode: no Stripe key configured -----------------------------------
   if (!stripe) {
     if (!DEMO_CHECKOUT_ENABLED) {
-      console.error('stripe checkout unavailable: STRIPE_SECRET_KEY is not configured')
+      console.error('stripe checkout unavailable: STRIPE_SECRET_KEY or STRIPE_API_KEY is not configured')
       return NextResponse.json(
         {
           error: 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.',
