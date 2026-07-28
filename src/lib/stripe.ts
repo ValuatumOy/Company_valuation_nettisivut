@@ -18,5 +18,15 @@ export function getStripe(): Stripe | null {
 }
 
 export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  if (configuredUrl) return configuredUrl.replace(/\/$/, '')
+
+  if (process.env.VERCEL_ENV === 'production') return 'https://valuation.fi'
+
+  const vercelUrl = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL
+  if (vercelUrl) return `https://${vercelUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}`
+
+  if (process.env.NODE_ENV === 'production') return 'https://valuation.fi'
+
+  return 'http://localhost:3000'
 }
