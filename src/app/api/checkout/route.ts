@@ -8,6 +8,8 @@ const STRIPE_AI_REPORT_PRICE_ID =
 const DEMO_CHECKOUT_ENABLED =
   process.env.NODE_ENV !== 'production' || process.env.STRIPE_DEMO_CHECKOUT === '1'
 
+export const runtime = 'nodejs'
+
 interface CheckoutBody {
   kind: ReportKind
   companyId?: string
@@ -96,20 +98,25 @@ export async function POST(req: Request) {
   // prices are "+ alv" (VAT-exclusive), so when on, Tax adds Finnish VAT on top.
   const taxEnabled = process.env.STRIPE_TAX_ENABLED === '1'
   try {
+    const price = await stripe.prices.retrieve(STRIPE_AI_REPORT_PRICE_ID)
+    if (!price.active) {
+      throw new Error(`Stripe price is inactive: ${STRIPE_AI_REPORT_PRICE_ID}`)
+    }
+
     const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
       payment_method_types: ['card'],
+      line_items: [
+        {
+          price: price.id,
+          quantity: 1,
+        },
+      ],
+      mode: 'payment',
+      allow_promotion_codes: true,
       customer_email: customerEmail || undefined,
       ...(taxEnabled
         ? { billing_address_collection: 'required' as const, automatic_tax: { enabled: true } }
         : {}),
-      line_items: [
-        {
-          price: STRIPE_AI_REPORT_PRICE_ID,
-          quantity: 1,
-        },
-      ],
-      allow_promotion_codes: true,
       metadata: {
         kind,
         companyId: body.companyId ?? '',

@@ -20,7 +20,7 @@ export function getStripe(): Stripe | null {
 }
 
 export function siteUrl(): string {
-  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim()
+  const configuredUrl = (process.env.SITE_URL ?? process.env.NEXT_PUBLIC_SITE_URL)?.trim()
   if (configuredUrl) {
     const normalizedUrl = configuredUrl.replace(/\/$/, '')
     const host = normalizedUrl.replace(/^https?:\/\//, '').split('/')[0]
