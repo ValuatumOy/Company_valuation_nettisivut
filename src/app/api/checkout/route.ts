@@ -60,7 +60,10 @@ export async function POST(req: Request) {
     if (!DEMO_CHECKOUT_ENABLED) {
       console.error('stripe checkout unavailable: STRIPE_SECRET_KEY is not configured')
       return NextResponse.json(
-        { error: 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.' },
+        {
+          error: 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.',
+          error_code: 'stripe_not_configured',
+        },
         { status: 500 },
       )
     }
@@ -126,9 +129,15 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ url: session.url })
   } catch (err) {
-    console.error('stripe checkout failed', err)
+    console.error('stripe checkout failed', {
+      price: STRIPE_AI_REPORT_PRICE_ID,
+      error: err,
+    })
     return NextResponse.json(
-      { error: 'Maksun käynnistys epäonnistui. Yritä uudelleen.' },
+      {
+        error: 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.',
+        error_code: 'stripe_session_failed',
+      },
       { status: 500 },
     )
   }
