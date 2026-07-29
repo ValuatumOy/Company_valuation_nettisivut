@@ -17,18 +17,24 @@ export function HeroSection({
   mockup,
 }: Props) {
   return (
-    <section id="tilaa" className="relative overflow-hidden bg-forest text-white">
-      <Image
-        src="/images/forest-fog.jpg"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover opacity-25"
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-forest/70 via-forest/55 to-forest" />
-      <div className="hero-pattern absolute inset-0" />
-      <div className="hero-glow absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2" />
+    <section id="tilaa" className="relative bg-forest text-white">
+      {/* overflow-hidden belongs on this decoration layer, not on the <section>:
+          it has to keep the oversized glow from causing horizontal scroll, but
+          clipping the section also clipped the search dropdown at the hero's
+          bottom edge, which read as the results hiding under the next section. */}
+      <div className="absolute inset-0 overflow-hidden">
+        <Image
+          src="/images/forest-fog.jpg"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-25"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-forest/70 via-forest/55 to-forest" />
+        <div className="hero-pattern absolute inset-0" />
+        <div className="hero-glow absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2" />
+      </div>
 
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 lg:px-10 lg:pb-28 lg:pt-44">
         <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">

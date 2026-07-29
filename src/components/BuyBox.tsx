@@ -2,11 +2,15 @@
 
 import { useState, type FormEvent } from 'react'
 import { eur, quote, type ReportKind } from '@/lib/pricing'
+import { companyDisplayName } from '@/lib/companies'
 
 type Props = {
   companyId: string
+  /** Raw Valuatum values — forwarded to checkout, never reformatted here. */
   companyName: string
   businessId: string
+  /** Konserni row: shown in the title so the buyer knows which model they get. */
+  isGroup?: boolean
   hasFinancials: boolean
 }
 
@@ -38,7 +42,13 @@ const OPTIONS: { kind: Exclude<ReportKind, 'existing'>; label: string; descripti
   },
 ]
 
-export function BuyBox({ companyId, companyName, businessId, hasFinancials }: Props) {
+export function BuyBox({
+  companyId,
+  companyName,
+  businessId,
+  isGroup = false,
+  hasFinancials,
+}: Props) {
   const [kind, setKind] = useState<ReportKind>(hasFinancials ? 'existing' : 'import')
   // Imports default to sharing on (the cheaper, catalogue-building choice).
   const [share, setShare] = useState(true)
@@ -88,7 +98,9 @@ export function BuyBox({ companyId, companyName, businessId, hasFinancials }: Pr
     <aside className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)]">
       <div className="bg-forest p-6 text-white">
         <p className="text-[12.5px] font-medium text-green-light">{BADGE[kind]}</p>
-        <h2 className="mt-1 text-2xl font-light tracking-tight">{companyName}</h2>
+        <h2 className="mt-1 text-2xl font-light tracking-tight">
+          {companyDisplayName({ name: companyName, isGroup })}
+        </h2>
         <div className="mt-4 flex items-end gap-2">
           {discount > 0 && (
             <span className="pb-1.5 text-sm text-white/40 line-through">{eur(base)}</span>

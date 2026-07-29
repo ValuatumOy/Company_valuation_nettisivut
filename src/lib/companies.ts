@@ -7,7 +7,17 @@
 export interface Company {
   id: string // internal slug used in URLs
   name: string
-  businessId: string // Finnish Y-tunnus
+  /**
+   * Valuatum's raw company code. NOT for display: live results carry the
+   * konserni "K" suffix (`26466749K`) and usually no dash. This is the value
+   * checkout and getById must keep using — dropping the K silently switches the
+   * report from konserni to emo figures (see backend HANDOFF 2026-07-09).
+   */
+  businessId: string
+  /** The same y-tunnus in the Finnish 7+1 format, for display only. */
+  businessIdFormatted: string
+  /** Valuatum's "K" suffix: this row is the konserni (group) model. */
+  isGroup: boolean
   city: string
   industry: string
   /**
@@ -20,8 +30,48 @@ export interface Company {
   employees?: number
 }
 
+/**
+ * What the data sources produce. The display fields are derived centrally in
+ * `withDisplay` so no source can forget them.
+ */
+type CompanySeed = Omit<Company, 'businessIdFormatted' | 'isGroup'>
+
+/**
+ * Shortest query Valuatum's /company will accept — anything shorter comes back
+ * as a 400 ("The search parameter name must contain at least 3 characters"),
+ * which the site would only be able to render as "not found".
+ */
+export const MIN_QUERY_LENGTH = 3
+
+/** Digits-only comparison key: `2646674-9`, `26466749` and `26466749K` all match. */
+function idKey(code: string): string {
+  return code.trim().replace(/[\s-]/g, '').toUpperCase().replace(/K$/, '')
+}
+
+function isGroupCode(code: string): boolean {
+  return /^\d{8}K$/i.test(code.trim().replace(/[\s-]/g, ''))
+}
+
+/** `26466749K` / `26466749` -> `2646674-9`. Anything unexpected passes through. */
+export function formatBusinessId(code: string): string {
+  const digits = idKey(code)
+  return /^\d{8}$/.test(digits) ? `${digits.slice(0, 7)}-${digits[7]}` : code
+}
+
+export function companyDisplayName(c: Pick<Company, 'name' | 'isGroup'>): string {
+  return c.isGroup ? `${c.name} – Konserni` : c.name
+}
+
+function withDisplay(c: CompanySeed): Company {
+  return {
+    ...c,
+    businessIdFormatted: formatBusinessId(c.businessId),
+    isGroup: isGroupCode(c.businessId),
+  }
+}
+
 // --- Bundled sample dataset (Finnish private companies) ------------------------
-const SAMPLE: Company[] = [
+const SAMPLE: CompanySeed[] = [
   {
     id: 'rovio-entertainment',
     name: 'Rovio Entertainment Oyj',
@@ -105,12 +155,12 @@ const SAMPLE: Company[] = [
 ]
 
 interface DataSource {
-  search(query: string, limit?: number): Promise<Company[]>
-  getById(id: string): Promise<Company | null>
+  search(query: string, limit?: number): Promise<CompanySeed[]>
+  getById(id: string): Promise<CompanySeed | null>
 }
 
 class MockDataSource implements DataSource {
-  async search(query: string, limit = 8): Promise<Company[]> {
+  async search(query: string, limit = 8): Promise<CompanySeed[]> {
     const q = query.trim().toLowerCase()
     if (!q) return []
     const matches = SAMPLE.filter(
@@ -123,7 +173,7 @@ class MockDataSource implements DataSource {
     return matches.slice(0, limit)
   }
 
-  async getById(id: string): Promise<Company | null> {
+  async getById(id: string): Promise<CompanySeed | null> {
     return SAMPLE.find((c) => c.id === id) ?? null
   }
 }
@@ -142,23 +192,23 @@ class ApiDataSource implements DataSource {
     return h
   }
 
-  async search(query: string, limit = 8): Promise<Company[]> {
+  async search(query: string, limit = 8): Promise<CompanySeed[]> {
     const url = new URL(`${this.baseUrl}/companies/search`)
     url.searchParams.set('q', query)
     url.searchParams.set('limit', String(limit))
     const res = await fetch(url, { headers: this.headers(), cache: 'no-store' })
     if (!res.ok) throw new Error(`Company search failed: ${res.status}`)
-    return (await res.json()) as Company[]
+    return (await res.json()) as CompanySeed[]
   }
 
-  async getById(id: string): Promise<Company | null> {
+  async getById(id: string): Promise<CompanySeed | null> {
     const res = await fetch(`${this.baseUrl}/companies/${encodeURIComponent(id)}`, {
       headers: this.headers(),
       cache: 'no-store',
     })
     if (res.status === 404) return null
     if (!res.ok) throw new Error(`Company fetch failed: ${res.status}`)
-    return (await res.json()) as Company
+    return (await res.json()) as CompanySeed
   }
 }
 
@@ -166,6 +216,8 @@ type ValuatumCandidate = {
   fid: number
   company_name: string | null
   company_code: string | null
+  /** Postal town from Valuatum's companyData; absent on older backends. */
+  city?: string | null
   industry_text: string | null
 }
 
@@ -178,31 +230,40 @@ type ValuatumCandidate = {
 class ValuatumDataSource implements DataSource {
   constructor(private baseUrl: string) {}
 
-  private toCompany(c: ValuatumCandidate): Company {
+  private toCompany(c: ValuatumCandidate): CompanySeed {
+    // Keep company_code verbatim, K suffix and all: it is both the URL id and
+    // what checkout sends back to the backend to resolve the FID.
     const businessId = c.company_code || String(c.fid)
     return {
       id: businessId,
       name: c.company_name || businessId,
       businessId,
-      city: '',
+      city: c.city || '',
       industry: c.industry_text || '',
       hasFinancials: true,
     }
   }
 
-  async search(query: string, limit = 8): Promise<Company[]> {
+  async search(query: string, limit = 8): Promise<CompanySeed[]> {
     const url = new URL(`${this.baseUrl}/api/public/company-search`)
     url.searchParams.set('q', query)
-    const res = await fetch(url, { cache: 'no-store' })
+    // Cached rather than no-store: this lookup costs ~1.4 s upstream, and the
+    // same query gets repeated constantly (search-as-you-type, then getById
+    // when the visitor clicks a result). Company master data tolerates 5 min.
+    const res = await fetch(url, { next: { revalidate: 300 } })
     if (!res.ok) throw new Error(`Company search failed: ${res.status}`)
     const rows = (await res.json()) as ValuatumCandidate[]
     return rows.slice(0, limit).map((c) => this.toCompany(c))
   }
 
-  async getById(id: string): Promise<Company | null> {
+  async getById(id: string): Promise<CompanySeed | null> {
     const rows = await this.search(id, 5)
     return (
-      rows.find((c) => c.businessId.replace('-', '') === id.replace('-', '')) ||
+      // Exact code first (`26466749K` from the URL matches the konserni row),
+      // then K-insensitively, so a plain y-tunnus still finds a group-only
+      // company instead of falling through to an unrelated first result.
+      rows.find((c) => c.businessId.toUpperCase() === id.toUpperCase()) ||
+      rows.find((c) => idKey(c.businessId) === idKey(id)) ||
       rows[0] ||
       null
     )
@@ -218,20 +279,22 @@ class CombinedDataSource implements DataSource {
     private mock: DataSource
   ) {}
 
-  async search(query: string, limit = 8): Promise<Company[]> {
+  async search(query: string, limit = 8): Promise<CompanySeed[]> {
     const [liveResults, mockResults] = await Promise.all([
-      this.live.search(query, limit).catch(() => [] as Company[]),
+      this.live.search(query, limit).catch(() => [] as CompanySeed[]),
       this.mock.search(query, limit),
     ])
-    const seen = new Set(liveResults.map((c) => c.businessId.replace('-', '')))
+    // idKey, not a bare dash strip: the live row for a sample company arrives
+    // as `26466749K` and would otherwise duplicate the curated `2646674-9`.
+    const seen = new Set(liveResults.map((c) => idKey(c.businessId)))
     const merged = [
       ...liveResults,
-      ...mockResults.filter((c) => !seen.has(c.businessId.replace('-', ''))),
+      ...mockResults.filter((c) => !seen.has(idKey(c.businessId))),
     ]
     return merged.slice(0, limit)
   }
 
-  async getById(id: string): Promise<Company | null> {
+  async getById(id: string): Promise<CompanySeed | null> {
     const sample = await this.mock.getById(id)
     if (sample) return sample
     return this.live.getById(id).catch(() => null)
@@ -247,12 +310,13 @@ function source(): DataSource {
   return new CombinedDataSource(new ValuatumDataSource(backend), new MockDataSource())
 }
 
-export function searchCompanies(query: string, limit?: number): Promise<Company[]> {
-  return source().search(query, limit)
+export async function searchCompanies(query: string, limit?: number): Promise<Company[]> {
+  return (await source().search(query, limit)).map(withDisplay)
 }
 
-export function getCompany(id: string): Promise<Company | null> {
-  return source().getById(id)
+export async function getCompany(id: string): Promise<Company | null> {
+  const seed = await source().getById(id)
+  return seed ? withDisplay(seed) : null
 }
 
 /**
@@ -260,5 +324,5 @@ export function getCompany(id: string): Promise<Company | null> {
  * sample — a live Valuatum search has no sensible "browse everything" query.
  */
 export async function featuredCompanies(limit = 8): Promise<Company[]> {
-  return SAMPLE.slice(0, limit)
+  return SAMPLE.slice(0, limit).map(withDisplay)
 }

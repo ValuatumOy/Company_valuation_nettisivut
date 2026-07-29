@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getCompany } from '@/lib/companies'
+import { companyDisplayName, getCompany } from '@/lib/companies'
 import { BuyBox } from '@/components/BuyBox'
 import { Reveal } from '@/components/Reveal'
 
-export const dynamic = 'force-dynamic'
+// Was force-dynamic, which re-ran the ~1.4 s Valuatum lookup on every single
+// visit. Company master data (name, y-tunnus, toimiala) doesn't change by the
+// minute, so cache the rendered page and let it revalidate in the background.
+export const revalidate = 300
 
 type Params = Promise<{ id: string }>
 
@@ -14,18 +17,15 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   const company = await getCompany(id)
   if (!company) return { title: 'Yritystä ei löytynyt | Valuatum' }
   return {
-    title: `${company.name} — yrityksen arvonmääritys | Valuatum`,
-    description: `Tilaa tekoälyavusteinen arvonmääritysraportti yritykselle ${company.name} (${company.businessId}). DCF, verrokkianalyysi ja riskiarvio yhdessä PDF-raportissa.`,
+    title: `${companyDisplayName(company)} — yrityksen arvonmääritys | Valuatum`,
+    description: `Tilaa tekoälyavusteinen arvonmääritysraportti yritykselle ${company.name} (${company.businessIdFormatted}). DCF, verrokkianalyysi ja riskiarvio yhdessä PDF-raportissa.`,
   }
 }
 
-function fmtEur(n?: number) {
-  if (!n) return '–'
-  return `${new Intl.NumberFormat('fi-FI', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(n)} €`
-}
+// No Liikevaihto tile: /rest/company carries no revenue, so it showed "–" for
+// every live company. Bringing it back means a per-company /rest/modeldata
+// call — Company.latestRevenueEur is still there, and the bundled sample still
+// carries the figures.
 
 const FEATURES = [
   'Yrityksen ja liiketoiminnan yleiskuvaus',
@@ -56,7 +56,7 @@ export default async function CompanyPage({ params }: { params: Params }) {
           </Link>
           <div className="mt-6 flex flex-wrap items-center gap-4">
             <h1 className="text-balance text-4xl font-light leading-[1.1] tracking-[-0.02em] lg:text-5xl">
-              {company.name}
+              {companyDisplayName(company)}
             </h1>
             {company.hasFinancials ? (
               <span className="rounded-full border border-green-light/30 bg-green/15 px-3.5 py-1.5 text-[12.5px] font-medium text-green-light">
@@ -69,7 +69,9 @@ export default async function CompanyPage({ params }: { params: Params }) {
             )}
           </div>
           <p className="mt-4 text-[15px] font-light text-white/60">
-            Y-tunnus {company.businessId} · {company.city} · {company.industry}
+            {[`Y-tunnus ${company.businessIdFormatted}`, company.city, company.industry]
+              .filter(Boolean)
+              .join(' · ')}
           </p>
         </div>
       </section>
@@ -78,11 +80,10 @@ export default async function CompanyPage({ params }: { params: Params }) {
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_400px] lg:px-10">
           <div>
             <Reveal>
-              <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-4">
-                <Fact label="Y-tunnus" value={company.businessId} />
-                <Fact label="Kotipaikka" value={company.city} />
-                <Fact label="Toimiala" value={company.industry} />
-                <Fact label="Liikevaihto" value={fmtEur(company.latestRevenueEur)} />
+              <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
+                <Fact label="Y-tunnus" value={company.businessIdFormatted} />
+                <Fact label="Kotipaikka" value={company.city || '–'} />
+                <Fact label="Toimiala" value={company.industry || '–'} />
               </dl>
             </Reveal>
 
@@ -120,8 +121,12 @@ export default async function CompanyPage({ params }: { params: Params }) {
           <Reveal delay={150} className="lg:sticky lg:top-28 lg:self-start">
             <BuyBox
               companyId={company.id}
+              // Name and businessId stay raw here — they are forwarded to
+              // checkout and on to the backend, where the K suffix decides
+              // konserni vs emo. isGroup only drives the label.
               companyName={company.name}
               businessId={company.businessId}
+              isGroup={company.isGroup}
               hasFinancials={company.hasFinancials}
             />
           </Reveal>
