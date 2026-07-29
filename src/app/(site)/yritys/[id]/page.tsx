@@ -22,13 +22,10 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   }
 }
 
-function fmtEur(n?: number) {
-  if (!n) return '–'
-  return `${new Intl.NumberFormat('fi-FI', {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(n)} €`
-}
+// No Liikevaihto tile: /rest/company carries no revenue, so it showed "–" for
+// every live company. Bringing it back means a per-company /rest/modeldata
+// call — Company.latestRevenueEur is still there, and the bundled sample still
+// carries the figures.
 
 const FEATURES = [
   'Yrityksen ja liiketoiminnan yleiskuvaus',
@@ -83,11 +80,10 @@ export default async function CompanyPage({ params }: { params: Params }) {
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_400px] lg:px-10">
           <div>
             <Reveal>
-              <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-4">
+              <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
                 <Fact label="Y-tunnus" value={company.businessIdFormatted} />
                 <Fact label="Kotipaikka" value={company.city || '–'} />
                 <Fact label="Toimiala" value={company.industry || '–'} />
-                <Fact label="Liikevaihto" value={fmtEur(company.latestRevenueEur)} />
               </dl>
             </Reveal>
 

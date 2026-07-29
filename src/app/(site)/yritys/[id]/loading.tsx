@@ -22,8 +22,8 @@ export default function Loading() {
       <section className="bg-off-white py-16 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_400px] lg:px-10">
           <div>
-            <div className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-4">
-              {Array.from({ length: 4 }).map((_, i) => (
+            <div className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
+              {Array.from({ length: 3 }).map((_, i) => (
                 <div key={i} className="bg-white p-5">
                   <div className="h-3 w-16 animate-pulse rounded bg-mist" />
                   <div className="mt-3 h-4 w-24 animate-pulse rounded bg-mist" />

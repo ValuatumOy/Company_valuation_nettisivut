@@ -216,6 +216,8 @@ type ValuatumCandidate = {
   fid: number
   company_name: string | null
   company_code: string | null
+  /** Postal town from Valuatum's companyData; absent on older backends. */
+  city?: string | null
   industry_text: string | null
 }
 
@@ -236,7 +238,7 @@ class ValuatumDataSource implements DataSource {
       id: businessId,
       name: c.company_name || businessId,
       businessId,
-      city: '',
+      city: c.city || '',
       industry: c.industry_text || '',
       hasFinancials: true,
     }

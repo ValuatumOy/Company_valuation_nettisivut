@@ -30,9 +30,13 @@ const STEPS = [
 export default function YritysPage() {
   return (
     <>
-      <section className="relative overflow-hidden bg-forest text-white">
-        <div className="hero-pattern absolute inset-0" />
-        <div className="hero-glow absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2" />
+      <section className="relative bg-forest text-white">
+        {/* Clip the decorations, not the section — the search dropdown has to be
+            able to overhang the hero's bottom edge. See HeroSection. */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="hero-pattern absolute inset-0" />
+          <div className="hero-glow absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2" />
+        </div>
         <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 lg:px-10 lg:pb-24 lg:pt-44">
           <Reveal>
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-light">
