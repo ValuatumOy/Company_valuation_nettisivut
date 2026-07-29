@@ -70,7 +70,7 @@ async function startGeneration(
   const result = await postCheckoutGenerate({
     businessId, companyName, email, userInput, stripeSessionId: sessionId, forecast,
   })
-  return result ? `/testi?key=${encodeURIComponent(result.key)}&rid=${encodeURIComponent(result.runId)}` : null
+  return result ? `/raportti?key=${encodeURIComponent(result.key)}&rid=${encodeURIComponent(result.runId)}` : null
 }
 
 // Shared by the paid and demo branches: try auto-generation first, fall back to
