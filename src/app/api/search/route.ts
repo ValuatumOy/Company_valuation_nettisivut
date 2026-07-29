@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
-import { searchCompanies } from '@/lib/companies'
+import { MIN_QUERY_LENGTH, searchCompanies } from '@/lib/companies'
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const q = searchParams.get('q') ?? ''
   const limit = Math.min(Math.max(Number(searchParams.get('limit')) || 8, 1), 20)
 
-  if (q.trim().length < 2) {
+  if (q.trim().length < MIN_QUERY_LENGTH) {
     return NextResponse.json({ companies: [] })
   }
 

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { Company } from '@/lib/companies'
+import { companyDisplayName, MIN_QUERY_LENGTH, type Company } from '@/lib/companies'
 
 type Props = {
   variant?: 'dark' | 'light'
@@ -16,13 +16,18 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [searched, setSearched] = useState(false)
+  // Which result row the pointer is on — drives the hover-only route prefetch.
+  const [hovered, setHovered] = useState<string | null>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const dark = variant === 'dark'
 
   useEffect(() => {
     const q = query.trim()
-    if (q.length < 2) {
+    // 3, not 2: Valuatum's /company rejects shorter queries outright
+    // ("The search parameter name must contain at least 3 characters"), so a
+    // 2-char query only bought a guaranteed round trip to an error.
+    if (q.length < MIN_QUERY_LENGTH) {
       setResults([])
       setSearched(false)
       return
@@ -105,17 +110,27 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
             <ul className="max-h-96 overflow-auto py-1">
               {results.map((c) => (
                 <li key={c.id}>
-                  <button
-                    type="button"
-                    onClick={() => router.push(`/yritys/${c.id}`)}
+                  <Link
+                    href={`/yritys/${c.id}`}
+                    // prefetch={false} until hovered, then a full route+data
+                    // prefetch of just that row. Leaving it on `auto` would
+                    // prefetch every visible result, and each one costs a
+                    // separate ~1.4 s company lookup on the backend.
+                    prefetch={hovered === c.id}
+                    onMouseEnter={() => setHovered(c.id)}
+                    onFocus={() => setHovered(c.id)}
                     className="flex w-full items-center justify-between gap-4 border-b border-mist/70 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-faint"
                   >
                     <span className="min-w-0">
                       <span className="block truncate text-sm font-medium text-charcoal">
-                        {c.name}
+                        {companyDisplayName(c)}
                       </span>
                       <span className="block truncate text-xs text-steel">
-                        {c.businessId} · {c.city} · {c.industry}
+                        {/* Live rows carry no city, so filter rather than
+                            rendering a stray " ·  · " separator. */}
+                        {[c.businessIdFormatted, c.city, c.industry]
+                          .filter(Boolean)
+                          .join(' · ')}
                       </span>
                     </span>
                     {c.hasFinancials ? (
@@ -127,7 +142,7 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                         Tiedot puuttuvat
                       </span>
                     )}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
