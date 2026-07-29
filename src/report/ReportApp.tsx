@@ -19,10 +19,22 @@ import {
   round2Redeem,
   searchCompany,
   validateKey,
-} from './expertApi'
+} from './reportApi'
 
 const KEY_STORAGE = 'valu_expert_key'
 const TERMINAL = ['ok', 'validation_failed', 'error']
+const SUPPORT_EMAIL = 'company-valuation@valuatum.com'
+
+// How the visitor reached this page. A paying customer always arrives on a
+// `?key=&rid=` link minted by checkout, so that entry mode drives a stripped
+// view: no key quota, no sign-out, no company search — their run is already
+// determined, and every one of those controls is either meaningless or an
+// outright trap (a spent single-use key can't start a second run, and signing
+// out erases the only handle they have on a report they paid for).
+// Resolved on the server from the query string and passed in, not sniffed from
+// window in an effect: the mode decides which copy renders on the very first
+// paint, and a customer must never be flashed the key-entry tool.
+export type Entry = 'link' | 'manual'
 
 // Prefill data for the "Muuta ennusteita" table, pulled from the run's stage-0
 // FAKTAT (forecast block, tEUR). `actual*` is the last realized year, shown
@@ -70,7 +82,7 @@ function extractForecastData(stage0: Stage0 | null | undefined): ForecastData | 
   }
 }
 
-export function ExpertApp() {
+export function ReportApp({ entry }: { entry: Entry }) {
   const [key, setKey] = useState('')
   const [me, setMe] = useState<ExpertMe | null>(null)
 
@@ -446,31 +458,59 @@ export function ExpertApp() {
     ? extractForecastData(results.find((r) => r.order === 0)?.parsed_json)
     : null
 
+  // Arrived on a checkout/email link → customer view, not the key-entry tool.
+  const customerMode = entry === 'link'
+
   // ── gate ──────────────────────────────────────────────────────────────
   if (!me) {
     return (
       <Shell>
         <div className="max-w-md mx-auto mt-20">
-          <h1 className="text-2xl font-semibold text-neutral-900">Testi</h1>
-          <p className="mt-2 text-sm text-neutral-500">
-            Syötä kutsuavaimesi. Krediiteilläsi voit tuottaa rajatun määrän
-            arvonmäärityksiä; tarkennukset (kierros 2) ovat maksuttomia.
-          </p>
-          <form
-            onSubmit={(e) => { e.preventDefault(); void signIn(key) }}
-            className="mt-6 flex gap-2"
-          >
-            <input
-              value={key}
-              onChange={(e) => setKey(e.target.value)}
-              placeholder="exp_…"
-              className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm"
-            />
-            <button className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">
-              Kirjaudu
-            </button>
-          </form>
-          {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+          {customerMode && (
+            <>
+              <h1 className="text-2xl font-semibold text-neutral-900">Arvonmääritysraportti</h1>
+              {error ? (
+                <>
+                  <p className="mt-2 text-sm text-neutral-600">
+                    Tämä linkki ei kelpaa tai se on vanhentunut. Raporttisi ei ole
+                    kadonnut — lähetämme sen uudelleen, kun otat yhteyttä.
+                  </p>
+                  <p className="mt-4 text-sm">
+                    <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-emerald-700 hover:underline">
+                      {SUPPORT_EMAIL}
+                    </a>
+                  </p>
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-neutral-500">Avataan raporttia…</p>
+              )}
+            </>
+          )}
+
+          {entry === 'manual' && (
+            <>
+              <h1 className="text-2xl font-semibold text-neutral-900">Arvonmääritys</h1>
+              <p className="mt-2 text-sm text-neutral-500">
+                Syötä avaimesi. Krediiteilläsi voit tuottaa rajatun määrän
+                arvonmäärityksiä; tarkennukset ovat maksuttomia.
+              </p>
+              <form
+                onSubmit={(e) => { e.preventDefault(); void signIn(key) }}
+                className="mt-6 flex gap-2"
+              >
+                <input
+                  value={key}
+                  onChange={(e) => setKey(e.target.value)}
+                  placeholder="exp_…"
+                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+                />
+                <button className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">
+                  Kirjaudu
+                </button>
+              </form>
+              {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+            </>
+          )}
         </div>
       </Shell>
     )
@@ -481,29 +521,35 @@ export function ExpertApp() {
     <Shell>
       <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
         <div>
-          <h1 className="text-xl font-semibold text-neutral-900">Arvonmääritys — testi</h1>
-          <p className="text-xs text-neutral-500">{me.label}</p>
+          <h1 className="text-xl font-semibold text-neutral-900">
+            {customerMode ? 'Arvonmääritysraportti' : 'Arvonmääritys'}
+          </h1>
+          <p className="text-xs text-neutral-500">
+            {customerMode ? (run?.params?.company_name ?? '') : me.label}
+          </p>
         </div>
-        <div className="text-right">
-          <div className="text-sm font-semibold text-neutral-900">
-            {me.unlimited ? 'Rajaton käyttö' : `${me.remaining} / ${me.generations_limit} krediittiä`}
-          </div>
-          <div className="flex items-center justify-end gap-3">
-            {runId && !busy && (
-              // Always-reachable escape: a failed/finished run otherwise dead-ends
-              // the page (the search form is hidden once runId is set).
-              <button onClick={resetRun} className="text-xs font-medium text-amber-700 hover:text-amber-900">
-                + Aloita uusi
+        {!customerMode && (
+          <div className="text-right">
+            <div className="text-sm font-semibold text-neutral-900">
+              {me.unlimited ? 'Rajaton käyttö' : `${me.remaining} / ${me.generations_limit} krediittiä`}
+            </div>
+            <div className="flex items-center justify-end gap-3">
+              {runId && !busy && (
+                // Always-reachable escape: a failed/finished run otherwise dead-ends
+                // the page (the search form is hidden once runId is set).
+                <button onClick={resetRun} className="text-xs font-medium text-amber-700 hover:text-amber-900">
+                  + Aloita uusi
+                </button>
+              )}
+              <button onClick={signOut} className="text-xs text-neutral-400 hover:text-neutral-600">
+                Kirjaudu ulos
               </button>
-            )}
-            <button onClick={signOut} className="text-xs text-neutral-400 hover:text-neutral-600">
-              Kirjaudu ulos
-            </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
-      {!runId && (
+      {!runId && !customerMode && (
         <div className="mt-6 max-w-xl">
           <label className="block text-sm font-medium text-neutral-700">Yritys (nimi tai y-tunnus)</label>
           <div className="mt-1 flex gap-2">
@@ -662,7 +708,7 @@ export function ExpertApp() {
               <p className="mt-0.5 text-xs text-amber-700">
                 {me?.paid_rounds_enabled
                   ? 'Vastauksesi on tallessa. Lisätarkennuskierros maksaa 5 € — se käynnistyy heti maksun jälkeen ja saat päivitetyn raportin samaan tapaan kuin edelliset.'
-                  : 'Tämän raportin tarkennuskierrokset on käytetty. Raportti alla on viimeisin versio — voit yhä ladata sen PDF:nä. Jos tarvitset lisää tarkennuksia, ota yhteyttä: excel@valuatum.com'}
+                  : `Tämän raportin tarkennuskierrokset on käytetty. Raportti alla on viimeisin versio — voit yhä ladata sen PDF:nä. Jos tarvitset lisää tarkennuksia, ota yhteyttä: ${SUPPORT_EMAIL}`}
               </p>
               <div className="mt-3 flex items-center gap-3">
                 {me?.paid_rounds_enabled && (
@@ -727,12 +773,14 @@ export function ExpertApp() {
             className="mt-3 h-[80vh] w-full rounded-lg border border-neutral-200 bg-white"
           />
 
-          <button
-            onClick={resetRun}
-            className="mt-4 text-sm text-emerald-700 hover:underline"
-          >
-            ← Uusi arvonmääritys
-          </button>
+          {!customerMode && (
+            <button
+              onClick={resetRun}
+              className="mt-4 text-sm text-emerald-700 hover:underline"
+            >
+              ← Uusi arvonmääritys
+            </button>
+          )}
         </div>
       )}
     </Shell>
@@ -754,8 +802,8 @@ function Shell({ children }: { children: React.ReactNode }) {
         {children}
         <p className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-400">
           Jos jokin menee pieleen, ota yhteyttä:{' '}
-          <a href="mailto:excel@valuatum.com" className="text-neutral-600 hover:underline">
-            excel@valuatum.com
+          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-neutral-600 hover:underline">
+            {SUPPORT_EMAIL}
           </a>
         </p>
       </div>
