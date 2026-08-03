@@ -31,6 +31,12 @@ export async function postOrder(payload: OrderPayload): Promise<boolean> {
 
 export type CheckoutGeneratePayload = {
   businessId: string
+  /**
+   * Valuatum followed model id of the row the buyer bought. Without it the
+   * backend re-resolves businessId (K suffix stripped) and picks a model by
+   * heuristic — which prefers emo and silently downgraded konserni purchases.
+   */
+  fid?: number
   companyName: string
   email: string
   userInput?: string
@@ -59,6 +65,7 @@ export async function postCheckoutGenerate(
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         business_id: payload.businessId.slice(0, 30),
+        fid: payload.fid ?? null,
         company_name: payload.companyName.slice(0, 300),
         email: payload.email.slice(0, 200),
         user_input: (payload.userInput ?? '').slice(0, 4000),

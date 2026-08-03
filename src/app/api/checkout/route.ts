@@ -15,6 +15,7 @@ interface CheckoutBody {
   companyId?: string
   companyName?: string
   businessId?: string
+  fid?: number
   shareData?: boolean
   customerEmail?: string
   userInput?: string
@@ -39,6 +40,11 @@ export async function POST(req: Request) {
   const shareData = kind === 'import' && Boolean(body.shareData)
   const companyName = body.companyName?.slice(0, 200) || 'Valittu yritys'
   const businessId = body.businessId?.slice(0, 30) || ''
+  // The Valuatum model the buyer selected. Round-tripped through Stripe as a
+  // string; the backend re-checks it against businessId before using it, so a
+  // tampered value can only cost the buyer the model choice, not redirect the
+  // run to another company.
+  const fid = Number.isSafeInteger(body.fid) && (body.fid as number) > 0 ? String(body.fid) : ''
   const customerEmail = body.customerEmail?.slice(0, 200) || ''
   const userInput = body.userInput?.slice(0, 4000) || ''
   // Opt-in: stop after the data fetch so the buyer can review/edit forecasts
@@ -79,6 +85,7 @@ export async function POST(req: Request) {
     const params = new URLSearchParams({ demo: '1', kind, n: randomUUID() })
     if (companyName) params.set('company', companyName)
     if (businessId) params.set('businessId', businessId)
+    if (fid) params.set('fid', fid)
     if (customerEmail) params.set('email', customerEmail)
     if (userInput) params.set('userInput', userInput)
     if (shareData) params.set('share', '1')
@@ -122,6 +129,7 @@ export async function POST(req: Request) {
         companyId: body.companyId ?? '',
         companyName,
         businessId,
+        fid,
         customerEmail,
         shareData: String(shareData),
         forecast: String(wantForecast),

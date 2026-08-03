@@ -62,6 +62,10 @@ async function fulfilSession(session: Stripe.Checkout.Session) {
   const kind = m.kind === 'import' || m.kind === 'creditsafe' ? m.kind : 'existing'
   const companyName = m.companyName || 'Tuntematon yritys'
   const businessId = m.businessId || ''
+  // Metadata is strings; undefined when absent so the backend keeps its own
+  // model heuristic instead of receiving a bogus 0/NaN.
+  const fidNum = Number(m.fid)
+  const fid = Number.isSafeInteger(fidNum) && fidNum > 0 ? fidNum : undefined
   const userInput = m.userInput || ''
   const email =
     session.customer_details?.email || session.customer_email || m.customerEmail || ''
@@ -75,7 +79,7 @@ async function fulfilSession(session: Stripe.Checkout.Session) {
   // Auto-generation path (we already hold the financials) — idempotent backend.
   if (kind === 'existing' && businessId) {
     const result = await postCheckoutGenerate({
-      businessId, companyName, email, userInput, stripeSessionId: sessionId,
+      businessId, fid, companyName, email, userInput, stripeSessionId: sessionId,
       // Must match the success page: the buyer opted in to reviewing forecasts,
       // so start the run in forecast mode whichever path (webhook/page) fires first.
       forecast: m.forecast === 'true',
