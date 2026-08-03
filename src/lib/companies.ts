@@ -18,6 +18,14 @@ export interface Company {
   businessIdFormatted: string
   /** Valuatum's "K" suffix: this row is the konserni (group) model. */
   isGroup: boolean
+  /**
+   * Valuatum's followedModelId for THIS row. Carried through checkout so the
+   * backend generates the exact model the buyer picked: a company can have
+   * several models (emo vs konserni, plus sibling analyst models) and
+   * businessId alone cannot separate them — the backend's lookup strips the K
+   * suffix. Absent on the bundled sample rows, which have no Valuatum model.
+   */
+  fid?: number
   city: string
   industry: string
   /**
@@ -238,6 +246,10 @@ class ValuatumDataSource implements DataSource {
       id: businessId,
       name: c.company_name || businessId,
       businessId,
+      // The one unambiguous handle on this exact model — the K suffix in
+      // businessId survives to checkout, but the backend strips it again when
+      // it re-resolves, so the fid is what actually pins emo vs konserni.
+      fid: c.fid,
       city: c.city || '',
       industry: c.industry_text || '',
       hasFinancials: true,

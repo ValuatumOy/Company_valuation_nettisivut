@@ -9,6 +9,8 @@ type Props = {
   /** Raw Valuatum values — forwarded to checkout, never reformatted here. */
   companyName: string
   businessId: string
+  /** Valuatum followed model id — pins emo vs konserni for the paid run. */
+  fid?: number
   /** Konserni row: shown in the title so the buyer knows which model they get. */
   isGroup?: boolean
   hasFinancials: boolean
@@ -46,6 +48,7 @@ export function BuyBox({
   companyId,
   companyName,
   businessId,
+  fid,
   isGroup = false,
   hasFinancials,
 }: Props) {
@@ -75,6 +78,7 @@ export function BuyBox({
           companyId,
           companyName,
           businessId,
+          fid,
           shareData: shareActive,
           customerEmail: email,
           userInput: userInput.trim() || undefined,

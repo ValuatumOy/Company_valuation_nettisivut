@@ -122,10 +122,12 @@ export default async function CompanyPage({ params }: { params: Params }) {
             <BuyBox
               companyId={company.id}
               // Name and businessId stay raw here — they are forwarded to
-              // checkout and on to the backend, where the K suffix decides
-              // konserni vs emo. isGroup only drives the label.
+              // checkout and on to the backend. fid rides along and is what
+              // actually decides konserni vs emo there (the backend's own
+              // lookup drops the K suffix). isGroup only drives the label.
               companyName={company.name}
               businessId={company.businessId}
+              fid={company.fid}
               isGroup={company.isGroup}
               hasFinancials={company.hasFinancials}
             />

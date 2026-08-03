@@ -31,6 +31,12 @@ function asKind(value: string): ReportKind {
   return value === 'import' || value === 'creditsafe' ? value : 'existing'
 }
 
+/** Stripe metadata and query params are strings; the backend wants a number. */
+function asFid(value: string): number | undefined {
+  const n = Number(value)
+  return Number.isSafeInteger(n) && n > 0 ? n : undefined
+}
+
 const kindLabels: Record<ReportKind, string> = {
   existing: 'Arvonmääritysraportti',
   import: 'Tilinpäätösten tuonti + arvonmääritysraportti',
@@ -63,12 +69,12 @@ type OrderResult = {
 // hand. 'import'/'creditsafe' still need a human step (upload / Creditsafe
 // fetch isn't wired to auto-generation yet) — those stay on postOrder.
 async function startGeneration(
-  companyName: string, businessId: string, email: string, userInput: string, sessionId: string,
-  forecast: boolean,
+  companyName: string, businessId: string, fid: number | undefined, email: string,
+  userInput: string, sessionId: string, forecast: boolean,
 ): Promise<string | null> {
   if (!businessId) return null
   const result = await postCheckoutGenerate({
-    businessId, companyName, email, userInput, stripeSessionId: sessionId, forecast,
+    businessId, fid, companyName, email, userInput, stripeSessionId: sessionId, forecast,
   })
   return result ? `/raportti?key=${encodeURIComponent(result.key)}&rid=${encodeURIComponent(result.runId)}` : null
 }
@@ -81,13 +87,13 @@ async function startGeneration(
 // link instead of losing it. postOrder has no such idempotency, so that one
 // still needs the guard.
 async function fulfil(
-  kind: ReportKind, companyName: string, businessId: string, email: string,
-  userInput: string, sessionId: string, orderNote: string, forecast: boolean,
+  kind: ReportKind, companyName: string, businessId: string, fid: number | undefined,
+  email: string, userInput: string, sessionId: string, orderNote: string, forecast: boolean,
 ): Promise<{ outcome: Outcome; reportLink: string | null }> {
   if (!email) return { outcome: 'failed', reportLink: null }
 
   if (kind === 'existing') {
-    const reportLink = await startGeneration(companyName, businessId, email, userInput, sessionId, forecast)
+    const reportLink = await startGeneration(companyName, businessId, fid, email, userInput, sessionId, forecast)
     if (reportLink) return { outcome: 'generating', reportLink }
   }
   if (postedSessions.has(sessionId)) return { outcome: 'queued', reportLink: null }
@@ -108,6 +114,7 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
     const kind = asKind(session.metadata?.kind ?? param(sp, 'kind'))
     const companyName = session.metadata?.companyName || 'Tuntematon yritys'
     const businessId = session.metadata?.businessId || ''
+    const fid = asFid(session.metadata?.fid || '')
     const userInput = session.metadata?.userInput || ''
     const forecast = session.metadata?.forecast === 'true'
     const email =
@@ -117,7 +124,7 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
       ''
 
     const { outcome, reportLink } = await fulfil(
-      kind, companyName, businessId, email, userInput, sessionId,
+      kind, companyName, businessId, fid, email, userInput, sessionId,
       `MAKSETTU (Stripe ${sessionId}), tuote: ${kind}, hinta: ${eur(session.amount_total ?? 0)}`,
       forecast,
     )
@@ -135,6 +142,7 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
   const kind = asKind(param(sp, 'kind'))
   const companyName = param(sp, 'company')
   const businessId = param(sp, 'businessId')
+  const fid = asFid(param(sp, 'fid'))
   const userInput = param(sp, 'userInput')
   const email = param(sp, 'email')
   const forecast = param(sp, 'forecast') === '1'
@@ -147,7 +155,7 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
 
   if (!companyName) return { demo: true, companyName, kindLabel: kindLabels[kind], outcome: 'failed', reportLink: null, awaitingForecast: false }
   const { outcome, reportLink } = await fulfil(
-    kind, companyName, businessId, email, userInput, demoKey,
+    kind, companyName, businessId, fid, email, userInput, demoKey,
     `KOEMAKSU (ei veloitusta), tuote: ${kind}, hinta: ${eur(q.total)}`,
     forecast,
   )
