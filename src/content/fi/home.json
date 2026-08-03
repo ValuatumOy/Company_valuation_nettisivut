@@ -97,16 +97,16 @@
       "ctaLabel": "Avaa esimerkkiraportti",
       "reports": [
         {
-          "id": "sample-supercell",
-          "name": "Supercell Oy",
-          "tag": "Kansainvälinen suuryhtiö",
-          "description": "Todellinen esimerkkiraportti julkisista tilinpäätöstiedoista: miljardiluokan peliyhtiö, jonka arvo nojaa poikkeukselliseen kannattavuuteen ja kansainväliseen liiketoimintaan.",
+          "id": "sample-free",
+          "name": "Esimerkkiyhtiö",
+          "tag": "Esimerkkiraportti",
+          "description": "Todellinen esimerkkiraportti julkisista tilinpäätöstiedoista. Näyttää raportin rakenteen, menetelmät, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
           "features": [
             "DCF ja EVA",
             "Skenaariot ja odotusarvo",
             "Arvon ajurit ja riskit"
           ],
-          "pdfUrl": "/samples/esimerkkiraportti-supercell.pdf"
+          "pdfUrl": "/samples/esimerkki_ilmainen.pdf"
         },
         {
           "id": "sample-services",

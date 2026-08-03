@@ -113,7 +113,7 @@ const data = {
         {
           "heading": "Missä näitä menetelmiä voi nähdä käytännössä?",
           "paragraphs": [
-            "Valuatumin AI-arvonmääritysraportti soveltaa juuri näitä menetelmiä suomalaisiin yhtiöihin: raportti kertoo käytetyt ja hylätyt menetelmät perusteluineen, laskee skenaariot todennäköisyyksineen ja odotusarvon sekä erittelee arvon ajurit ja riskit. Laadun voi tarkistaa etukäteen [ilmaisista esimerkkiraporteista](/#esimerkit) — mukana on todellinen, julkisista tiedoista laadittu [Supercell Oy:n raportti](/samples/esimerkkiraportti-supercell.pdf). Yksittäinen raportti maksaa [79 € + alv](/#hinnoittelu), ja [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Tekoälyn roolista arvonmäärityksessä kerromme tarkemmin kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
+            "Valuatumin AI-arvonmääritysraportti soveltaa juuri näitä menetelmiä suomalaisiin yhtiöihin: raportti kertoo käytetyt ja hylätyt menetelmät perusteluineen, laskee skenaariot todennäköisyyksineen ja odotusarvon sekä erittelee arvon ajurit ja riskit. Laadun voi tarkistaa etukäteen [ilmaisista esimerkkiraporteista](/#esimerkit) — mukana on todellinen, julkisista tiedoista laadittu [esimerkkiraportti](/samples/esimerkki_ilmainen.pdf). Yksittäinen raportti maksaa [79 € + alv](/#hinnoittelu), ja [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Tekoälyn roolista arvonmäärityksessä kerromme tarkemmin kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
           ],
           "listItems": []
         },
@@ -212,7 +212,7 @@ const data = {
         {
           "heading": "Mitä AI-arvonmääritysraportti maksaa ja miten sen saa?",
           "paragraphs": [
-            "Raportin laadun voi tarkistaa ilmaiseksi: [esimerkkiraportit](/#esimerkit) ovat avoimia ilman rekisteröitymistä, ja mukana on julkisista tiedoista laadittu todellinen [Supercell Oy:n raportti](/samples/esimerkkiraportti-supercell.pdf). Yksittäinen yrityskohtainen raportti maksaa [79 € + alv](/#hinnoittelu) (kolmen raportin paketti 199 € + alv on tulossa). Raportti valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä — [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Jos arvonmääritysmenetelmät ovat vieraita, aloita kirjoituksesta [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)"
+            "Raportin laadun voi tarkistaa ilmaiseksi: [esimerkkiraportit](/#esimerkit) ovat avoimia ilman rekisteröitymistä, ja mukana on julkisista tiedoista laadittu todellinen [esimerkkiraportti](/samples/esimerkki_ilmainen.pdf). Yksittäinen yrityskohtainen raportti maksaa [79 € + alv](/#hinnoittelu) (kolmen raportin paketti 199 € + alv on tulossa). Raportti valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä — [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Jos arvonmääritysmenetelmät ovat vieraita, aloita kirjoituksesta [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)"
           ],
           "listItems": []
         },

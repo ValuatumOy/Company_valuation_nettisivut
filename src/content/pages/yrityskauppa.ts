@@ -66,7 +66,7 @@ export const yrityskauppaPage: ContentPageData = {
         "Raportti laskee arvon menetelmillä, jotka sopivat yhtiön taloudelliseen profiiliin. Kannattavalle yhtiölle keskeisiä ovat kassavirtapohjainen DCF ja taloudellinen lisäarvo (EVA). Niiden rinnalla arvo testataan kolmella skenaariolla:",
         "Kullekin skenaariolle annetaan todennäköisyys, ja niistä lasketaan arvon odotusarvo. Neuvottelussa tämä on käyttökelpoisempi työkalu kuin yksi piste-estimaatti: osapuolet voivat olla eri mieltä todennäköisyyksistä ja silti keskustella samoista luvuista.",
         "Uskottavuuden kannalta ratkaisevaa on myös se, mitä raportti ei käytä. Soveltumattomat menetelmät hylätään ja hylkäys perustellaan — esimerkiksi miksi tulospohjainen kerroin ei sovellu tappiolliselle yhtiölle. Kun vastapuoli vetoaa menetelmään, joka antaisi sille edullisemman luvun, raportista näkyy valmiiksi, miksi menetelmä ei sovellu juuri tähän yhtiöön.",
-        "Raportin luvuille on kova kuri: jokainen tekstissä esiintyvä euromäärä jäljittyy varmennettuun tilinpäätösdataan tai dokumentoituun laskelmaan, ja tämä tarkistetaan ohjelmallisesti ennen toimitusta. Verkkolähteisiin perustuvat laadulliset väitteet merkitään lähdeviittein, ja raportin lopussa on klikattava lähdeluettelo. Laadun voi todeta itse [esimerkkiraporteista](/#esimerkit) — mukana on julkisista tiedoista laadittu raportti Supercell Oy:stä."
+        "Raportin luvuille on kova kuri: jokainen tekstissä esiintyvä euromäärä jäljittyy varmennettuun tilinpäätösdataan tai dokumentoituun laskelmaan, ja tämä tarkistetaan ohjelmallisesti ennen toimitusta. Verkkolähteisiin perustuvat laadulliset väitteet merkitään lähdeviittein, ja raportin lopussa on klikattava lähdeluettelo. Laadun voi todeta itse [esimerkkiraporteista](/#esimerkit) — mukana on julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/esimerkki_ilmainen.pdf)."
       ],
       "listItems": [
         "Pessimistinen skenaario: keskeiset riskit toteutuvat — mitä arvolle jää.",
@@ -150,7 +150,7 @@ export const yrityskauppaPage: ContentPageData = {
     },
     {
       "question": "Kuinka nopeasti saan raportin neuvotteluja varten?",
-      "answer": "Kun tilinpäätöstiedot ovat jo hallussamme, raportti alkaa syntyä heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — sekä selaimessa että sähköpostiisi PDF:nä. Laadun voi arvioida etukäteen maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu raportti Supercell Oy:stä."
+      "answer": "Kun tilinpäätöstiedot ovat jo hallussamme, raportti alkaa syntyä heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — sekä selaimessa että sähköpostiisi PDF:nä. Laadun voi arvioida etukäteen maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/esimerkki_ilmainen.pdf)."
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ennen neuvottelupöytää",

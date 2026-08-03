@@ -12,7 +12,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
       "paragraphs": [
         "Sukupolvenvaihdoksessa yrityksen arvo ei ole vain neuvottelukysymys, vaan se vaikuttaa suoraan verotukseen. Jos yritys tai sen osakkeita siirretään jatkajalle lahjana, lahjavero määräytyy yrityksen käyvän arvon perusteella. Perintötilanteessa sama koskee perintöveroa. Jos kauppahinta alittaa käyvän arvon selvästi, erotus voidaan verottaa lahjana. Ilman perusteltua käsitystä arvosta luopuja ja jatkaja suunnittelevat järjestelyä sokkona: veroseuraamukset, kauppahinta ja jatkajan rahoitustarve jäävät arvailun varaan.",
         "Tärkeä rajaus: Verohallinnolla on oma arvostamiskäytäntönsä, jolla se määrittää yrityksen käyvän arvon verotusta varten. Tämä raportti ei ole verotukseen sellaisenaan kelpaava arvo eikä virallinen käyvän arvon lausunto. Sen tehtävä on antaa perusteltu, dokumentoitu arvostusväli, jonka pohjalta suunnittelet järjestelyä ja keskustelet vero- ja lakiasiantuntijan kanssa — tiedät, mistä suuruusluokasta puhutaan, ennen kuin sitoudut mihinkään.",
-        "Raportti sisältää noin 15 osiota tiivistelmästä ja tilinpäätösanalyysistä DCF- ja EVA-laskelmiin, skenaarioihin, riskeihin, arvon ajureihin ja lähdeluetteloon. Käytetyt ja hylätyt menetelmät perustellaan avoimesti. Rakenteen ja laadun näet [esimerkkiraporteista](/#esimerkit) — todellinen esimerkki on julkisista tiedoista laadittu Supercell Oy:n raportti."
+        "Raportti sisältää noin 15 osiota tiivistelmästä ja tilinpäätösanalyysistä DCF- ja EVA-laskelmiin, skenaarioihin, riskeihin, arvon ajureihin ja lähdeluetteloon. Käytetyt ja hylätyt menetelmät perustellaan avoimesti. Rakenteen ja laadun näet [esimerkkiraporteista](/#esimerkit) — mukana on julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/esimerkki_ilmainen.pdf)."
       ],
       "listItems": [],
       "table": {
@@ -151,7 +151,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
     },
     {
       "question": "Mitä raportti maksaa ja miten saan sen?",
-      "answer": "Yksittäinen raportti maksaa 79 € + alv ja valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Kolmen raportin paketti (199 € + alv) on tulossa. Laadun näet ennen ostamista maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu Supercell Oy:n raportti."
+      "answer": "Yksittäinen raportti maksaa 79 € + alv ja valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Kolmen raportin paketti (199 € + alv) on tulossa. Laadun näet ennen ostamista maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/esimerkki_ilmainen.pdf)."
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ajoissa — ennen kuin sukupolvenvaihdos on käsillä.",
