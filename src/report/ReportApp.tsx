@@ -894,6 +894,56 @@ function Progress({
   )
 }
 
+// Inline "?" that reveals an explanation. Hover is the primary gesture, but it
+// is not the only one: the button is focusable (keyboard) and toggles on click
+// (touch, where hover does not exist), and the panel is wired to the trigger
+// with aria-describedby so screen readers get the text either way.
+let _tipSeq = 0
+function HelpTip({ label, children }: { label: string; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false)
+  const idRef = useRef<string | null>(null)
+  if (idRef.current === null) idRef.current = `tip-${++_tipSeq}`
+  const id = idRef.current
+
+  return (
+    <span
+      className="relative inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        aria-label={label}
+        aria-expanded={open}
+        aria-describedby={open ? id : undefined}
+        onClick={() => setOpen((o) => !o)}
+        onFocus={() => setOpen(true)}
+        onBlur={() => setOpen(false)}
+        onKeyDown={(e) => { if (e.key === 'Escape') setOpen(false) }}
+        className={`flex h-[18px] w-[18px] items-center justify-center rounded-full border text-[11px] font-semibold leading-none transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green ${
+          open ? 'border-green bg-green text-white' : 'border-mist bg-white text-steel'
+        }`}
+      >
+        ?
+      </button>
+      <span
+        id={id}
+        role="tooltip"
+        hidden={!open}
+        /* Right-aligned by default so it can't run off a narrow screen, centred
+           over the trigger once there is room. */
+        className="absolute bottom-[calc(100%+8px)] right-0 z-20 w-[min(19rem,78vw)] rounded-xl bg-charcoal px-3.5 py-2.5 text-[12.5px] leading-relaxed text-white shadow-[0_8px_24px_rgba(26,36,32,0.18)] sm:left-1/2 sm:right-auto sm:-translate-x-1/2"
+      >
+        {children}
+        <span
+          aria-hidden
+          className="absolute right-[5px] top-full border-[6px] border-transparent border-t-charcoal sm:left-1/2 sm:right-auto sm:-ml-1.5"
+        />
+      </span>
+    </span>
+  )
+}
+
 // Single loading affordance for the whole app: a slow green pulse, never a spinner.
 function Pulse() {
   return (
@@ -1110,25 +1160,23 @@ function ClarifyPanel({
         {/* Sets `show_old_numbers` on the round-2 run, which swaps one directive in
             the writer prompt: either report every changed figure as "vanha → uusi"
             with a reason, or never mention the previous round at all (default). */}
-        <label className="flex cursor-pointer select-none items-start gap-2.5">
-          <input
-            type="checkbox"
-            checked={showOldNumbers}
-            onChange={(e) => setShowOldNumbers(e.target.checked)}
-            disabled={busy}
-            className="mt-0.5 h-4 w-4 rounded border-mist accent-[var(--green)]"
-          />
-          <span>
-            <span className="block text-[13.5px] text-charcoal">
-              Näytä raportissa mikä muuttui
-            </span>
-            <span className="mt-0.5 block max-w-[62ch] text-[12.5px] leading-relaxed text-steel">
-              Tarkennettu raportti kirjoittaa muuttuneet luvut muodossa vanha → uusi ja kertoo
-              syyn. Ilman valintaa raportissa näkyvät vain uudet luvut, eikä edelliseen versioon
-              viitata.
-            </span>
-          </span>
-        </label>
+        <div className="flex items-center gap-2">
+          <label className="flex cursor-pointer select-none items-center gap-2.5 text-[13.5px] text-charcoal">
+            <input
+              type="checkbox"
+              checked={showOldNumbers}
+              onChange={(e) => setShowOldNumbers(e.target.checked)}
+              disabled={busy}
+              className="h-4 w-4 rounded border-mist accent-[var(--green)]"
+            />
+            Näytä raportissa mikä muuttui
+          </label>
+          <HelpTip label="Mitä valinta tekee?">
+            Tarkennettu raportti kirjoittaa muuttuneet luvut muodossa vanha → uusi ja kertoo
+            syyn. Ilman valintaa raportissa näkyvät vain uudet luvut, eikä edelliseen versioon
+            viitata.
+          </HelpTip>
+        </div>
         <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
           <button
             onClick={() =>
