@@ -181,7 +181,15 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
     setKey(k)
     setMe(info)
     try {
-      const r = await getRun(k, rid)
+      let r = await getRun(k, rid)
+      // The emailed link targets the run that had finished when the mail was
+      // sent. If a refinement was started meanwhile (e.g. from the browser tab
+      // left open), follow the family's newest run — otherwise this view shows
+      // a stale report with empty clarification boxes, inviting a second round.
+      if (r.latest_run_id && r.latest_run_id !== rid) {
+        rid = r.latest_run_id
+        r = await getRun(k, rid)
+      }
       setRunId(rid)
       setRun(r)
       if (r.status === 'awaiting_forecast') {
