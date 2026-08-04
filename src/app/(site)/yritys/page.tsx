@@ -22,8 +22,8 @@ const STEPS = [
   },
   {
     number: '03',
-    title: 'Seuraa selaimessa, saat PDF:n sähköpostiin',
-    text: 'Generointi käynnistyy heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa. Viisi tarkennuskierrosta sisältyy hintaan.',
+    title: 'Saat PDF-raportin sähköpostiisi',
+    text: 'Generointi käynnistyy heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa. Valmiin raportin yhteydessä voit vielä vastata tekoälyn tarkentaviin kysymyksiin.',
   },
 ]
 

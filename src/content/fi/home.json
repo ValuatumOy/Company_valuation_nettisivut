@@ -302,13 +302,13 @@
         },
         {
           "id": "step-5",
-          "title": "Seuraa raportin syntyä selaimessa",
-          "description": "Näet vaiheet reaaliajassa: tilinpäätösdatan haku, ennusteet, DCF- ja EVA-laskenta, skenaariot ja analyysitekstin kirjoitus. Valmistuu tyypillisesti 10–20 minuutissa."
+          "title": "Odota raportin valmistumista",
+          "description": "Sivu näyttää missä vaiheessa ajo menee ja kestää tyypillisesti 10–20 minuuttia. Voit sulkea välilehden — raportti tulee joka tapauksessa sähköpostiisi."
         },
         {
           "id": "step-6",
           "title": "Saat PDF-raportin ja voit tarkentaa sitä",
-          "description": "Valmis raportti aukeaa selaimeen ja tulee sähköpostiisi PDF-muodossa. Tekoäly voi kysyä tarkentavia kysymyksiä — viisi tarkennuskierrosta sisältyy hintaan, ja raportti päivittyy vastaustesi pohjalta."
+          "description": "Valmis raportti aukeaa selaimeen ja tulee sähköpostiisi PDF-muodossa. Tekoäly esittää tarkentavia kysymyksiä, ja vastaamalla niihin saat päivitetyn version. Sisältyvien tarkennuskierrosten määrä näkyy raporttinäkymässä."
         }
       ]
     },
@@ -350,7 +350,7 @@
             "Riskit, arvon ajurit ja herkkyysanalyysi",
             "Valmis 10–20 minuutissa, näet edistymisen selaimessa",
             "Halutessasi tarkistat ja muokkaat ennusteet ennen raporttia",
-            "5 tarkennuskierrosta sisältyy"
+            "Tarkentavat kysymykset ja päivitetty versio"
           ],
           "ctaLabel": "Tilaa raportti",
           "ctaHref": "/yritys",
@@ -489,7 +489,7 @@
         {
           "id": "faq-clarify",
           "question": "Mitä jos tekoäly tarvitsee lisätietoja kesken raportin?",
-          "answer": "Jos jokin jää tekoälylle epäselväksi, se kysyy tarkentavia kysymyksiä valmiin raportin yhteydessä. Voit vastata suoraan selaimessa — viisi tarkennuskierrosta sisältyy hintaan, ja raportti päivittyy vastaustesi pohjalta."
+          "answer": "Jos jokin jää tekoälylle epäselväksi, se kysyy tarkentavia kysymyksiä valmiin raportin yhteydessä. Voit vastata suoraan selaimessa, ja raportti päivittyy vastaustesi pohjalta. Raporttinäkymä kertoo, montako tarkennuskierrosta hintaan sisältyy ja mitä mahdollinen lisäkierros maksaa."
         },
         {
           "id": "faq-forecast",
