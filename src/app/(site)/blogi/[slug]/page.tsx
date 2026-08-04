@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { blogPosts } from '@/content/blog'
 import { InlineMd } from '@/components/InlineMd'
 import { safeJsonLd } from '@/lib/jsonld'
+import { SITE_URL } from '@/lib/site'
 
 type Params = { params: Promise<{ slug: string }> }
 
@@ -37,7 +38,7 @@ export default async function BlogPostPage({ params }: Params) {
     dateModified: post.date,
     inLanguage: 'fi',
     author: { '@type': 'Organization', name: 'Valuatum Oy' },
-    publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: 'https://valuation.fi' },
+    publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: SITE_URL },
   }
 
   return (

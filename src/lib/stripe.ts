@@ -1,7 +1,8 @@
 import Stripe from 'stripe'
+import { SITE_URL } from '@/lib/site'
 
 let cached: Stripe | null = null
-const DEFAULT_PUBLIC_SITE_URL = 'https://www.arvonmaaritys.fi'
+const DEFAULT_PUBLIC_SITE_URL = SITE_URL
 const LEGACY_PUBLIC_SITE_HOSTS = new Set(['valuation.fi', 'www.valuation.fi'])
 
 /**

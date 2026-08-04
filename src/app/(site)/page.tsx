@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPageContent, getSiteSettings } from '@/content/server'
 import { safeJsonLd } from '@/lib/jsonld'
+import { SITE_URL } from '@/lib/site'
 import { ComparisonSection } from '@/components/sections/ComparisonSection'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { FeatureGridSection } from '@/components/sections/FeatureGridSection'
@@ -28,8 +29,8 @@ function jsonLd(page: Awaited<ReturnType<typeof getPageContent>>) {
     {
       '@type': 'Organization',
       name: 'Valuatum Oy',
-      url: 'https://valuation.fi',
-      logo: 'https://valuation.fi/logo.svg',
+      url: SITE_URL,
+      logo: `${SITE_URL}/logo.svg`,
       email: 'company-valuation@valuatum.com',
       sameAs: ['https://www.valuatum.com'],
     },

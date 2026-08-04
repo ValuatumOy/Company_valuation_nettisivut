@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { InlineMd } from '@/components/InlineMd'
 import { safeJsonLd } from '@/lib/jsonld'
+import { SITE_URL } from '@/lib/site'
 
 export type ContentSection = {
   heading: string
@@ -31,7 +32,7 @@ export function contentPageJsonLd(page: ContentPageData) {
         description: page.metaDescription,
         inLanguage: 'fi',
         author: { '@type': 'Organization', name: 'Valuatum Oy' },
-        publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: 'https://valuation.fi' },
+        publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: SITE_URL },
       },
       {
         '@type': 'FAQPage',

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Script from "next/script";
+import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const GA_ID = "G-K7HYM7Q10C";
@@ -12,8 +13,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  // TODO(launch): switch metadataBase to https://valuation.fi when domain moves
-  metadataBase: new URL("https://valuation.fi"),
+  metadataBase: new URL(SITE_URL),
   title: "AI-arvonmääritysraportti suomalaiselle yritykselle | Valuatum",
   description:
     "Tilaa AI-avusteinen yrityksen arvonmääritysraportti. Raportti sisältää arvion yrityksen arvosta, arvostusvälin, menetelmät, riskit ja arvon ajurit.",
