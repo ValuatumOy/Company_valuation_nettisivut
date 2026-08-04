@@ -2,18 +2,14 @@ import Image from 'next/image'
 import type { PageSection } from '@/content/schema'
 import { CompanySearch } from '@/components/CompanySearch'
 import { Reveal } from '@/components/Reveal'
-import { CheckIcon } from '@/components/icons'
 
 type Props = Extract<PageSection, { type: 'hero' }> & { contactEmail: string }
 
 export function HeroSection({
-  badge,
   title,
   subtitle,
   trustLine,
   secondaryCta,
-  statusNote,
-  badges,
   mockup,
 }: Props) {
   return (
@@ -39,15 +35,8 @@ export function HeroSection({
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 lg:px-10 lg:pb-28 lg:pt-44">
         <div className="grid items-center gap-14 lg:grid-cols-[1.1fr_0.9fr]">
           <div>
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-green-light/30 bg-green/15 px-4 py-1.5 text-[13px] font-medium text-green-light">
-                <span className="h-1.5 w-1.5 rounded-full bg-green-light" />
-                {badge}
-              </span>
-            </Reveal>
-
             <Reveal delay={100}>
-              <h1 className="mt-6 text-balance text-[2.5rem] font-light leading-[1.08] tracking-[-0.02em] sm:text-5xl lg:text-[3.4rem]">
+              <h1 className="text-balance text-[2.5rem] font-light leading-[1.08] tracking-[-0.02em] sm:text-5xl lg:text-[3.4rem]">
                 {title}
               </h1>
             </Reveal>
@@ -64,11 +53,7 @@ export function HeroSection({
                 <p className="mt-3 text-[13px] font-light text-white/55">
                   Hae yritys nimellä tai Y-tunnuksella → näet hinnan ja tilaat raportin.
                 </p>
-                <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-white/55">
-                  <span className="inline-flex items-center gap-1.5">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-gold" />
-                    {statusNote}
-                  </span>
+                <div className="mt-4 text-[13px] text-white/55">
                   <a
                     href={secondaryCta.href}
                     className="font-medium text-green-light transition-colors duration-200 hover:text-white"
@@ -77,20 +62,6 @@ export function HeroSection({
                   </a>
                 </div>
               </div>
-            </Reveal>
-
-            <Reveal delay={400}>
-              <ul className="mt-9 flex flex-wrap gap-2">
-                {badges.map((item) => (
-                  <li
-                    key={item.id}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-white/[0.05] px-3.5 py-1.5 text-[12.5px] text-white/70"
-                  >
-                    <CheckIcon className="h-3.5 w-3.5 text-green-light" />
-                    {item.label}
-                  </li>
-                ))}
-              </ul>
             </Reveal>
 
             <Reveal delay={500}>

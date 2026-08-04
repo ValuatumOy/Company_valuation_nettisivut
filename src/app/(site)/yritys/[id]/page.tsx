@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   if (!company) return { title: 'Yritystä ei löytynyt | Valuatum' }
   return {
     title: `${companyDisplayName(company)} — yrityksen arvonmääritys | Valuatum`,
-    description: `Tilaa tekoälyavusteinen arvonmääritysraportti yritykselle ${company.name} (${company.businessIdFormatted}). DCF, verrokkianalyysi ja riskiarvio yhdessä PDF-raportissa.`,
+    description: `Tilaa tekoälyavusteinen arvonmääritysraportti yritykselle ${company.name} (${company.businessIdFormatted}). DCF, EVA-täsmäytys, skenaariot ja riskiarvio yhdessä PDF-raportissa.`,
   }
 }
 
@@ -27,15 +27,21 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 // call — Company.latestRevenueEur is still there, and the bundled sample still
 // carries the figures.
 
+// Mirrors the section list of the actual delivered report — see the sample PDF
+// at /samples/esimerkki_ilmainen.pdf before changing this.
 const FEATURES = [
-  'Yrityksen ja liiketoiminnan yleiskuvaus',
-  'Viiden vuoden normalisoidut tilinpäätösluvut',
-  'DCF-arvonmääritys oletuksineen',
-  'Verrokkiyhtiöt ja arvostuskertoimet',
-  'Käänteinen arvonmääritys',
-  'Skenaarioanalyysi',
-  'Riskiarvio ja pisteytys',
-  'Perusteltu arvohaarukka',
+  'Tiivistelmä, avainluvut ja luottamustaso',
+  'Datan laatuluokka, lähteet ja rajoitteet',
+  'Liiketoimintaprofiili, markkina ja kilpailijat',
+  'Markkinasignaalit ja strateginen arvo',
+  'Historiallinen kehitys ja henkilöstötehokkuus',
+  '10 vuoden ennuste ja arvio sen uskottavuudesta',
+  'Menetelmien pisteytys: hyväksytyt ja hylätyt',
+  'DCF-laskelma ja WACC-parametrit',
+  'EVA-täsmäytys ja Verohallinnon mallin ristiintarkistus',
+  'Herkkyysanalyysi ja skenaariot todennäköisyyksineen',
+  'Riskit, arvon ajurit ja mikä liikuttaisi arviota',
+  'Tilinpäätöstaulukot, lähderekisteri ja metodologia',
 ]
 
 export default async function CompanyPage({ params }: { params: Params }) {
@@ -58,13 +64,9 @@ export default async function CompanyPage({ params }: { params: Params }) {
             <h1 className="text-balance text-4xl font-light leading-[1.1] tracking-[-0.02em] lg:text-5xl">
               {companyDisplayName(company)}
             </h1>
-            {company.hasFinancials ? (
+            {company.hasFinancials && (
               <span className="rounded-full border border-green-light/30 bg-green/15 px-3.5 py-1.5 text-[12.5px] font-medium text-green-light">
                 Tilinpäätöstiedot valmiina
-              </span>
-            ) : (
-              <span className="rounded-full border border-white/15 bg-white/[0.06] px-3.5 py-1.5 text-[12.5px] font-medium text-white/70">
-                Tilinpäätöstiedot puuttuvat
               </span>
             )}
           </div>
@@ -129,7 +131,6 @@ export default async function CompanyPage({ params }: { params: Params }) {
               businessId={company.businessId}
               fid={company.fid}
               isGroup={company.isGroup}
-              hasFinancials={company.hasFinancials}
             />
           </Reveal>
         </div>

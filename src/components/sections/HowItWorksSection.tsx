@@ -3,7 +3,7 @@ import { Reveal } from '@/components/Reveal'
 
 type Props = Extract<PageSection, { type: 'howItWorks' }>
 
-export function HowItWorksSection({ eyebrow, title, steps, note }: Props) {
+export function HowItWorksSection({ eyebrow, title, steps }: Props) {
   return (
     <section className="bg-off-white py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -14,11 +14,12 @@ export function HowItWorksSection({ eyebrow, title, steps, note }: Props) {
           </h2>
         </Reveal>
 
-        <ol className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {steps.map((step, index) => (
             <Reveal key={step.id} delay={index * 120} as="li">
               <div className="relative h-full">
-                {index < steps.length - 1 && (
+                {/* Connector stops at the end of each row, not just the last step. */}
+                {index < steps.length - 1 && (index + 1) % 3 !== 0 && (
                   <span className="absolute left-12 top-6 hidden h-px w-[calc(100%-3rem)] bg-mist lg:block" aria-hidden />
                 )}
                 <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-full border border-green/30 bg-white text-lg font-medium text-green-deep shadow-[0_4px_16px_rgba(61,158,114,0.15)]">
@@ -30,12 +31,6 @@ export function HowItWorksSection({ eyebrow, title, steps, note }: Props) {
             </Reveal>
           ))}
         </ol>
-
-        <Reveal delay={300}>
-          <p className="mx-auto mt-14 max-w-2xl rounded-2xl border border-gold/30 bg-gold-faint px-6 py-4 text-center text-[14px] leading-relaxed text-charcoal-mid">
-            {note}
-          </p>
-        </Reveal>
       </div>
     </section>
   )

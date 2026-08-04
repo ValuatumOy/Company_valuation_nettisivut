@@ -30,8 +30,9 @@ export interface Company {
   industry: string
   /**
    * Whether we already hold the financial statements for this company.
-   * - true  -> "existing data" report, instant generation
-   * - false -> user chooses upload ('import') or fetch ('creditsafe')
+   * Always true for anything reachable through search — a Valuatum hit is
+   * exactly what "we hold the financials" means. The flag drives only the
+   * "Tiedot valmiina" badge now; there is no false-branch purchase path.
    */
   hasFinancials: boolean
   latestRevenueEur?: number

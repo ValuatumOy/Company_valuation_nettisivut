@@ -5,7 +5,7 @@ import { Reveal } from '@/components/Reveal'
 export const metadata: Metadata = {
   title: 'Yrityshaku — tilaa arvonmääritysraportti | Valuatum',
   description:
-    'Hae yritys nimellä tai Y-tunnuksella ja tilaa tekoälyavusteinen arvonmääritysraportti. DCF, verrokkianalyysi ja riskiarvio yhdessä PDF-raportissa.',
+    'Hae yritys nimellä tai Y-tunnuksella ja tilaa tekoälyavusteinen arvonmääritysraportti. DCF, EVA-täsmäytys, skenaariot ja riskiarvio yhdessä PDF-raportissa.',
   alternates: { canonical: '/yritys' },
 }
 
@@ -13,17 +13,17 @@ const STEPS = [
   {
     number: '01',
     title: 'Hae yritys',
-    text: 'Etsi yritys nimellä tai Y-tunnuksella. Näet heti, ovatko tilinpäätöstiedot jo hallussamme.',
+    text: 'Etsi yritys nimellä tai Y-tunnuksella. Konserniyhtiöistä valitset emo- tai konsernitason mallin.',
   },
   {
     number: '02',
-    title: 'Valitse tietolähde',
-    text: 'Jos tiedot ovat valmiina, raportti laaditaan heti maksun jälkeen. Muussa tapauksessa lataat tilinpäätökset itse tai haemme ne puolestasi.',
+    title: 'Maksa kortilla',
+    text: 'Kertamaksu Stripen kautta, ei käyttäjätiliä. Voit halutessasi antaa lisätietoja, joita tekoäly ei löydä julkisista lähteistä.',
   },
   {
     number: '03',
-    title: 'Saat raportin sähköpostiisi',
-    text: 'Maksun jälkeen raportti laaditaan ja toimitetaan sähköpostiisi PDF-muodossa.',
+    title: 'Seuraa selaimessa, saat PDF:n sähköpostiin',
+    text: 'Generointi käynnistyy heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa. Viisi tarkennuskierrosta sisältyy hintaan.',
   },
 ]
 
@@ -50,16 +50,13 @@ export default function YritysPage() {
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-white/75">
-              Etsi yritys nimellä tai Y-tunnuksella. Näet suoraan, ovatko tilinpäätöstiedot jo
-              hallussamme ja mitä raporttivaihtoehtoja yritykselle on saatavilla.
+              Etsi yritys nimellä tai Y-tunnuksella. Haku käyttää Valuatumin omaa
+              yritysaineistoa — löytyneelle yhtiölle raportti voidaan laatia heti.
             </p>
           </Reveal>
           <Reveal delay={300}>
             <div className="mt-8 max-w-2xl">
               <CompanySearch variant="dark" autoFocus />
-              <p className="mt-4 text-[13px] text-white/55">
-                Jos yritystä ei löydy hausta, voit silti tilata raportin etusivun lomakkeella.
-              </p>
             </div>
           </Reveal>
         </div>

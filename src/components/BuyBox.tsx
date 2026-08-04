@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
-import { eur, quote, type ReportKind } from '@/lib/pricing'
+import { eur, quote } from '@/lib/pricing'
 import { companyDisplayName } from '@/lib/companies'
 
 type Props = {
@@ -13,48 +13,20 @@ type Props = {
   fid?: number
   /** Konserni row: shown in the title so the buyer knows which model they get. */
   isGroup?: boolean
-  hasFinancials: boolean
 }
 
-const BADGE: Record<ReportKind, string> = {
-  existing: 'Arvonmääritysraportti',
-  import: 'Omat tilinpäätökset + raportti',
-  creditsafe: 'Tietojen haku + raportti',
-}
-
-const LEAD: Record<ReportKind, (name: string) => string> = {
-  existing: (name) =>
-    `Tilinpäätöstiedot yritykselle ${name} ovat jo hallussamme. Raportti laaditaan automaattisesti maksun jälkeen.`,
-  import: () =>
-    'Maksat ensin ja lataat sen jälkeen tilinpäätökset (enintään viideltä vuodelta). Poimimme luvut ja laadimme raportin.',
-  creditsafe: () =>
-    'Haemme viralliset tilinpäätöstiedot puolestasi, minkä jälkeen raportti laaditaan automaattisesti. Sinun ei tarvitse ladata mitään.',
-}
-
-const OPTIONS: { kind: Exclude<ReportKind, 'existing'>; label: string; description: string }[] = [
-  {
-    kind: 'import',
-    label: 'Lataan tilinpäätökset itse',
-    description: 'Lataat tilinpäätös-PDF:t maksun jälkeen. Poimimme luvut niistä.',
-  },
-  {
-    kind: 'creditsafe',
-    label: 'Haette tiedot puolestani',
-    description: 'Haemme viralliset tilinpäätöstiedot, sinun ei tarvitse toimittaa mitään.',
-  },
-]
-
+// Every company reachable through search comes from Valuatum's own data, which
+// is what "we hold the financials" means — so 'existing' is the only kind the
+// site can sell. The user-uploads-statements and we-fetch-them flows were never
+// built end-to-end; the pricing/checkout plumbing for them still exists so that
+// any Stripe session already in flight resolves, but nothing offers them.
 export function BuyBox({
   companyId,
   companyName,
   businessId,
   fid,
   isGroup = false,
-  hasFinancials,
 }: Props) {
-  const [kind, setKind] = useState<ReportKind>(hasFinancials ? 'existing' : 'import')
-  // Imports default to sharing on (the cheaper, catalogue-building choice).
-  const [share, setShare] = useState(true)
   const [email, setEmail] = useState('')
   const [userInput, setUserInput] = useState('')
   // Opt-in (default off): review/edit forecasts before the report is generated.
@@ -62,8 +34,7 @@ export function BuyBox({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const shareActive = kind === 'import' && share
-  const { base, discount, total } = quote(kind, shareActive)
+  const { total } = quote('existing', false)
 
   async function checkout(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -74,12 +45,11 @@ export function BuyBox({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          kind,
+          kind: 'existing',
           companyId,
           companyName,
           businessId,
           fid,
-          shareData: shareActive,
           customerEmail: email,
           userInput: userInput.trim() || undefined,
           wantForecast,
@@ -101,14 +71,11 @@ export function BuyBox({
   return (
     <aside className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)]">
       <div className="bg-forest p-6 text-white">
-        <p className="text-[12.5px] font-medium text-green-light">{BADGE[kind]}</p>
+        <p className="text-[12.5px] font-medium text-green-light">AI-arvonmääritysraportti</p>
         <h2 className="mt-1 text-2xl font-light tracking-tight">
           {companyDisplayName({ name: companyName, isGroup })}
         </h2>
         <div className="mt-4 flex items-end gap-2">
-          {discount > 0 && (
-            <span className="pb-1.5 text-sm text-white/40 line-through">{eur(base)}</span>
-          )}
           <span className="text-[2.6rem] font-light leading-none tracking-tight">{eur(total)}</span>
         </div>
         <p className="mt-2 text-xs text-white/50">Kertamaksu per raportti, ei tilausta. Hintoihin lisätään alv.</p>
@@ -116,66 +83,10 @@ export function BuyBox({
 
       <form onSubmit={checkout} className="p-6">
         <p className="text-sm font-light leading-relaxed text-charcoal-mid">
-          {LEAD[kind](companyName)}
+          Tilinpäätöstiedot yritykselle {companyName} ovat jo hallussamme. Raportti
+          laaditaan automaattisesti maksun jälkeen ja valmistuu tyypillisesti 10–20
+          minuutissa.
         </p>
-
-        {!hasFinancials && (
-          <fieldset className="mt-5">
-            <legend className="text-[13px] font-medium text-charcoal">
-              Miten tilinpäätöstiedot toimitetaan?
-            </legend>
-            <div className="mt-2.5 space-y-2.5">
-              {OPTIONS.map((o) => (
-                <label
-                  key={o.kind}
-                  className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition-colors ${
-                    kind === o.kind ? 'border-green bg-green-faint' : 'border-mist hover:border-green/40'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="buybox-kind"
-                    checked={kind === o.kind}
-                    onChange={() => setKind(o.kind)}
-                    className="mt-1 h-4 w-4 accent-green"
-                  />
-                  <span className="min-w-0 flex-1 text-sm">
-                    <span className="flex items-baseline justify-between gap-2">
-                      <span className="font-medium text-charcoal">{o.label}</span>
-                      <span className="shrink-0 text-[13px] text-steel">
-                        {eur(quote(o.kind, false).total)}
-                      </span>
-                    </span>
-                    <span className="mt-1 block text-[13px] font-light leading-relaxed text-charcoal-mid">
-                      {o.description}
-                    </span>
-                  </span>
-                </label>
-              ))}
-            </div>
-          </fieldset>
-        )}
-
-        {kind === 'import' && (
-          <label className="mt-4 flex cursor-pointer items-start gap-3 rounded-2xl border border-mist bg-off-white p-4 transition-colors hover:border-green/40">
-            <input
-              type="checkbox"
-              checked={share}
-              onChange={(e) => setShare(e.target.checked)}
-              className="mt-1 h-4 w-4 accent-green"
-            />
-            <span className="text-sm">
-              <span className="font-medium text-charcoal">
-                Salli lukujen uudelleenkäyttö — säästät {eur(quote('import', true).discount)}
-              </span>
-              <span className="mt-1 block text-[13px] font-light leading-relaxed text-charcoal-mid">
-                Tallennamme vain tilinpäätösluvut, jotta {companyName} voidaan arvioida myöhemmin
-                uudelleen. Hinta {eur(quote('import', true).total)} normaalin{' '}
-                {eur(quote('import', false).total)} sijaan.
-              </span>
-            </span>
-          </label>
-        )}
 
         <label className="mt-5 block">
           <span className="text-[13px] font-medium text-charcoal">
@@ -206,25 +117,23 @@ export function BuyBox({
           />
         </label>
 
-        {kind === 'existing' && (
-          <label className="mt-4 flex cursor-pointer items-start gap-2.5 rounded-xl border border-mist bg-off-white px-3.5 py-3">
-            <input
-              type="checkbox"
-              checked={wantForecast}
-              onChange={(e) => setWantForecast(e.target.checked)}
-              className="mt-0.5 h-4 w-4 shrink-0 accent-green"
-            />
-            <span className="text-[13px] leading-relaxed text-charcoal-mid">
-              <span className="font-medium text-charcoal">
-                Haluan tarkistaa ennusteet ennen raporttia
-              </span>
-              <br />
-              Maksun jälkeen näet liikevaihto- ja EBIT-ennusteet ja voit muokata niitä
-              omilla näkemyksilläsi. Raportti luodaan vasta kun vahvistat ne. Jätä tyhjäksi,
-              niin raportti syntyy suoraan meidän ennusteillamme.
+        <label className="mt-4 flex cursor-pointer items-start gap-2.5 rounded-xl border border-mist bg-off-white px-3.5 py-3">
+          <input
+            type="checkbox"
+            checked={wantForecast}
+            onChange={(e) => setWantForecast(e.target.checked)}
+            className="mt-0.5 h-4 w-4 shrink-0 accent-green"
+          />
+          <span className="text-[13px] leading-relaxed text-charcoal-mid">
+            <span className="font-medium text-charcoal">
+              Haluan tarkistaa ennusteet ennen raporttia
             </span>
-          </label>
-        )}
+            <br />
+            Maksun jälkeen näet liikevaihto- ja EBIT-ennusteet ja voit muokata niitä
+            omilla näkemyksilläsi. Raportti luodaan vasta kun vahvistat ne. Jätä tyhjäksi,
+            niin raportti syntyy suoraan meidän ennusteillamme.
+          </span>
+        </label>
 
         <button
           type="submit"

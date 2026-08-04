@@ -18,17 +18,10 @@ const linkSchema = z.object({
 
 const heroSectionSchema = sectionBaseSchema.extend({
   type: z.literal('hero'),
-  badge: z.string(),
   title: z.string(),
   subtitle: z.string(),
   trustLine: z.string(),
-  inputPlaceholder: z.string(),
-  emailPlaceholder: z.string(),
-  cta: z.string(),
   secondaryCta: linkSchema,
-  formNote: z.string(),
-  statusNote: z.string(),
-  badges: z.array(z.object({ id: z.string(), label: z.string() })),
   mockup: z.object({
     reportLabel: z.string(),
     company: z.string(),
@@ -122,7 +115,6 @@ const howItWorksSectionSchema = sectionBaseSchema.extend({
       description: z.string(),
     })
   ),
-  note: z.string(),
 })
 
 const pricingSectionSchema = sectionBaseSchema.extend({

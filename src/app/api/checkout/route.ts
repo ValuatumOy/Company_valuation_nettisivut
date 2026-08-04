@@ -53,13 +53,8 @@ export async function POST(req: Request) {
   const wantForecast = kind === 'existing' && Boolean(body.wantForecast)
   const q = quote(kind, shareData)
 
-  // Where the user lands after a successful payment.
-  // - import   -> the statement-upload step (gated behind payment)
-  // - others   -> confirmation page that posts the order to the backend
-  const successPath =
-    kind === 'import'
-      ? `/tilinpaatokset/lataa?session_id={CHECKOUT_SESSION_ID}`
-      : `/kassa/valmis?session_id={CHECKOUT_SESSION_ID}&kind=${kind}`
+  // Confirmation page: starts generation and/or posts the order to the backend.
+  const successPath = `/kassa/valmis?session_id={CHECKOUT_SESSION_ID}&kind=${kind}`
 
   const stripe = getStripe()
 
@@ -90,11 +85,7 @@ export async function POST(req: Request) {
     if (userInput) params.set('userInput', userInput)
     if (shareData) params.set('share', '1')
     if (wantForecast) params.set('forecast', '1')
-    const demoTarget =
-      kind === 'import'
-        ? `/tilinpaatokset/lataa?${params}`
-        : `/kassa/valmis?${params}`
-    return NextResponse.json({ url: `${siteUrl()}${demoTarget}` })
+    return NextResponse.json({ url: `${siteUrl()}/kassa/valmis?${params}` })
   }
 
   // --- Real Stripe Checkout Session ------------------------------------------

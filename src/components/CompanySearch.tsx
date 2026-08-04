@@ -133,13 +133,9 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                           .join(' · ')}
                       </span>
                     </span>
-                    {c.hasFinancials ? (
+                    {c.hasFinancials && (
                       <span className="shrink-0 rounded-full bg-green-mist px-2.5 py-1 text-[11px] font-medium text-green-deep">
                         Tiedot valmiina
-                      </span>
-                    ) : (
-                      <span className="shrink-0 rounded-full bg-off-white px-2.5 py-1 text-[11px] font-medium text-steel">
-                        Tiedot puuttuvat
                       </span>
                     )}
                   </Link>
@@ -154,15 +150,16 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                   Yritystä ”{query}” ei löytynyt hakemistostamme.
                 </p>
                 <p className="mt-1.5 text-sm font-light leading-relaxed text-charcoal-mid">
-                  Voit silti tilata raportin: jätä tilaus etusivun lomakkeella, niin sovimme
-                  tilinpäätöstietojen toimituksesta erikseen.
+                  Kokeile Y-tunnusta tai yhtiön virallista nimeä. Jos yhtiötä ei löydy
+                  vieläkään, ota yhteyttä — tarkistamme onko sille saatavilla
+                  tilinpäätösaineistoa.
                 </p>
-                <Link
-                  href="/yritys"
+                <a
+                  href="mailto:company-valuation@valuatum.com"
                   className="mt-4 inline-block rounded-full bg-green px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-deep"
                 >
-                  Siirry tilauslomakkeelle
-                </Link>
+                  Ota yhteyttä
+                </a>
               </div>
             )
           )}

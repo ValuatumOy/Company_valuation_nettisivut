@@ -94,11 +94,6 @@
       "href": "/kertoimet"
     },
     {
-      "id": "foot-tilinpaatokset",
-      "label": "Tilinpäätösten toimitus",
-      "href": "/tilinpaatokset"
-    },
-    {
       "id": "foot-yrityskauppa",
       "label": "Arvonmääritys yrityskaupassa",
       "href": "/yrityskauppa"

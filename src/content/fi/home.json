@@ -11,78 +11,45 @@
       "id": "hero",
       "visible": true,
       "type": "hero",
-      "badge": "AI-arvonmääritysraportti · Launch-hinta 79 €",
       "title": "Selvitä yrityksen arvo ilman raskasta konsulttiprosessia.",
-      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Saat analyytikkotasoisen AI-arvonmääritysraportin, jossa näkyvät yrityksen arvioitu arvo, arvostusväli, käytetyt menetelmät, riskit ja arvon tärkeimmät ajurit.",
+      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Saat analyytikkotasoisen AI-arvonmääritysraportin, jossa näkyvät yrityksen arvioitu arvo, skenaariohaarukka, käytetyt ja hylätyt menetelmät, riskit ja arvon tärkeimmät ajurit.",
       "trustLine": "Rakennettu Valuatumin 25+ vuoden arvonmääritys-, credit risk- ja equity research -osaamisen päälle.",
-      "inputPlaceholder": "Yrityksen nimi tai Y-tunnus",
-      "emailPlaceholder": "Sähköposti (valinnainen)",
-      "cta": "Jatka tilaukseen",
       "secondaryCta": {
         "label": "Katso esimerkkiraportti",
         "href": "#esimerkit"
       },
-      "formNote": "Raportti alkaa syntyä heti maksun jälkeen — seuraat sitä selaimessa ja saat sen myös sähköpostiisi.",
-      "statusNote": "Raportti valmistuu tyypillisesti 10–20 minuutissa. Viisi tarkennuskierrosta sisältyy hintaan.",
-      "badges": [
-        {
-          "id": "badge-pdf",
-          "label": "PDF-raportti"
-        },
-        {
-          "id": "badge-range",
-          "label": "Arvostusväli"
-        },
-        {
-          "id": "badge-methods",
-          "label": "Menetelmäperustelut"
-        },
-        {
-          "id": "badge-risks",
-          "label": "Riskit ja arvon ajurit"
-        },
-        {
-          "id": "badge-valuatum",
-          "label": "Valuatum 25+ vuotta"
-        }
-      ],
       "mockup": {
         "reportLabel": "AI-arvonmääritysraportti",
         "company": "Esimerkki Yhtiö Oy",
         "businessId": "Y-tunnus 1234567-8",
-        "valueLabel": "Arvioitu arvo",
+        "valueLabel": "Oman pääoman arvo",
         "value": "2,4 M€",
-        "rangeLabel": "Arvostusväli",
-        "rangeLow": "1,9 M€",
+        "rangeLabel": "Skenaariohaarukka",
+        "rangeLow": "2,0 M€",
         "rangeHigh": "2,8 M€",
-        "methodsLabel": "Menetelmien painotus",
+        "methodsLabel": "Skenaariot ja todennäköisyydet",
         "methods": [
           {
-            "id": "m-dcf",
-            "name": "DCF-kassavirta",
-            "weight": 40
-          },
-          {
-            "id": "m-evebitda",
-            "name": "EV/EBITDA",
-            "weight": 25
-          },
-          {
-            "id": "m-pe",
-            "name": "P/E-kerroin",
-            "weight": 20
-          },
-          {
-            "id": "m-roepbv",
-            "name": "ROE vs. P/BV",
+            "id": "m-pessimistic",
+            "name": "Pessimistinen",
             "weight": 15
+          },
+          {
+            "id": "m-conservative",
+            "name": "Konservatiivinen",
+            "weight": 65
+          },
+          {
+            "id": "m-optimistic",
+            "name": "Optimistinen",
+            "weight": 20
           }
         ],
-        "risksLabel": "Keskeiset havainnot",
+        "risksLabel": "Menetelmät ja tarkistukset",
         "risks": [
-          "Asiakaskeskittymä",
-          "Käyttökate normalisoitu",
-          "Nettovelka huomioitu"
+          "DCF päämenetelmänä",
+          "EVA-täsmäytys",
+          "Herkkyysanalyysi"
         ],
         "footnote": "Esimerkkidata · ei todellinen yhtiö"
       }
@@ -93,16 +60,16 @@
       "type": "sampleReports",
       "eyebrow": "Esimerkkiraportit",
       "title": "Katso laatu ennen tilaamista.",
-      "subtitle": "Esimerkkiraportit näyttävät, miten raportti käsittelee erilaisia yrityksiä: kannattavaa, tappiollista ja tasepohjaista tapausta.",
+      "subtitle": "Avaa oikea, julkisista tilinpäätöstiedoista laadittu raportti kokonaisuudessaan — sama rakenne ja sama laatu kuin tilaamassasi.",
       "ctaLabel": "Avaa esimerkkiraportti",
       "reports": [
         {
           "id": "sample-free",
-          "name": "Esimerkkiyhtiö",
-          "tag": "Esimerkkiraportti",
-          "description": "Todellinen esimerkkiraportti julkisista tilinpäätöstiedoista. Näyttää raportin rakenteen, menetelmät, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
+          "name": "St1 Nordic Oy",
+          "tag": "Todellinen esimerkkiraportti",
+          "description": "26-sivuinen raportti julkisista tilinpäätöstiedoista. Näyttää rakenteen, menetelmien pisteytyksen, DCF- ja EVA-laskelmat, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
           "features": [
-            "DCF ja EVA",
+            "DCF ja EVA-täsmäytys",
             "Skenaariot ja odotusarvo",
             "Arvon ajurit ja riskit"
           ],
@@ -110,25 +77,21 @@
         },
         {
           "id": "sample-services",
-          "name": "Anonymisoitu palveluyhtiö",
-          "tag": "Vakaa kannattavuus",
-          "description": "Näyttää, miten raportti arvioi normalisoitua tulosta ja kassavirran kestävyyttä.",
+          "name": "Vakaa palveluyhtiö",
+          "tag": "Tulossa",
+          "description": "Esimerkki siitä, miten raportti käsittelee tasaisesti kannattavaa yhtiötä, jolle kassavirtapohjainen arvo on selkeästi hallitseva.",
           "features": [
-            "DCF + kertoimet",
-            "Normalisoitu tulos",
-            "Herkkyysanalyysi"
+            "Kassavirtapainotteinen tapaus"
           ],
           "pdfUrl": "#esimerkit"
         },
         {
           "id": "sample-holding",
-          "name": "Anonymisoitu holding-yhtiö",
-          "tag": "Tasepainotteinen arvo",
-          "description": "Näyttää, miten substanssi, nettovelka ja omaisuuserät vaikuttavat arvoon.",
+          "name": "Tappiollinen tai omaisuusvaltainen yhtiö",
+          "tag": "Tulossa",
+          "description": "Esimerkki siitä, miten raportti käsittelee tapauksen, jossa tulos ei kanna arvoa ja tase nousee ratkaisevaan rooliin.",
           "features": [
-            "Substanssiarvo",
-            "Nettovelka-analyysi",
-            "Omaisuuserät"
+            "Tasepainotteinen tapaus"
           ],
           "pdfUrl": "#esimerkit"
         }
@@ -140,76 +103,96 @@
       "type": "featureGrid",
       "eyebrow": "Sisältö",
       "title": "Mitä raportti sisältää?",
-      "subtitle": "Jäsennelty analyysi, joka ei jätä lukua selittämättä — arvosta ja menetelmistä riskeihin ja toimenpiteisiin.",
+      "subtitle": "16 osiota tiivistelmästä liitteisiin. Jokainen luku perustellaan: mistä se tulee, mitä menetelmää käytettiin ja mitkä menetelmät hylättiin.",
       "items": [
         {
+          "id": "feat-summary",
+          "title": "Tiivistelmä, avainluvut ja luottamustaso",
+          "group": "Arvo"
+        },
+        {
           "id": "feat-value",
-          "title": "Yrityksen arvioitu arvo ja arvostusväli",
+          "title": "Oman pääoman arvo ja skenaariohaarukka",
           "group": "Arvo"
         },
         {
           "id": "feat-data",
-          "title": "Datan laatu ja rajoitteet",
+          "title": "Datan laatuluokka, käytetyt lähteet ja tunnistetut rajoitteet",
           "group": "Arvo"
         },
         {
           "id": "feat-profile",
-          "title": "Liiketoimintaprofiili",
+          "title": "Liiketoimintaprofiili, markkina ja kilpailijat",
+          "group": "Analyysi"
+        },
+        {
+          "id": "feat-signals",
+          "title": "Markkinasignaalit ja strateginen arvo",
           "group": "Analyysi"
         },
         {
           "id": "feat-history",
-          "title": "Historiallinen taloudellinen kehitys",
+          "title": "Historiallinen taloudellinen kehitys ja henkilöstötehokkuus",
           "group": "Analyysi"
         },
         {
           "id": "feat-forecast",
-          "title": "AI:n ennusteiden arviointi",
+          "title": "10 vuoden ennuste ja tekoälyn arvio sen uskottavuudesta",
           "group": "Analyysi"
         },
         {
-          "id": "feat-path",
-          "title": "Valuaatiopolun valinta",
-          "group": "Menetelmät"
-        },
-        {
           "id": "feat-methods",
-          "title": "Käytetyt ja hylätyt menetelmät",
+          "title": "Menetelmien pisteytys: hyväksytyt ja hylätyt perusteluineen",
           "group": "Menetelmät"
         },
         {
           "id": "feat-dcf",
-          "title": "DCF, tasearvo, kertoimet tai muut soveltuvat menetelmät",
+          "title": "DCF-laskelma, WACC-parametrit ja silta yritysarvosta oman pääoman arvoon",
+          "group": "Menetelmät"
+        },
+        {
+          "id": "feat-eva",
+          "title": "EVA-täsmäytys samaan ennusteeseen ja WACCiin",
+          "group": "Menetelmät"
+        },
+        {
+          "id": "feat-taxauthority",
+          "title": "Ristiintarkistus Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo)",
           "group": "Menetelmät"
         },
         {
           "id": "feat-sensitivity",
-          "title": "Herkkyysanalyysi ja skenaariot",
-          "group": "Riskit"
+          "title": "Herkkyysanalyysi ja skenaariot todennäköisyyksineen",
+          "group": "Skenaariot ja riskit"
         },
         {
           "id": "feat-risks",
-          "title": "Riskit",
-          "group": "Riskit"
+          "title": "Keskeiset arvonmääritysriskit ja miten ne näkyvät luvuissa",
+          "group": "Skenaariot ja riskit"
         },
         {
           "id": "feat-drivers",
-          "title": "Arvon ajurit",
-          "group": "Toimenpiteet"
+          "title": "Arvoa nostavat ja laskevat ajurit",
+          "group": "Skenaariot ja riskit"
         },
         {
-          "id": "feat-actions",
-          "title": "Toimenpiteet arvon kasvattamiseksi",
-          "group": "Toimenpiteet"
+          "id": "feat-movers",
+          "title": "Mitkä tekijät liikuttaisivat arviota",
+          "group": "Skenaariot ja riskit"
         },
         {
           "id": "feat-financials",
-          "title": "Tilinpäätöstaulukot",
+          "title": "Tilinpäätöstaulukot ja lähderekisteri hakupäivineen",
           "group": "Liitteet"
         },
         {
           "id": "feat-method-disclaimer",
-          "title": "Metodologia ja vastuuvapaus",
+          "title": "Metodologia, tekoälyn rooli, rajoitukset ja vastuuvapaus",
+          "group": "Liitteet"
+        },
+        {
+          "id": "feat-appendix",
+          "title": "Liite: ennusteen täydet vuositason luvut",
           "group": "Liitteet"
         }
       ]
@@ -233,13 +216,14 @@
       "valuatum": {
         "title": "Valuatum AI-arvonmääritysraportti",
         "items": [
-          "Arvo ja arvostusväli",
-          "Käytetyt ja hylätyt menetelmät perusteluineen",
+          "Arvo, skenaariohaarukka ja skenaarioiden odotusarvo",
+          "Menetelmien pisteytys: hyväksytyt ja hylätyt perusteluineen",
           "Mitä oletusta arvo eniten tarvitsee",
           "Riskit, jotka voivat kaataa arvon",
-          "Datan rajoitteet näkyvästi",
-          "Toimenpiteet arvon kasvattamiseksi",
-          "Selkeä analyysiteksti"
+          "Datan laatuluokka ja rajoitteet näkyvästi",
+          "Mitkä tekijät liikuttaisivat arviota",
+          "Ristiintarkistus Verohallinnon arvostusmalliin",
+          "Selkeä analyysiteksti, ei mustaa laatikkoa"
         ]
       },
       "footnote": "Selkeämpi tapa ymmärtää, mistä yrityksen arvo muodostuu — vaihtoehto perinteisille arvoraporteille."
@@ -298,26 +282,35 @@
       "steps": [
         {
           "id": "step-1",
-          "title": "Hae yritys ja kerro lisätiedot",
-          "description": "Syötä yrityksen nimi tai Y-tunnus. Voit halutessasi kertoa myös tietoja, joita tekoäly ei löydä julkisista lähteistä."
+          "title": "Hae yritys",
+          "description": "Syötä yrityksen nimi tai Y-tunnus. Haku tunnistaa yhtiön ja poimii sen viralliset tilinpäätöstiedot — konserniyhtiöistä valitset emo- tai konsernitason mallin."
         },
         {
           "id": "step-2",
-          "title": "Maksa ja raportti alkaa syntyä heti",
-          "description": "Kun tilinpäätöstiedot ovat jo hallussamme, generointi käynnistyy automaattisesti maksun jälkeen — ei odottelua operaattorin vuoroa."
+          "title": "Anna sähköposti ja halutessasi lisätiedot",
+          "description": "Sähköpostiin toimitetaan valmis raportti. Voit lisäksi kertoa asioita, joita tekoäly ei löydä julkisista lähteistä: ajankohtainen konteksti, sopimukset, omat oletukset."
         },
         {
           "id": "step-3",
-          "title": "Seuraa edistymistä ja tarkenna tarvittaessa",
-          "description": "Näet raportin syntyvän selaimessa. Tekoäly voi kysyä tarkentavia kysymyksiä — viisi tarkennuskierrosta sisältyy hintaan."
+          "title": "Maksa kortilla — ei käyttäjätiliä",
+          "description": "Maksu hoituu Stripen kautta. Kertamaksu per raportti, ei tilausta eikä rekisteröitymistä."
         },
         {
           "id": "step-4",
-          "title": "Saat valmiin raportin selaimeen ja sähköpostiin",
-          "description": "Raportti valmistuu tyypillisesti 10–20 minuutissa PDF-muodossa, sekä selaimessa että sähköpostiisi."
+          "title": "Halutessasi tarkista ennusteet ennen raporttia",
+          "description": "Voit tilatessasi valita, että näet liikevaihto- ja EBIT-ennusteet ensin ja voit muokata niitä omilla näkemyksilläsi. Raportti luodaan vasta kun vahvistat ne. Jos et valitse tätä, generointi käynnistyy suoraan maksun jälkeen."
+        },
+        {
+          "id": "step-5",
+          "title": "Seuraa raportin syntyä selaimessa",
+          "description": "Näet vaiheet reaaliajassa: tilinpäätösdatan haku, ennusteet, DCF- ja EVA-laskenta, skenaariot ja analyysitekstin kirjoitus. Valmistuu tyypillisesti 10–20 minuutissa."
+        },
+        {
+          "id": "step-6",
+          "title": "Saat PDF-raportin ja voit tarkentaa sitä",
+          "description": "Valmis raportti aukeaa selaimeen ja tulee sähköpostiisi PDF-muodossa. Tekoäly voi kysyä tarkentavia kysymyksiä — viisi tarkennuskierrosta sisältyy hintaan, ja raportti päivittyy vastaustesi pohjalta."
         }
-      ],
-      "note": "Jos tilinpäätöstietoja ei vielä ole meillä, lataat ne itse tai haemme ne puolestasi maksun jälkeen — silloin raportti valmistuu manuaalisen käsittelyn kautta hieman pidemmässä ajassa."
+      ]
     },
     {
       "id": "pricing",
@@ -336,7 +329,7 @@
           "badge": "",
           "description": "Avaa valmiit esimerkkiraportit ilman maksukorttia.",
           "features": [
-            "Kolme erilaista esimerkkitapausta",
+            "Todellinen raportti julkisista tilinpäätöstiedoista",
             "Koko raportin rakenne nähtävillä",
             "Ei rekisteröitymistä"
           ],
@@ -350,15 +343,14 @@
           "price": "79 €",
           "priceSuffix": "+ alv",
           "badge": "Launch-hinta",
-          "description": "Yksi yrityskohtainen PDF-raportti. 79 € kun tilinpäätöstiedot ovat jo hallussamme — generointi käynnistyy automaattisesti heti maksun jälkeen.",
+          "description": "Yksi yrityskohtainen PDF-raportti. Kertamaksu, ei tilausta eikä käyttäjätiliä — generointi käynnistyy automaattisesti heti maksun jälkeen.",
           "features": [
-            "Arvo ja arvostusväli",
-            "Menetelmät perusteluineen",
-            "Riskit ja arvon ajurit",
+            "Arvo, skenaariohaarukka ja odotusarvo",
+            "DCF, EVA-täsmäytys ja menetelmien pisteytys",
+            "Riskit, arvon ajurit ja herkkyysanalyysi",
             "Valmis 10–20 minuutissa, näet edistymisen selaimessa",
-            "5 tarkennuskierrosta sisältyy",
-            "Omat tilinpäätökset liitteenä: 99 € (79 € jos sallit tietojen jakamisen)",
-            "Tietojen haku puolestasi: 129 €"
+            "Halutessasi tarkistat ja muokkaat ennusteet ennen raporttia",
+            "5 tarkennuskierrosta sisältyy"
           ],
           "ctaLabel": "Tilaa raportti",
           "ctaHref": "/yritys",
@@ -404,7 +396,7 @@
       "type": "methodology",
       "eyebrow": "Menetelmä ja luotettavuus",
       "title": "Rakennettu Valuatumin analyysiosaamisen päälle.",
-      "intro": "Raportti yhdistää tilinpäätösdataa, arvonmäärityslogiikkaa ja AI:n tuottamaa analyysitekstiä. Tavoite ei ole antaa mustaa laatikkoa, vaan näyttää, mikä oletus yrityksen arvon kannalta on ratkaiseva.",
+      "intro": "Laskenta tulee Valuatumin arvonmääritysmoottorista, ei kielimallilta. Tekoälyn rooli on tulkita luvut, pisteyttää menetelmien soveltuvuus ja kirjoittaa analyysi — se ei laske DCF:ää uudelleen eikä keksi lukuja. Tavoite ei ole musta laatikko, vaan näyttää mikä oletus arvon kannalta on ratkaiseva.",
       "points": [
         {
           "id": "point-experience",
@@ -414,17 +406,22 @@
         {
           "id": "point-deterministic",
           "title": "Laskenta on deterministinen",
-          "description": "Raportti käyttää strukturoitua tilinpäätösdataa ja deterministisiä laskentamalleja. AI kirjoittaa analyysin ja selittää luvut — ei keksi niitä."
+          "description": "Ennusteet, DCF, EVA ja herkkyystaulukot tulevat Valuatumin laskentamoottorista strukturoidusta tilinpäätösdatasta. Tekoäly esittää moottorin antamat rivit ja selittää ne — ei laske niitä uudelleen."
         },
         {
           "id": "point-method-selection",
-          "title": "Menetelmät valitaan yhtiön profiilin mukaan",
-          "description": "Kannattavalle yhtiölle DCF, P/E, EV/EBITDA ja ROE vs. P/BV. Tappiolliselle EBIT-% vs. P/Sales ja substanssi. Hylätyt menetelmät perustellaan raportissa."
+          "title": "Menetelmät pisteytetään, hylkäys perustellaan",
+          "description": "Ehdottomat hylkäyssäännöt karsivat ensin soveltumattomat menetelmät. Jäljelle jäävät pisteytetään 0–100 dokumentoiduilla kriteereillä, ja painot muodostetaan pisteistä. Verrokkikertoimet hylätään näkyvästi, jos vertailukelpoisia yhtiöitä ei ole."
+        },
+        {
+          "id": "point-crosscheck",
+          "title": "Arvo ristiintarkistetaan",
+          "description": "EVA täsmäytetään samaan ennusteeseen ja WACCiin, ja tulos verrataan Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo). Jos mallien välillä on ero, se näytetään — ei tasata piiloon."
         },
         {
           "id": "point-limitations",
           "title": "Rajoitteet näkyvät raportissa",
-          "description": "Datan laatu, oletusten epävarmuus ja menetelmien rajoitteet kerrotaan avoimesti — ei pienellä präntätyllä."
+          "description": "Raportti antaa datan laatuluokan ja luottamustason, listaa tunnistetut rajoitteet ja kertoo mikä kaataisi arvion — ei pienellä präntätyllä."
         }
       ],
       "stats": [
@@ -435,8 +432,8 @@
         },
         {
           "id": "stat-methods",
-          "value": "4",
-          "label": "menetelmäperhettä: DCF, kertoimet, ROE/P/BV, substanssi"
+          "value": "16",
+          "label": "osiota tiivistelmästä metodologiaan ja liitteisiin"
         },
         {
           "id": "stat-transparency",
@@ -462,17 +459,17 @@
         {
           "id": "faq-basis",
           "question": "Mihin raportin arvo perustuu?",
-          "answer": "Arvo lasketaan yhtiön tilinpäätösdatasta useilla menetelmillä: kassavirtapohjainen DCF, markkinapohjaiset kertoimet (P/E, EV/EBITDA), ROE vs. P/BV -suhde ja tasepohjainen substanssiarvo. Menetelmät painotetaan yhtiön taloudellisen profiilin mukaan, ja raportti kertoo, mitkä menetelmät käytettiin ja miksi osa hylättiin."
+          "answer": "Päämenetelmä on kassavirtapohjainen DCF, joka lasketaan yhtiön toteutuneista luvuista ja 10 vuoden ennusteesta yrityskohtaisella WACCilla. EVA lasketaan samasta ennusteesta täsmäytyksenä, ja arvo ristiintarkistetaan Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo). Verrokkikertoimet (P/E, EV/EBITDA) ja tasearvo ovat mukana ehdokkaina, mutta ne hylätään näkyvästi perusteluineen, jos ne eivät sovellu yhtiöön tai vertailukelpoista dataa ei ole. Raportti näyttää jokaisen menetelmän pisteet, painon ja hylkäysperustelun."
         },
         {
           "id": "faq-coverage",
           "question": "Voiko raportin saada mistä tahansa suomalaisesta yrityksestä?",
-          "answer": "Lähtökohtaisesti kyllä, kun yhtiöllä on vähintään yksi rekisteröity tilinpäätös. Jos data ei riitä luotettavaan arvonmääritykseen, kerromme sen ennen maksua emmekä toimita puutteellista raporttia."
+          "answer": "Lähtökohtaisesti kyllä, kun yhtiöllä on rekisteröityjä tilinpäätöksiä. Haku kertoo heti, löytyykö yhtiö — konserneista voit valita emo- tai konsernitason mallin. Jos data ei riitä luotettavaan arvonmääritykseen, kerromme sen emmekä toimita puutteellista raporttia."
         },
         {
           "id": "faq-delivery",
           "question": "Kuinka nopeasti raportti toimitetaan?",
-          "answer": "Kun tilinpäätöstiedot ovat jo hallussamme, raportti alkaa syntyä automaattisesti heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — näet edistymisen suoraan selaimessa ja saat raportin myös sähköpostiisi. Jos toimitat tai haet tilinpäätökset erikseen, käsittely kestää hieman pidempään."
+          "answer": "Raportti alkaa syntyä automaattisesti heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — näet edistymisen suoraan selaimessa ja saat raportin myös sähköpostiisi PDF:nä. Jos valitset tilatessasi ennusteiden tarkistuksen, generointi käynnistyy vasta kun olet vahvistanut ennusteet."
         },
         {
           "id": "faq-data-quality",
@@ -493,6 +490,11 @@
           "id": "faq-clarify",
           "question": "Mitä jos tekoäly tarvitsee lisätietoja kesken raportin?",
           "answer": "Jos jokin jää tekoälylle epäselväksi, se kysyy tarkentavia kysymyksiä valmiin raportin yhteydessä. Voit vastata suoraan selaimessa — viisi tarkennuskierrosta sisältyy hintaan, ja raportti päivittyy vastaustesi pohjalta."
+        },
+        {
+          "id": "faq-forecast",
+          "question": "Voinko vaikuttaa raportin ennusteisiin?",
+          "answer": "Kyllä. Ennusteet tuotetaan järjestelmän deterministisillä ennustesäännöillä, mutta voit tilatessasi valita, että näet liikevaihto- ja EBIT-ennusteet ennen raporttia ja muokkaat niitä omilla näkemyksilläsi. Raportti lasketaan silloin sinun luvuillasi, ja se kerrotaan raportissa näkyvästi. Myös skenaarioiden todennäköisyydet ovat muokattavia oletuksia, eivät ennuste."
         }
       ]
     },

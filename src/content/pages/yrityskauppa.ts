@@ -22,7 +22,7 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Mitä raportti antaa myyjälle ja ostajalle?",
       "paragraphs": [
-        "Sama raportti palvelee kaupan molempia osapuolia, koska se ei aja kummankaan etua: menetelmät, painotukset, oletukset ja datan rajoitteet dokumentoidaan avoimesti. Noin 15 osiota kattavat tiivistelmän, liiketoimintaprofiilin, tilinpäätösanalyysin ennusteineen, arvonmääritysmenetelmät, skenaariot, riskit ja toimenpiteet — lopussa lähteet, metodologia ja vastuuvapaus."
+        "Sama raportti palvelee kaupan molempia osapuolia, koska se ei aja kummankaan etua: menetelmien pisteytys, painot, oletukset ja datan rajoitteet dokumentoidaan avoimesti. 16 osiota kattavat tiivistelmän ja datan laatuluokan, liiketoimintaprofiilin ja markkinasignaalit, historiallisen kehityksen, kymmenen vuoden ennusteen, DCF-laskelman ja EVA-täsmäytyksen, skenaariot todennäköisyyksineen, riskit ja arvon ajurit — lopussa tilinpäätöstaulukot, lähderekisteri, metodologia ja vastuuvapaus."
       ],
       "listItems": [],
       "table": {

@@ -1,8 +1,13 @@
 // Central pricing config. All amounts in EUR cents (all prices + alv).
 // Override via env so finance/ops can tune prices without code changes.
-// Launch pricing: 79 € base (matches the landing's advertised price) with
-// data-availability surcharges; sharing imported statements waives the
-// import surcharge back down to the base price.
+// Launch pricing: 79 € base — the ONLY price the site currently sells.
+//
+// 'import' and 'creditsafe' are legacy: the upload-your-own-statements and
+// we-fetch-them-for-you flows were never built end-to-end, and every page and
+// component offering them was removed. The kinds stay here (and in the checkout
+// route / kassa/valmis) only so a Stripe session created before that removal
+// still resolves to the right label and amount. Do not surface them again
+// without building the fulfilment behind them.
 
 export const PRICES = {
   existingReport: Number(process.env.PRICE_EXISTING_REPORT ?? 7900), // 79 € — data already on file
