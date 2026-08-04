@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   type ClarificationRequest,
   type CompanyCandidate,
@@ -20,10 +20,27 @@ import {
   searchCompany,
   validateKey,
 } from './reportApi'
+import { type MockSeed, mockForecastPreview } from './mockRun'
 
 const KEY_STORAGE = 'valu_expert_key'
 const TERMINAL = ['ok', 'validation_failed', 'error']
 const SUPPORT_EMAIL = 'company-valuation@valuatum.com'
+
+// One vocabulary for the whole app, borrowed from the marketing site's design
+// system (DESIGN.md): Inter, pill CTAs, rounded-3xl cards on mist borders,
+// green as the only accent. Defined once so the same control never renders two
+// different ways on two screens.
+const CARD = 'rounded-3xl border border-mist bg-white'
+const EYEBROW = 'text-[11px] font-semibold uppercase tracking-[0.14em] text-green-deep'
+const TITLE = 'text-[22px] font-light tracking-tight text-charcoal'
+const HELP = 'text-sm leading-relaxed text-steel'
+const LABEL = 'text-[13px] font-medium text-charcoal-mid'
+const INPUT =
+  'w-full rounded-xl border border-mist bg-white px-3.5 py-2.5 text-sm text-charcoal placeholder:text-steel/70 transition-colors duration-150 focus:border-green focus:outline-none focus:ring-2 focus:ring-green/15 disabled:bg-off-white disabled:text-steel'
+const BTN =
+  'rounded-full bg-green px-6 py-3 text-sm font-semibold text-white transition-colors duration-150 hover:bg-green-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:bg-green'
+const BTN_GHOST =
+  'rounded-full border border-mist bg-white px-5 py-2.5 text-sm font-medium text-charcoal-mid transition-colors duration-150 hover:border-steel/40 hover:bg-off-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green disabled:opacity-40'
 
 // How the visitor reached this page. A paying customer always arrives on a
 // `?key=&rid=` link minted by checkout, so that entry mode drives a stripped
@@ -82,9 +99,11 @@ function extractForecastData(stage0: Stage0 | null | undefined): ForecastData | 
   }
 }
 
-export function ReportApp({ entry }: { entry: Entry }) {
+// Dev-only: `/raportti/mock?state=…` passes a seed so the post-generation
+// screens can be designed without spending a real run. Null in production.
+export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | null }) {
   const [key, setKey] = useState('')
-  const [me, setMe] = useState<ExpertMe | null>(null)
+  const [me, setMe] = useState<ExpertMe | null>(mock?.me ?? null)
 
   const [query, setQuery] = useState('')
   const [candidates, setCandidates] = useState<CompanyCandidate[]>([])
@@ -102,10 +121,10 @@ export function ReportApp({ entry }: { entry: Entry }) {
   // (~100 s); drives the "importing forecasts" progress label.
   const [importingForecast, setImportingForecast] = useState(false)
 
-  const [runId, setRunId] = useState<string | null>(null)
-  const [run, setRun] = useState<any>(null)
-  const [busy, setBusy] = useState(false)
-  const [reportSrc, setReportSrc] = useState<string | null>(null)
+  const [runId, setRunId] = useState<string | null>(mock?.runId ?? null)
+  const [run, setRun] = useState<any>(mock?.run ?? null)
+  const [busy, setBusy] = useState(mock?.busy ?? false)
+  const [reportSrc, setReportSrc] = useState<string | null>(mock?.reportSrc ?? null)
   const [error, setError] = useState<string | null>(null)
   // Free rounds (2) used up: hold the answers the user just typed so the
   // "buy extra round" button can send the same payload to checkout.
@@ -115,7 +134,11 @@ export function ReportApp({ entry }: { entry: Entry }) {
     showOldNumbers: boolean
     scenarioProbabilities?: { pessimistic: number; base: number; optimistic: number }
     forecastEdits: ForecastEdit[]
-  } | null>(null)
+  } | null>(
+    mock?.capReached
+      ? { answers: [], freeText: '', showOldNumbers: false, forecastEdits: [] }
+      : null
+  )
   const [buying, setBuying] = useState(false)
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null)
 
@@ -127,7 +150,7 @@ export function ReportApp({ entry }: { entry: Entry }) {
   //    report (the paid checkout flow mints a single-use key per order).
   // 3. Otherwise restore a previously signed-in key from localStorage.
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || mock) return
     const params = new URLSearchParams(window.location.search)
     const urlKey = params.get('key')
     const urlRid = params.get('rid')
@@ -268,7 +291,7 @@ export function ReportApp({ entry }: { entry: Entry }) {
       if (errored) {
         setError(
           'Raportin tuottaminen epäonnistui teknisen virheen vuoksi. ' +
-          'Käyttämätön krediitti on palautettu — kokeile generointia hetken päästä uudelleen. ' +
+          'Käyttämätön krediitti on palautettu, kokeile generointia hetken päästä uudelleen. ' +
           `(Tekninen syy: vaihe ${errored.order}: ${errored.error_message || 'tuntematon virhe'})`,
         )
         return
@@ -454,43 +477,59 @@ export function ReportApp({ entry }: { entry: Entry }) {
       : []) || []
   const isRefinedVersion = Boolean(run?.parent_run_id)
   // Prefill for the forecast editor: the run's stage-0 FAKTAT forecast block.
-  const forecastData: ForecastData | null = !busy
-    ? extractForecastData(results.find((r) => r.order === 0)?.parsed_json)
-    : null
+  // Memoized on the run, not rebuilt per render: ForecastEditor's edit-reporting
+  // effect lists `data` in its deps, so a fresh object every render made it
+  // fire → setState in the parent → render → fire again (infinite loop).
+  const forecastData: ForecastData | null = useMemo(
+    () =>
+      busy
+        ? null
+        : extractForecastData(
+            (run?.results || []).find((r: any) => r.order === 0)?.parsed_json
+          ),
+    [run, busy]
+  )
 
   // Arrived on a checkout/email link → customer view, not the key-entry tool.
   const customerMode = entry === 'link'
+
+  const previewForecast = (text: string) =>
+    mock ? mockForecastPreview(text) : forecastPreview(key, runId!, text)
 
   // ── gate ──────────────────────────────────────────────────────────────
   if (!me) {
     return (
       <Shell>
-        <div className="max-w-md mx-auto mt-20">
+        <div className={`mx-auto mt-16 max-w-md ${CARD} p-8`}>
           {customerMode && (
             <>
-              <h1 className="text-2xl font-semibold text-neutral-900">Arvonmääritysraportti</h1>
+              <h1 className={TITLE}>Arvonmääritysraportti</h1>
               {error ? (
                 <>
-                  <p className="mt-2 text-sm text-neutral-600">
+                  <p className={`mt-3 ${HELP}`}>
                     Tämä linkki ei kelpaa tai se on vanhentunut. Raporttisi ei ole
-                    kadonnut — lähetämme sen uudelleen, kun otat yhteyttä.
+                    kadonnut, lähetämme sen uudelleen kun otat yhteyttä.
                   </p>
-                  <p className="mt-4 text-sm">
-                    <a href={`mailto:${SUPPORT_EMAIL}`} className="font-medium text-emerald-700 hover:underline">
-                      {SUPPORT_EMAIL}
-                    </a>
-                  </p>
+                  <a
+                    href={`mailto:${SUPPORT_EMAIL}`}
+                    className="mt-4 inline-block text-sm font-medium text-green-deep underline-offset-2 hover:underline"
+                  >
+                    {SUPPORT_EMAIL}
+                  </a>
                 </>
               ) : (
-                <p className="mt-2 text-sm text-neutral-500">Avataan raporttia…</p>
+                <p className={`mt-3 flex items-center gap-2.5 ${HELP}`}>
+                  <Pulse />
+                  Avataan raporttia…
+                </p>
               )}
             </>
           )}
 
           {entry === 'manual' && (
             <>
-              <h1 className="text-2xl font-semibold text-neutral-900">Arvonmääritys</h1>
-              <p className="mt-2 text-sm text-neutral-500">
+              <h1 className={TITLE}>Kirjaudu sisään</h1>
+              <p className={`mt-3 ${HELP}`}>
                 Syötä avaimesi. Krediiteilläsi voit tuottaa rajatun määrän
                 arvonmäärityksiä; tarkennukset ovat maksuttomia.
               </p>
@@ -502,11 +541,9 @@ export function ReportApp({ entry }: { entry: Entry }) {
                   value={key}
                   onChange={(e) => setKey(e.target.value)}
                   placeholder="exp_…"
-                  className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+                  className={INPUT}
                 />
-                <button className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-500">
-                  Kirjaudu
-                </button>
+                <button className={`${BTN} shrink-0 px-5 py-2.5`}>Kirjaudu</button>
               </form>
               {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
             </>
@@ -519,66 +556,73 @@ export function ReportApp({ entry }: { entry: Entry }) {
   // ── app ───────────────────────────────────────────────────────────────
   return (
     <Shell>
-      <div className="flex items-center justify-between border-b border-neutral-200 pb-3">
+      <div className="flex flex-wrap items-end justify-between gap-4 border-b border-mist pb-5">
         <div>
-          <h1 className="text-xl font-semibold text-neutral-900">
+          <p className={EYEBROW}>
             {customerMode ? 'Arvonmääritysraportti' : 'Arvonmääritys'}
-          </h1>
-          <p className="text-xs text-neutral-500">
-            {customerMode ? (run?.params?.company_name ?? '') : me.label}
           </p>
+          <h1 className={`mt-1.5 ${TITLE}`}>
+            {(customerMode ? run?.params?.company_name : me.label) || 'Yritys'}
+          </h1>
         </div>
         {!customerMode && (
-          <div className="text-right">
-            <div className="text-sm font-semibold text-neutral-900">
+          <div className="flex items-center gap-4">
+            <span className="rounded-full bg-green-mist px-3 py-1 text-[12.5px] font-medium text-green-deep">
               {me.unlimited ? 'Rajaton käyttö' : `${me.remaining} / ${me.generations_limit} krediittiä`}
-            </div>
-            <div className="flex items-center justify-end gap-3">
-              {runId && !busy && (
-                // Always-reachable escape: a failed/finished run otherwise dead-ends
-                // the page (the search form is hidden once runId is set).
-                <button onClick={resetRun} className="text-xs font-medium text-amber-700 hover:text-amber-900">
-                  + Aloita uusi
-                </button>
-              )}
-              <button onClick={signOut} className="text-xs text-neutral-400 hover:text-neutral-600">
-                Kirjaudu ulos
+            </span>
+            {runId && !busy && (
+              // Always-reachable escape: a failed/finished run otherwise dead-ends
+              // the page (the search form is hidden once runId is set).
+              <button
+                onClick={resetRun}
+                className="text-[13px] font-medium text-green-deep underline-offset-2 hover:underline"
+              >
+                Aloita uusi
               </button>
-            </div>
+            )}
+            <button
+              onClick={signOut}
+              className="text-[13px] text-steel underline-offset-2 hover:text-charcoal-mid hover:underline"
+            >
+              Kirjaudu ulos
+            </button>
           </div>
         )}
       </div>
 
       {!runId && !customerMode && (
-        <div className="mt-6 max-w-xl">
-          <label className="block text-sm font-medium text-neutral-700">Yritys (nimi tai y-tunnus)</label>
-          <div className="mt-1 flex gap-2">
+        <div className={`mt-8 max-w-2xl ${CARD} p-6 lg:p-8`}>
+          <label className={`block ${LABEL}`} htmlFor="company-q">
+            Yritys (nimi tai y-tunnus)
+          </label>
+          <div className="mt-2 flex gap-2">
             <input
+              id="company-q"
               value={query}
               onChange={(e) => { setQuery(e.target.value); setSelected(null) }}
               onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); void doSearch() } }}
               placeholder="esim. Valuatum Oy tai 1612398-8"
-              className="flex-1 rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+              className={INPUT}
             />
             <button
               onClick={doSearch}
               disabled={searching || query.trim().length < 2}
-              className="rounded-lg border border-neutral-300 px-4 py-2 text-sm font-medium text-neutral-700 hover:bg-neutral-100 disabled:opacity-40"
+              className={`${BTN_GHOST} shrink-0`}
             >
               {searching ? 'Haetaan…' : 'Hae'}
             </button>
           </div>
-          {searchErr && <p className="mt-1 text-xs text-red-600">{searchErr}</p>}
+          {searchErr && <p className="mt-2 text-[13px] text-red-600">{searchErr}</p>}
 
           {candidates.length > 1 && !selected && (
-            <div className="mt-2 grid gap-1">
+            <div className="mt-2 grid gap-1.5">
               {candidates.map((c) => (
                 <button
                   key={`${c.fid}-${c.analyst_name || ''}`}
                   onClick={() => setSelected(c)}
-                  className="rounded border border-neutral-200 px-2 py-1.5 text-left text-xs hover:bg-neutral-50"
+                  className="rounded-xl border border-mist px-3 py-2 text-left text-[13px] text-charcoal-mid transition-colors duration-150 hover:border-green/40 hover:bg-green-faint"
                 >
-                  {c.company_name} — {c.company_code}
+                  {c.company_name} · {c.company_code}
                   {c.industry_text ? ` · ${c.industry_text}` : ''}
                   {c.analyst_name ? ` (${c.analyst_name})` : ''}
                 </button>
@@ -587,78 +631,79 @@ export function ReportApp({ entry }: { entry: Entry }) {
           )}
 
           {selected && (
-            <div className="mt-2 flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs text-emerald-800">
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-2 rounded-xl bg-green-faint px-3.5 py-2.5 text-[13px] text-green-deep">
               <span>
-                Valittu: {selected.company_name} ({selected.company_code})
+                Valittu: <strong className="font-semibold">{selected.company_name}</strong> ({selected.company_code})
                 {selected.industry_text ? ` · ${selected.industry_text}` : ''}
               </span>
               <button
                 onClick={() => { setSelected(null); setCandidates([]) }}
-                className="font-medium text-emerald-700 hover:underline"
+                className="font-medium underline-offset-2 hover:underline"
               >
                 Vaihda
               </button>
             </div>
           )}
 
-          <label className="mt-4 block text-sm font-medium text-neutral-700">
-            Sähköposti raportille (valinnainen)
+          <label className={`mt-6 block ${LABEL}`} htmlFor="delivery-email">
+            Sähköposti raportille <span className="font-normal text-steel">(valinnainen)</span>
           </label>
           <input
+            id="delivery-email"
             value={deliveryEmail}
             onChange={(e) => setDeliveryEmail(e.target.value)}
             type="email"
             placeholder="nimi@yritys.fi"
-            className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            className={`mt-2 ${INPUT}`}
           />
 
-          <label className="mt-4 block text-sm font-medium text-neutral-700">
-            Lisätiedot (valinnainen)
+          <label className={`mt-5 block ${LABEL}`} htmlFor="user-input">
+            Lisätiedot <span className="font-normal text-steel">(valinnainen)</span>
           </label>
           <textarea
+            id="user-input"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             rows={3}
             placeholder="Omat oletukset, tiedot joita ei löydy julkisista lähteistä…"
-            className="mt-1 w-full rounded-lg border border-neutral-300 px-3 py-2 text-sm"
+            className={`mt-2 ${INPUT} resize-y`}
           />
 
-          <fieldset className="mt-4 rounded-lg border border-neutral-200 p-3">
-            <legend className="px-1 text-xs font-medium text-neutral-600">
-              Omat ennusteet (valinnainen)
-            </legend>
-            <label className="flex cursor-pointer items-start gap-2 py-1">
-              <input
-                type="radio"
-                name="forecast-mode"
-                checked={!wantForecast}
-                onChange={() => setWantForecast(false)}
-                className="mt-0.5"
-              />
-              <span className="text-sm text-neutral-700">
-                Käytä Valuatumin ennusteita — luo raportti suoraan{' '}
-                <span className="text-neutral-400">(oletus)</span>
-              </span>
-            </label>
-            <label className="flex cursor-pointer items-start gap-2 py-1">
-              <input
-                type="radio"
-                name="forecast-mode"
-                checked={wantForecast}
-                onChange={() => setWantForecast(true)}
-                className="mt-0.5"
-              />
-              <span className="text-sm text-neutral-700">
-                Haluan tarkistaa ennusteet — voin muokata liikevaihto- ja EBIT-ennusteita
-                ennen raportin luontia
-              </span>
-            </label>
+          <fieldset className="mt-6">
+            <legend className={LABEL}>Ennusteet</legend>
+            <div className="mt-2 grid gap-2">
+              {[
+                [false, 'Käytä Valuatumin ennusteita', 'Raportti luodaan suoraan. Oletus.'],
+                [true, 'Tarkistan ennusteet ensin', 'Näet liikevaihto- ja EBIT-ennusteet ja voit muokata niitä ennen raportin luontia.'],
+              ].map(([val, title, desc]) => (
+                <label
+                  key={String(val)}
+                  className={`flex cursor-pointer items-start gap-3 rounded-xl border px-3.5 py-3 transition-colors duration-150 ${
+                    wantForecast === val
+                      ? 'border-green bg-green-faint'
+                      : 'border-mist hover:border-steel/40'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="forecast-mode"
+                    checked={wantForecast === val}
+                    onChange={() => setWantForecast(val as boolean)}
+                    className="mt-1 accent-[var(--green)]"
+                  />
+                  <span>
+                    <span className="block text-[13.5px] font-medium text-charcoal">{title as string}</span>
+                    <span className="mt-0.5 block text-[12.5px] text-steel">{desc as string}</span>
+                  </span>
+                </label>
+              ))}
+            </div>
           </fieldset>
 
           <button
             onClick={startGeneration}
             disabled={!selected || (!me.unlimited && (me.remaining ?? 0) <= 0)}
-            className="mt-4 rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-500 disabled:opacity-40"
+            className={`mt-6 ${BTN}`}
           >
             {!me.unlimited && (me.remaining ?? 0) <= 0
               ? 'Kiintiö käytetty'
@@ -666,11 +711,11 @@ export function ReportApp({ entry }: { entry: Entry }) {
                 ? 'Hae tiedot ja tarkista ennusteet'
                 : 'Tuota arvonmääritys'}
           </button>
-          <p className="mt-2 text-xs text-neutral-500">
+          <p className="mt-3 text-[12.5px] leading-relaxed text-steel">
             {wantForecast
-              ? 'Haemme ensin yrityksen taloustiedot ja näytämme ennusteet — voit muokata niitä tai jatkaa suoraan. Sen jälkeen raportin generointi kestää tyypillisesti 10–20 minuuttia.'
+              ? 'Haemme ensin yrityksen taloustiedot ja näytämme ennusteet. Sen jälkeen raportin generointi kestää tyypillisesti 10–20 minuuttia.'
               : 'Raportin generointi kestää tyypillisesti 10–20 minuuttia.'}{' '}
-            Valmis raportti sisältää tekoälyn tarkentavia kysymyksiä — vastaamalla niihin saat
+            Valmis raportti sisältää tekoälyn tarkentavia kysymyksiä; vastaamalla niihin saat
             halutessasi tarkennetun version{roundsNote}.
           </p>
         </div>
@@ -689,41 +734,42 @@ export function ReportApp({ entry }: { entry: Entry }) {
           data={forecastData}
           edits={round1Edits}
           onEditsChange={setRound1Edits}
-          onPreview={(text) => forecastPreview(key, runId, text)}
+          onPreview={previewForecast}
           onContinue={() => continueFromForecast(round1Edits)}
         />
       )}
 
-      {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      {error && (
+        <p className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          {error}
+        </p>
+      )}
 
       {reportSrc && (
-        <div className="mt-6">
+        <div className="mt-8">
           {capReachedPayload ? (
-            <div className="mb-6 rounded-lg border border-amber-300 bg-amber-50 p-4">
-              <div className="text-sm font-semibold text-amber-900">
+            <div className={`mb-10 ${CARD} p-6 lg:p-8`}>
+              <p className={EYEBROW.replace('text-green-deep', 'text-gold')}>Tarkennukset</p>
+              <h2 className={`mt-1.5 ${TITLE}`}>
                 {me?.free_rounds_per_report
-                  ? `Maksuttomat tarkennuskierrokset (${me.free_rounds_per_report}) on käytetty`
-                  : 'Maksuttomat tarkennuskierrokset on käytetty'}
-              </div>
-              <p className="mt-0.5 text-xs text-amber-700">
+                  ? `Maksuttomat kierrokset (${me.free_rounds_per_report}) on käytetty`
+                  : 'Maksuttomat kierrokset on käytetty'}
+              </h2>
+              <p className={`mt-2 max-w-[62ch] ${HELP}`}>
                 {me?.paid_rounds_enabled
-                  ? 'Vastauksesi on tallessa. Lisätarkennuskierros maksaa 5 € — se käynnistyy heti maksun jälkeen ja saat päivitetyn raportin samaan tapaan kuin edelliset.'
-                  : `Tämän raportin tarkennuskierrokset on käytetty. Raportti alla on viimeisin versio — voit yhä ladata sen PDF:nä. Jos tarvitset lisää tarkennuksia, ota yhteyttä: ${SUPPORT_EMAIL}`}
+                  ? 'Vastauksesi ovat tallessa. Lisäkierros maksaa 5 € ja käynnistyy heti maksun jälkeen.'
+                  : `Raportti alla on viimeisin versio ja voit yhä ladata sen PDF:nä. Jos tarvitset lisää tarkennuksia, ota yhteyttä: ${SUPPORT_EMAIL}`}
               </p>
-              <div className="mt-3 flex items-center gap-3">
+              <div className="mt-5 flex flex-wrap items-center gap-3">
                 {me?.paid_rounds_enabled && (
-                  <button
-                    onClick={buyExtraRound}
-                    disabled={buying}
-                    className="rounded bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-40"
-                  >
-                    {buying ? 'Siirrytään maksuun…' : 'Osta lisäkierros — 5 €'}
+                  <button onClick={buyExtraRound} disabled={buying} className={BTN}>
+                    {buying ? 'Siirrytään maksuun…' : 'Osta lisäkierros, 5 €'}
                   </button>
                 )}
                 <button
                   onClick={() => setCapReachedPayload(null)}
                   disabled={buying}
-                  className="text-xs text-amber-700 hover:underline disabled:opacity-40"
+                  className={BTN_GHOST}
                 >
                   {me?.paid_rounds_enabled ? 'Muokkaa vastauksia' : 'Sulje'}
                 </button>
@@ -731,54 +777,42 @@ export function ReportApp({ entry }: { entry: Entry }) {
             </div>
           ) : (
             (clarifications.length > 0 || forecastData) && (
-              <div className="mb-6">
-                <h3 className="text-sm font-semibold text-neutral-900">Haluatko tarkentaa raporttia?</h3>
-                <p className="mt-0.5 text-xs text-neutral-500">
-                  Lue raportti alla ensin — vastaa alle mihin haluat, tai kirjoita vapaasti mitä
-                  tekoäly ei osannut kysyä.
-                </p>
-                <ClarifyPanel
-                  busy={busy}
-                  requests={clarifications}
-                  forecastData={forecastData}
-                  onForecastPreview={(text) => forecastPreview(key, runId!, text)}
-                  onSubmit={startRound2}
-                />
-              </div>
+              <ClarifyPanel
+                busy={busy}
+                requests={clarifications}
+                forecastData={forecastData}
+                onForecastPreview={previewForecast}
+                onSubmit={startRound2}
+              />
             )
           )}
 
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="text-sm font-semibold text-neutral-900">
-              {isRefinedVersion ? 'Tarkennettu versio' : 'Ensimmäinen versio'}
-            </h2>
+          <div className="mt-10 flex flex-wrap items-end justify-between gap-3 border-t border-mist pt-6">
+            <div>
+              <p className={EYEBROW}>{isRefinedVersion ? 'Tarkennettu versio' : 'Ensimmäinen versio'}</p>
+              <h2 className={`mt-1.5 ${TITLE}`}>Raportti</h2>
+            </div>
             <div className="flex flex-wrap items-center gap-2">
-              <button
-                onClick={() => downloadPdf(false)}
-                className="rounded-lg bg-neutral-800 px-3 py-1.5 text-xs font-semibold text-white hover:bg-neutral-700"
-              >
+              <button onClick={() => downloadPdf(false)} className={`${BTN} px-5 py-2.5`}>
                 Lataa PDF
               </button>
-              <button
-                onClick={() => downloadPdf(true)}
-                className="rounded-lg border border-neutral-300 px-3 py-1.5 text-xs font-medium text-neutral-700 hover:bg-neutral-100"
-              >
-                Avaa PDF uuteen välilehteen
+              <button onClick={() => downloadPdf(true)} className={BTN_GHOST}>
+                Avaa uuteen välilehteen
               </button>
             </div>
           </div>
           <iframe
             title="Raportti"
             srcDoc={reportSrc}
-            className="mt-3 h-[80vh] w-full rounded-lg border border-neutral-200 bg-white"
+            className="mt-5 h-[80vh] w-full rounded-3xl border border-mist bg-white"
           />
 
           {!customerMode && (
             <button
               onClick={resetRun}
-              className="mt-4 text-sm text-emerald-700 hover:underline"
+              className="mt-6 text-sm font-medium text-green-deep underline-offset-2 hover:underline"
             >
-              ← Uusi arvonmääritys
+              Uusi arvonmääritys
             </button>
           )}
         </div>
@@ -797,12 +831,23 @@ function padHtml(html: string): string {
 
 function Shell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen bg-neutral-50">
+    <main className="min-h-screen bg-off-white">
+      <header className="border-b border-mist bg-white">
+        <div className="mx-auto flex max-w-4xl items-center gap-2.5 px-6 py-4">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="" aria-hidden className="h-5 w-auto" />
+          <span className="text-[13px] font-medium tracking-tight text-charcoal">Valuatum</span>
+          <span className="text-[13px] text-steel">Arvonmääritys</span>
+        </div>
+      </header>
       <div className="mx-auto max-w-4xl px-6 py-10">
         {children}
-        <p className="mt-10 border-t border-neutral-200 pt-4 text-xs text-neutral-400">
+        <p className="mt-12 border-t border-mist pt-5 text-[13px] text-steel">
           Jos jokin menee pieleen, ota yhteyttä:{' '}
-          <a href={`mailto:${SUPPORT_EMAIL}`} className="text-neutral-600 hover:underline">
+          <a
+            href={`mailto:${SUPPORT_EMAIL}`}
+            className="font-medium text-green-deep underline-offset-2 hover:underline"
+          >
             {SUPPORT_EMAIL}
           </a>
         </p>
@@ -828,28 +873,34 @@ function Progress({
   const label = awaitingImport
     ? 'Tuodaan muokatut ennusteet Valuatumin malliin…'
     : forecastFetch
-    ? 'Haetaan taloustiedot — pääset kohta tarkistamaan ennusteet…'
+    ? 'Haetaan taloustiedot, pääset kohta tarkistamaan ennusteet…'
     : byOrder[0] && byOrder[0].status === 'running'
     ? 'Haetaan taloustietoja Valuatumista…'
     : running
     ? `Analysoidaan (vaihe ${running.order})…`
     : 'Käynnistetään…'
   return (
-    <div className="mt-6 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3">
+    <div className={`mt-8 ${CARD} p-6 lg:p-8`}>
       <div className="flex items-center gap-3">
-        <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-500" />
-        <span className="text-sm text-emerald-800">{label}</span>
-        <span className="text-xs text-emerald-600">
-          {forecastFetch ? 'Kestää noin minuutin.' : 'Kestää tyypillisesti 10–20 minuuttia.'}
-        </span>
+        <Pulse />
+        <span className="text-[15px] text-charcoal">{label}</span>
       </div>
-      {!forecastFetch && (
-        <p className="mt-1.5 text-xs text-emerald-700">
-          Valmis raportti sisältää tekoälyn tarkentavia kysymyksiä — vastaamalla niihin saat
-          halutessasi tarkennetun version.
-        </p>
-      )}
+      <p className="mt-2 pl-[22px] text-[13px] text-steel">
+        {forecastFetch ? 'Kestää noin minuutin.' : 'Kestää tyypillisesti 10–20 minuuttia.'}{' '}
+        {!forecastFetch &&
+          'Valmis raportti sisältää tekoälyn tarkentavia kysymyksiä; vastaamalla niihin saat halutessasi tarkennetun version.'}
+      </p>
     </div>
+  )
+}
+
+// Single loading affordance for the whole app: a slow green pulse, never a spinner.
+function Pulse() {
+  return (
+    <span className="relative flex h-2.5 w-2.5 shrink-0">
+      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green opacity-60" />
+      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-green" />
+    </span>
   )
 }
 
@@ -872,38 +923,35 @@ function ForecastGate({
 }) {
   const edited = edits.length > 0
   return (
-    <div className="mt-6 rounded-lg border border-neutral-200 bg-white p-4">
-      <h2 className="text-sm font-semibold text-neutral-900">Tarkista ennusteet ennen raporttia</h2>
-      <p className="mt-1 text-xs text-neutral-500">
-        Alla ovat Valuatumin ennusteet liikevaihdolle ja EBITille. Voit halutessasi muokata niitä
-        omilla näkemyksilläsi — tai jättää ne ennalleen ja luoda raportin suoraan. Muokkaaminen on
-        vapaaehtoista.
+    <div className="mt-8">
+      <p className={EYEBROW}>Ennen raporttia</p>
+      <h2 className={`mt-1.5 ${TITLE}`}>Tarkista ennusteet</h2>
+      <p className={`mt-2 max-w-[62ch] ${HELP}`}>
+        Alla ovat Valuatumin ennusteet liikevaihdolle ja EBITille. Voit muokata niitä omilla
+        näkemyksilläsi tai jättää ne ennalleen. Muokkaaminen on vapaaehtoista.
       </p>
 
       {data ? (
         <ForecastEditor
           data={data}
           busy={false}
-          defaultOpen
+          bare
           onPreview={onPreview}
           onEditsChange={onEditsChange}
         />
       ) : (
-        <p className="mt-3 text-xs text-amber-700">
-          Ennustedataa ei ollut saatavilla — raportti luodaan Valuatumin ennusteilla.
+        <p className={`mt-6 rounded-2xl bg-gold-faint px-4 py-3 text-[13px] text-charcoal-mid`}>
+          Ennustedataa ei ollut saatavilla. Raportti luodaan Valuatumin ennusteilla.
         </p>
       )}
 
-      <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button
-          onClick={onContinue}
-          className="rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-emerald-500"
-        >
+      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+        <button onClick={onContinue} className={BTN}>
           {edited ? 'Luo raportti näillä ennusteilla' : 'Luo raportti Valuatumin ennusteilla'}
         </button>
         {edited && (
-          <span className="text-xs text-neutral-500">
-            Muokatut ennusteet viedään ensin Valuatumin malliin (n. 1–2 min) ennen raportin luontia.
+          <span className="text-[12.5px] text-steel">
+            Muokatut ennusteet viedään ensin Valuatumin malliin (n. 1–2 min).
           </span>
         )}
       </div>
@@ -949,124 +997,172 @@ function ClarifyPanel({
     (freeText.trim() ? 1 : 0) +
     (probsValid ? 1 : 0)
 
+  const nothingToSend = answered === 0 && forecastEdits.length === 0
+
   return (
-    <div className="mt-2 rounded-lg border border-amber-300 bg-amber-50 p-4">
-      <div className="text-sm font-semibold text-amber-900">Täydennä ja tarkenna</div>
-      <p className="mt-0.5 text-xs text-amber-700">
-        AI ei voinut varmentaa näitä. Vastaa mihin voit — tarkennettu raportti (kierros 2) ei
-        kuluta kiintiötä.
-      </p>
-      <div className="mt-3 grid gap-2 md:grid-cols-2">
-        {requests.map((r) => (
-          <div key={r.id} className="rounded border border-amber-200 bg-white p-2">
-            <div className="text-xs font-medium text-neutral-800">{r.question}</div>
-            {r.valuation_impact && (
-              <div className="mt-0.5 text-[10px] text-amber-600">Vaikutus: {r.valuation_impact}</div>
-            )}
-            <textarea
-              value={answers[r.id] || ''}
-              onChange={(e) => setAnswers((a) => ({ ...a, [r.id]: e.target.value }))}
-              disabled={busy}
-              rows={2}
-              placeholder="Vastauksesi (jätä tyhjäksi jos et tiedä)"
-              className="mt-1 w-full rounded border border-neutral-300 px-2 py-1 text-xs"
-            />
+    <section className={`${CARD} overflow-hidden`}>
+      <div className="border-b border-mist px-6 py-6 lg:px-8">
+        <p className={EYEBROW}>Tarkennuskierros</p>
+        <h2 className={`mt-1.5 ${TITLE}`}>Haluatko tarkentaa raporttia?</h2>
+        <p className={`mt-2 max-w-[62ch] ${HELP}`}>
+          Lue raportti alta ensin. Vastaa alla oleviin kysymyksiin mihin voit, korjaa ennusteita
+          tai kirjoita vapaasti mitä tekoäly ei osannut kysyä. Tarkennus ei kuluta kiintiötä.
+        </p>
+      </div>
+
+      {requests.length > 0 && (
+        <div className="px-6 lg:px-8">
+          <div className="flex items-baseline gap-2 pt-6">
+            <h3 className={LABEL}>Tekoäly ei pystynyt varmentamaan näitä</h3>
+            <span className="text-[12px] text-steel">{requests.length} kysymystä</span>
           </div>
-        ))}
-      </div>
-      <div className="mt-2 rounded border border-amber-200 bg-white p-2">
-        <div className="text-xs font-medium text-neutral-800">
-          Skenaarioiden todennäköisyydet (valinnainen)
+          <ul className="mt-1 divide-y divide-mist">
+            {requests.map((r) => (
+              <li key={r.id} className="py-5">
+                <label htmlFor={`ans-${r.id}`} className="block text-[14.5px] leading-snug text-charcoal">
+                  {r.question}
+                </label>
+                {r.valuation_impact && (
+                  <p className="mt-1.5 text-[12px] text-steel">
+                    Vaikutus arvoon: {r.valuation_impact}
+                  </p>
+                )}
+                <textarea
+                  id={`ans-${r.id}`}
+                  value={answers[r.id] || ''}
+                  onChange={(e) => setAnswers((a) => ({ ...a, [r.id]: e.target.value }))}
+                  disabled={busy}
+                  rows={2}
+                  placeholder="Vastauksesi. Jätä tyhjäksi jos et tiedä."
+                  className={`mt-2.5 ${INPUT} resize-y`}
+                />
+              </li>
+            ))}
+          </ul>
         </div>
-        <div className="mt-0.5 text-[10px] text-neutral-500">
-          Jätä tyhjäksi = AI valitsee itse. Täytä kaikki kolme, summan oltava 100 %.
-        </div>
-        <div className="mt-1.5 flex items-center gap-2">
-          {(
-            [
-              ['pessimistic', 'Pessimistinen'],
-              ['base', 'Konservatiivinen'],
-              ['optimistic', 'Optimistinen'],
-            ] as const
-          ).map(([k, label]) => (
-            <label key={k} className="flex flex-col text-[10px] text-neutral-600">
-              {label}
-              <input
-                type="number"
-                min={0}
-                max={100}
-                step={5}
-                value={probs[k]}
-                onChange={(e) => setProbs((p) => ({ ...p, [k]: e.target.value }))}
-                disabled={busy}
-                placeholder="%"
-                className="mt-0.5 w-16 rounded border border-neutral-300 px-2 py-1 text-xs"
-              />
-            </label>
-          ))}
-          <span className={`text-[10px] ${probsError ? 'text-red-600' : 'text-neutral-500'}`}>
-            {probsFilled > 0 ? `Summa ${probsSum} %` : ''}
-            {probsError ? ' — täytä kaikki kolme, summan oltava 100 %' : ''}
-          </span>
-        </div>
-      </div>
-      <textarea
-        value={freeText}
-        onChange={(e) => setFreeText(e.target.value)}
-        disabled={busy}
-        rows={2}
-        placeholder="Muuta täydennettävää…"
-        className="mt-2 w-full rounded border border-neutral-300 px-2 py-1 text-xs"
-      />
-      {forecastData && (
-        <ForecastEditor
-          data={forecastData}
-          busy={busy}
-          onPreview={onForecastPreview}
-          onEditsChange={setForecastEdits}
-        />
       )}
-      <label className="mt-2 flex items-center gap-1.5 text-xs text-neutral-600 cursor-pointer select-none">
-        <input
-          type="checkbox"
-          checked={showOldNumbers}
-          onChange={(e) => setShowOldNumbers(e.target.checked)}
+
+      <div className="border-t border-mist px-6 py-6 lg:px-8">
+        <label htmlFor="free-text" className={LABEL}>
+          Muuta täydennettävää <span className="font-normal text-steel">(valinnainen)</span>
+        </label>
+        <textarea
+          id="free-text"
+          value={freeText}
+          onChange={(e) => setFreeText(e.target.value)}
           disabled={busy}
-          className="accent-amber-600"
+          rows={3}
+          placeholder="Esim. yrityskohtaisia tietoja, joita julkisista lähteistä ei löydy."
+          className={`mt-2 ${INPUT} resize-y`}
         />
-        Näytä vanhat luvut (vanha → uusi)
-      </label>
-      <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <button
-          onClick={() =>
-            onSubmit(
-              requests
-                .map((r) => ({ id: r.id, question: r.question, answer: (answers[r.id] || '').trim() }))
-                .filter((a) => a.answer),
-              freeText.trim(),
-              showOldNumbers,
-              probsValid
-                ? {
-                    pessimistic: parseInt(probs.pessimistic),
-                    base: parseInt(probs.base),
-                    optimistic: parseInt(probs.optimistic),
-                  }
-                : undefined,
-              forecastEdits
-            )
-          }
-          disabled={busy || (answered === 0 && forecastEdits.length === 0) || probsError}
-          className="rounded bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-40"
-        >
-          Tarkenna raporttia (kierros 2)
-        </button>
-        {forecastEdits.length > 0 && (
-          <span className="text-[11px] text-amber-700">
-            Ennusteita muutettu — malli ja raportti lasketaan uudelleen (kesto tyypillisesti 10–20 min).
+
+        <div className="mt-6">
+          <span className={LABEL}>
+            Skenaarioiden todennäköisyydet <span className="font-normal text-steel">(valinnainen)</span>
           </span>
-        )}
+          <p className="mt-1 text-[12.5px] text-steel">
+            Jätä tyhjäksi, niin tekoäly valitsee itse. Täytä kaikki kolme, summan on oltava 100 %.
+          </p>
+          <div className="mt-3 flex flex-wrap items-end gap-3">
+            {(
+              [
+                ['pessimistic', 'Pessimistinen'],
+                ['base', 'Konservatiivinen'],
+                ['optimistic', 'Optimistinen'],
+              ] as const
+            ).map(([k, label]) => (
+              <label key={k} className="flex flex-col gap-1 text-[12.5px] text-charcoal-mid">
+                {label}
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  step={5}
+                  value={probs[k]}
+                  onChange={(e) => setProbs((p) => ({ ...p, [k]: e.target.value }))}
+                  disabled={busy}
+                  placeholder="%"
+                  className={`${INPUT} w-24 tabular-nums`}
+                />
+              </label>
+            ))}
+            {probsFilled > 0 && (
+              <span className={`pb-2.5 text-[12.5px] ${probsError ? 'text-red-600' : 'text-green-deep'}`}>
+                Summa {probsSum} %{probsError ? ', täytä kaikki kolme niin että summa on 100 %' : ''}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
-    </div>
+
+      {forecastData && (
+        <div className="border-t border-mist px-6 lg:px-8">
+          <ForecastEditor
+            data={forecastData}
+            busy={busy}
+            onPreview={onForecastPreview}
+            onEditsChange={setForecastEdits}
+          />
+        </div>
+      )}
+
+      <div className="border-t border-mist bg-off-white px-6 py-6 lg:px-8">
+        {/* Sets `show_old_numbers` on the round-2 run, which swaps one directive in
+            the writer prompt: either report every changed figure as "vanha → uusi"
+            with a reason, or never mention the previous round at all (default). */}
+        <label className="flex cursor-pointer select-none items-start gap-2.5">
+          <input
+            type="checkbox"
+            checked={showOldNumbers}
+            onChange={(e) => setShowOldNumbers(e.target.checked)}
+            disabled={busy}
+            className="mt-0.5 h-4 w-4 rounded border-mist accent-[var(--green)]"
+          />
+          <span>
+            <span className="block text-[13.5px] text-charcoal">
+              Näytä raportissa mikä muuttui
+            </span>
+            <span className="mt-0.5 block max-w-[62ch] text-[12.5px] leading-relaxed text-steel">
+              Tarkennettu raportti kirjoittaa muuttuneet luvut muodossa vanha → uusi ja kertoo
+              syyn. Ilman valintaa raportissa näkyvät vain uudet luvut, eikä edelliseen versioon
+              viitata.
+            </span>
+          </span>
+        </label>
+        <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <button
+            onClick={() =>
+              onSubmit(
+                requests
+                  .map((r) => ({ id: r.id, question: r.question, answer: (answers[r.id] || '').trim() }))
+                  .filter((a) => a.answer),
+                freeText.trim(),
+                showOldNumbers,
+                probsValid
+                  ? {
+                      pessimistic: parseInt(probs.pessimistic),
+                      base: parseInt(probs.base),
+                      optimistic: parseInt(probs.optimistic),
+                    }
+                  : undefined,
+                forecastEdits
+              )
+            }
+            disabled={busy || nothingToSend || probsError}
+            className={BTN}
+          >
+            Tarkenna raporttia
+          </button>
+          <span className="text-[12.5px] text-steel">
+            {nothingToSend
+              ? 'Vastaa vähintään yhteen kohtaan tai muuta ennusteita.'
+              : forecastEdits.length > 0
+                ? 'Ennusteita muutettu: malli ja raportti lasketaan uudelleen, kesto 10–20 min.'
+                : 'Uusi versio valmistuu tyypillisesti 10–20 minuutissa.'}
+          </span>
+        </div>
+      </div>
+    </section>
   )
 }
 
@@ -1100,15 +1196,18 @@ function ForecastEditor({
   busy,
   onPreview,
   onEditsChange,
-  defaultOpen = false,
+  bare = false,
 }: {
   data: ForecastData
   busy: boolean
   onPreview: (text: string) => Promise<ForecastPreview>
   onEditsChange: (edits: ForecastEdit[]) => void
-  defaultOpen?: boolean
+  // `bare` = the forecast-review screen, where editing forecasts IS the task:
+  // no disclosure to open, no "why would I click this" label. Inside the
+  // refinement panel it stays collapsed, because there it is one option of four.
+  bare?: boolean
 }) {
-  const [open, setOpen] = useState(defaultOpen)
+  const [open, setOpen] = useState(bare)
   const [rev, setRev] = useState<number[]>(() => data.years.map((_, i) => data.rev[i]))
   const [ebit, setEbit] = useState<number[]>(() => data.years.map((_, i) => data.ebit[i]))
   const [mode, setMode] = useState<{ rev: Unit; ebit: Unit }>({ rev: 'abs', ebit: 'abs' })
@@ -1215,35 +1314,40 @@ function ForecastEditor({
   const anyChanged = data.years.some((_, i) => changed('rev', i) || changed('ebit', i))
 
   return (
-    <div className="mt-3">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="flex w-full items-center justify-between rounded-md border border-amber-200 bg-white px-3 py-2 text-left"
-      >
-        <span>
-          <span className="text-[13px] font-semibold text-amber-900">
-            Muuta ennusteita
-            <span className="ml-2 rounded bg-amber-600 px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
-              Uusi
+    <div className={bare ? 'mt-6' : ''}>
+      {!bare && (
+        <button
+          type="button"
+          onClick={() => setOpen((o) => !o)}
+          aria-expanded={open}
+          className="flex w-full items-center justify-between gap-4 py-6 text-left"
+        >
+          <span>
+            <span className={LABEL}>Muuta ennusteita</span>
+            <span className="mt-1 block max-w-[58ch] text-[12.5px] leading-relaxed text-steel">
+              Liikevaihto- ja EBIT-ennusteet, joiden pohjalta arvonmääritys on laskettu.
+              {anyChanged ? ' Muutoksia tehty.' : ''}
             </span>
           </span>
-          <span className="mt-0.5 block text-[11px] text-neutral-500">
-            Voit halutessasi muuttaa raportin liikevaihto- ja EBIT-ennusteita — raportti ja
-            arvonmääritys lasketaan uudelleen muutostesi pohjalta.
+          <span
+            className={`shrink-0 text-steel transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+            aria-hidden
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5.5L7 9.5L11 5.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </span>
-        </span>
-        <span className={`text-amber-700 transition-transform ${open ? 'rotate-180' : ''}`}>▼</span>
-      </button>
+        </button>
+      )}
 
       {open && (
-        <div className="rounded-b-md border border-t-0 border-amber-200 bg-white px-3 pb-3 pt-2">
-          <div className="mb-3 rounded-md border border-amber-200 bg-amber-50 p-3">
-            <div className="text-xs font-semibold text-amber-900">
+        <div className={bare ? '' : 'pb-6'}>
+          <div className="rounded-2xl bg-green-faint p-5">
+            <h3 className="text-[13.5px] font-medium text-charcoal">
               Kuvaile, miten ennustetta pitäisi muuttaa
-            </div>
-            <p className="mt-0.5 text-[11px] text-amber-700">
-              AI muodostaa kuvauksesta numeroehdotuksen. Näet ja hyväksyt luvut ennen
+            </h3>
+            <p className="mt-1 max-w-[62ch] text-[12.5px] leading-relaxed text-steel">
+              Tekoäly muodostaa kuvauksesta numeroehdotuksen. Näet ja hyväksyt luvut ennen
               raportin uudelleenlaskentaa.
             </p>
             <textarea
@@ -1256,11 +1360,11 @@ function ForecastEditor({
               rows={3}
               maxLength={8000}
               placeholder="Esim. Liikevaihto kasvaa noin 20 % vuodessa uuden tuotelinjan ansiosta, ja EBIT-marginaali paranee 12 %:iin vuoteen 2028 mennessä."
-              className="mt-2 w-full rounded border border-neutral-300 bg-white px-2.5 py-2 text-xs"
+              className={`mt-3 ${INPUT} resize-y`}
             />
-            <div className="mt-2 flex flex-wrap gap-1.5">
+            <div className="mt-2.5 flex flex-wrap gap-2">
               {[
-                ['Nopeampi kasvu + parempi marginaali', 'Liikevaihto kasvaa noin 20 % vuodessa uuden tuotelinjan ansiosta, ja EBIT-marginaali paranee 12 %:iin ennustejakson loppuun mennessä.'],
+                ['Nopeampi kasvu, parempi marginaali', 'Liikevaihto kasvaa noin 20 % vuodessa uuden tuotelinjan ansiosta, ja EBIT-marginaali paranee 12 %:iin ennustejakson loppuun mennessä.'],
                 ['Maltillisempi kasvu', 'Kasvu hidastuu noin 5 %:iin vuodessa markkinan kypsyessä. Kannattavuus säilyy nykytasolla.'],
               ].map(([label, text]) => (
                 <button
@@ -1268,62 +1372,63 @@ function ForecastEditor({
                   type="button"
                   onClick={() => setDescription(text)}
                   disabled={busy || aiBusy}
-                  className="rounded-full border border-amber-200 bg-white px-2.5 py-1 text-[10px] text-amber-800 hover:bg-amber-100 disabled:opacity-40"
+                  className="rounded-full border border-mist bg-white px-3 py-1.5 text-[12px] text-charcoal-mid transition-colors duration-150 hover:border-green/40 hover:text-green-deep disabled:opacity-40"
                 >
                   {label}
                 </button>
               ))}
             </div>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
+            <div className="mt-4 flex flex-wrap items-center gap-3">
               <button
                 type="button"
                 onClick={() => void createAiPreview()}
                 disabled={busy || aiBusy || !description.trim()}
-                className="rounded border border-amber-300 bg-white px-3 py-1.5 text-xs font-semibold text-amber-800 hover:bg-amber-100 disabled:opacity-40"
+                className={`${BTN_GHOST} ${aiBusy ? 'inline-flex items-center gap-2' : ''}`}
               >
-                {aiBusy ? 'AI muodostaa muutoksia…' : 'Muodosta muutokset (AI)'}
+                {aiBusy && <Pulse />}
+                {aiBusy ? 'Muodostetaan…' : 'Muodosta muutokset'}
               </button>
-              <span className="text-[10px] text-neutral-500">
-                Kuvaus sekä nykyiset liikevaihto- ja EBIT-ennusteet käsitellään ulkoisessa
-                AI-palvelussa (Google Gemini). Yrityksen nimeä, tunnusta tai sähköpostia ei lähetetä.
-              </span>
             </div>
-            {aiError && <p className="mt-2 text-[11px] text-red-600">{aiError}</p>}
+            <p className="mt-3 max-w-[70ch] text-[11.5px] leading-relaxed text-steel">
+              Kuvaus sekä nykyiset liikevaihto- ja EBIT-ennusteet käsitellään ulkoisessa
+              AI-palvelussa (Google Gemini). Yrityksen nimeä, tunnusta tai sähköpostia ei lähetetä.
+            </p>
+            {aiError && <p className="mt-2 text-[12.5px] text-red-600">{aiError}</p>}
 
             {aiPreview && (
-              <div className="mt-3 overflow-hidden rounded-md border border-amber-300 bg-white">
-                <div className="bg-amber-100 px-3 py-2 text-xs font-semibold text-amber-900">
-                  AI:n ehdotus — tarkista ennen käyttöönottoa
-                </div>
-                <div className="p-3">
+              <div className="mt-4 overflow-hidden rounded-2xl border border-mist bg-white">
+                <div className="border-b border-mist px-4 py-3">
+                  <h4 className="text-[13.5px] font-medium text-charcoal">
+                    Ehdotus, tarkista ennen käyttöönottoa
+                  </h4>
                   {aiPreview.summary && (
-                    <p className="border-l-2 border-amber-400 bg-neutral-50 px-2.5 py-2 text-xs text-neutral-700">
-                      {aiPreview.summary}
-                    </p>
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-steel">{aiPreview.summary}</p>
                   )}
+                </div>
+                <div className="px-4 py-3">
                   {aiPreview.rows.length > 0 ? (
-                    <div className="mt-2 overflow-x-auto">
-                      <table className="w-full border-collapse text-xs">
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse text-[13px]">
                         <thead>
-                          <tr className="border-b border-neutral-200 text-left text-[10px] text-neutral-500">
-                            <th className="py-1 pr-2">Muuttuja</th>
-                            <th className="px-2 py-1 text-right">Vuosi</th>
-                            <th className="px-2 py-1 text-right">Nykyinen</th>
-                            <th className="py-1 pl-2 text-right">Ehdotus</th>
+                          <tr className="text-left text-[11.5px] font-medium uppercase tracking-wide text-steel">
+                            <th className="pb-2 pr-2 font-medium">Muuttuja</th>
+                            <th className="px-2 pb-2 text-right font-medium">Vuosi</th>
+                            <th className="px-2 pb-2 text-right font-medium">Nykyinen</th>
+                            <th className="pb-2 pl-2 text-right font-medium">Ehdotus</th>
                           </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="divide-y divide-mist">
                           {aiPreview.rows.map((row) => (
-                            <tr key={`${row.varname}-${row.year}`} className="border-b border-neutral-100 last:border-0">
-                              <td className="py-1.5 pr-2 font-medium text-neutral-700">
+                            <tr key={`${row.varname}-${row.year}`}>
+                              <td className="py-2 pr-2 text-charcoal-mid">
                                 {row.varname === 'ns' ? 'Liikevaihto' : 'EBIT'}
                               </td>
-                              <td className="px-2 py-1.5 text-right">{row.year}</td>
-                              <td className="px-2 py-1.5 text-right text-neutral-400">
-                                {_fmt0.format(row.old)} tEUR
+                              <td className="px-2 py-2 text-right tabular-nums text-steel">{row.year}</td>
+                              <td className="px-2 py-2 text-right tabular-nums text-steel">
+                                {_fmt0.format(row.old)}
                               </td>
-                              <td className="py-1.5 pl-2 text-right font-semibold text-neutral-900">
-                                {_fmt0.format(row.value)} tEUR
+                              <td className="py-2 pl-2 text-right font-semibold tabular-nums text-green-deep">
+                                {_fmt0.format(row.value)}
                               </td>
                             </tr>
                           ))}
@@ -1331,21 +1436,21 @@ function ForecastEditor({
                       </table>
                     </div>
                   ) : (
-                    <p className="mt-2 text-xs text-neutral-600">
-                      AI ei ehdottanut muutoksia nykyisiin ennustelukuihin.
+                    <p className="text-[13px] text-steel">
+                      Tekoäly ei ehdottanut muutoksia nykyisiin ennustelukuihin.
                     </p>
                   )}
                   {aiPreview.notes.length > 0 && (
-                    <ul className="mt-2 list-disc pl-4 text-[11px] text-amber-800">
+                    <ul className="mt-3 list-disc space-y-1 pl-4 text-[12.5px] text-steel">
                       {aiPreview.notes.map((note) => <li key={note}>{note}</li>)}
                     </ul>
                   )}
-                  <div className="mt-3 flex flex-wrap gap-2">
+                  <div className="mt-4 flex flex-wrap gap-2">
                     <button
                       type="button"
                       onClick={acceptAiPreview}
                       disabled={busy || aiPreview.edits.length === 0}
-                      className="rounded bg-amber-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-amber-500 disabled:opacity-40"
+                      className={`${BTN} px-5 py-2.5`}
                     >
                       Käytä nämä muutokset
                     </button>
@@ -1353,7 +1458,7 @@ function ForecastEditor({
                       type="button"
                       onClick={() => setAiPreview(null)}
                       disabled={busy}
-                      className="rounded border border-neutral-300 px-3 py-1.5 text-xs text-neutral-600 hover:bg-neutral-50"
+                      className={BTN_GHOST}
                     >
                       Muokkaa kuvausta
                     </button>
@@ -1363,37 +1468,37 @@ function ForecastEditor({
             )}
 
             {acceptedSummary && (
-              <div className="mt-3 rounded-md border border-emerald-300 bg-emerald-50 px-3 py-2">
-                <div className="text-xs font-semibold text-emerald-800">
+              <div className="mt-4 rounded-2xl border border-green/30 bg-white px-4 py-3">
+                <p className="text-[13.5px] font-medium text-green-deep">
                   Ennustemuutokset otettu käyttöön
-                </div>
-                <p className="mt-0.5 text-[11px] text-emerald-700">{acceptedSummary}</p>
-                <p className="mt-1 text-[10px] text-emerald-700">
-                  Voit vielä hienosäätää hyväksyttyjä arvoja alla olevasta taulukosta.
+                </p>
+                <p className="mt-1 text-[12.5px] leading-relaxed text-steel">{acceptedSummary}</p>
+                <p className="mt-1 text-[12.5px] text-steel">
+                  Voit vielä hienosäätää arvoja alla olevasta taulukosta.
                 </p>
               </div>
             )}
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-xs">
+
+          <div className="mt-6 overflow-x-auto">
+            <table className="w-full border-collapse text-[13px]">
               <thead>
-                <tr className="text-[11px] text-neutral-500">
-                  <th className="p-1 text-left" />
+                <tr className="text-[11.5px] font-medium text-steel">
+                  <th className="pb-2 text-left font-medium" />
                   {data.actualYear != null && (
-                    <th className="p-1 text-right text-neutral-400">
+                    <th className="px-2 pb-2 text-right font-medium">
                       {data.actualYear}
-                      <br />
-                      (tot.)
+                      <span className="block font-normal">toteutunut</span>
                     </th>
                   )}
                   {data.years.map((y) => (
-                    <th key={y} className="p-1 text-right">
+                    <th key={y} className="px-2 pb-2 text-right font-medium tabular-nums">
                       {y}E
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-mist">
                 {_FC_ROWS.map((row) => {
                   const isAbs = mode[row.key] === 'abs'
                   const actualVal = row.key === 'rev' ? data.actualRev : data.actualEbit
@@ -1403,19 +1508,20 @@ function ForecastEditor({
                       : null
                   return (
                     <tr key={row.key}>
-                      <td className="whitespace-nowrap p-1 text-left align-top">
-                        <span className="text-xs font-semibold text-neutral-800">{row.name}</span>
-                        <span className="mt-1 inline-flex overflow-hidden rounded border border-neutral-300">
+                      <td className="whitespace-nowrap py-3 pr-3 text-left align-top">
+                        <span className="block text-[13.5px] font-medium text-charcoal">{row.name}</span>
+                        <span className="mt-1.5 inline-flex overflow-hidden rounded-full border border-mist">
                           {(['abs', 'pct'] as const).map((m) => (
                             <button
                               key={m}
                               type="button"
                               disabled={busy}
                               onClick={() => setMode((mm) => ({ ...mm, [row.key]: m }))}
-                              className={`px-1.5 py-0.5 text-[10px] ${
+                              aria-pressed={mode[row.key] === m}
+                              className={`px-2.5 py-1 text-[11.5px] transition-colors duration-150 ${
                                 mode[row.key] === m
-                                  ? 'bg-neutral-800 text-white'
-                                  : 'bg-white text-neutral-500'
+                                  ? 'bg-charcoal text-white'
+                                  : 'bg-white text-steel hover:text-charcoal-mid'
                               }`}
                             >
                               {m === 'abs' ? 'tEUR' : row.pctLabel}
@@ -1424,7 +1530,7 @@ function ForecastEditor({
                         </span>
                       </td>
                       {data.actualYear != null && (
-                        <td className="p-1 text-right align-top text-neutral-400">
+                        <td className="px-2 py-3 text-right align-top tabular-nums text-steel">
                           {actualVal == null
                             ? '–'
                             : isAbs
@@ -1455,26 +1561,27 @@ function ForecastEditor({
                             : ''
                         const isChanged = changed(row.key, i)
                         return (
-                          <td key={y} className="p-1 text-right align-top">
+                          <td key={y} className="px-1 py-3 text-right align-top">
                             <input
                               defaultValue={shown}
                               key={`${row.key}-${i}-${mode[row.key]}-${shown}`}
                               disabled={busy}
+                              aria-label={`${row.name} ${y}`}
                               onBlur={(e) => commit(row.key, i, e.target.value)}
                               onKeyDown={(e) => {
                                 if (e.key === 'Enter') (e.target as HTMLInputElement).blur()
                               }}
-                              className={`w-[4.6rem] rounded border px-1.5 py-1 text-right text-xs ${
+                              className={`w-[4.9rem] rounded-lg border px-2 py-1.5 text-right text-[13px] tabular-nums transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-green/15 ${
                                 isChanged
-                                  ? 'border-amber-600 bg-amber-100 font-semibold'
-                                  : 'border-neutral-300'
+                                  ? 'border-green bg-green-faint font-semibold text-green-deep'
+                                  : 'border-mist text-charcoal focus:border-green'
                               }`}
                             />
                             {deriv && (
-                              <span className="mt-0.5 block text-[10px] text-neutral-400">{deriv}</span>
+                              <span className="mt-1 block text-[11.5px] tabular-nums text-steel">{deriv}</span>
                             )}
                             {isChanged && (
-                              <span className="mt-0.5 block text-[10px] text-amber-700">
+                              <span className="mt-0.5 block text-[11.5px] tabular-nums text-green-deep/70">
                                 alkup.{' '}
                                 {isAbs
                                   ? _fmt0.format(data[row.key][i])
@@ -1494,17 +1601,17 @@ function ForecastEditor({
               </tbody>
             </table>
           </div>
-          <div className="mt-2 flex items-center justify-between">
-            <span className="text-[11px] text-neutral-500">
-              Luvut tuhansina euroina (tEUR). Prosenttinäkymässä liikevaihto = kasvu-%
-              edellisvuodesta, EBIT = osuus liikevaihdosta.
+          <div className="mt-3 flex flex-wrap items-baseline justify-between gap-3">
+            <span className="max-w-[70ch] text-[11.5px] leading-relaxed text-steel">
+              Luvut tuhansina euroina (tEUR). Prosenttinäkymässä liikevaihto on kasvu-%
+              edellisvuodesta ja EBIT osuus liikevaihdosta.
             </span>
             {anyChanged && (
               <button
                 type="button"
                 onClick={reset}
                 disabled={busy}
-                className="text-[11px] text-amber-700 underline"
+                className="text-[12.5px] font-medium text-green-deep underline-offset-2 hover:underline disabled:opacity-40"
               >
                 Palauta alkuperäiset
               </button>
