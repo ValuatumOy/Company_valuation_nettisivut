@@ -1,6 +1,6 @@
 import { randomUUID } from 'crypto'
 import { NextResponse } from 'next/server'
-import { getStripe, siteUrl } from '@/lib/stripe'
+import { getStripe, siteUrl, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
 import { quote, type ReportKind } from '@/lib/pricing'
 
 const STRIPE_AI_REPORT_PRICE_ID =
@@ -116,6 +116,10 @@ export async function POST(req: Request) {
         ? { billing_address_collection: 'required' as const, automatic_tax: { enabled: true } }
         : {}),
       metadata: {
+        // Marks the session as OURS — everything downstream (our webhook, the
+        // backend's checkout-generate) refuses to fulfil a session without it,
+        // because other products bill through this same Stripe account.
+        product: VALUATION_PRODUCT_TAG,
         kind,
         companyId: body.companyId ?? '',
         companyName,

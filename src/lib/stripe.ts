@@ -1,6 +1,20 @@
 import Stripe from 'stripe'
 import { SITE_URL } from '@/lib/site'
 
+/**
+ * Stamped into the metadata of every Checkout Session this site creates, and
+ * required by both our webhook and the backend's /api/public/checkout-generate.
+ *
+ * Stripe delivers an event to EVERY webhook endpoint registered on the account,
+ * and the sibling luottoriskit.fi products use the same metadata field names
+ * (businessId/fid/companyName) — so their purchases reached fulfilSession
+ * looking like ours and generated a paid arvonmääritys report for a buyer who
+ * had ordered a credit report (2026-08-05). The tag is what makes "is this
+ * session mine?" answerable. Keep it in sync with VALUATION_PRODUCT_TAG in the
+ * pipeline backend (app/main.py).
+ */
+export const VALUATION_PRODUCT_TAG = 'arvonmaaritys_ai_raportti'
+
 let cached: Stripe | null = null
 const DEFAULT_PUBLIC_SITE_URL = SITE_URL
 const LEGACY_PUBLIC_SITE_HOSTS = new Set(['valuation.fi', 'www.valuation.fi'])

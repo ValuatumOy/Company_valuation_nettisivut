@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
-import { getStripe } from '@/lib/stripe'
+import { getStripe, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
 import { postOrder, postCheckoutGenerate } from '@/lib/orders'
 import { eur } from '@/lib/pricing'
 
@@ -57,8 +57,40 @@ export async function POST(req: Request) {
   return NextResponse.json({ received: true })
 }
 
+// Kinds this site sells. Our own Checkout Sessions always set one; a session
+// carrying none was created by some other product on the account.
+const OWN_KINDS = new Set(['existing', 'import', 'creditsafe'])
+
+/**
+ * Is this session ours to fulfil? Stripe fans checkout.session.completed out to
+ * EVERY endpoint registered on the account, so this endpoint also receives the
+ * luottoriskit.fi products' purchases — and those carry businessId/fid/
+ * companyName metadata under the very same names we read. Without this gate,
+ * `kind` defaulted to 'existing', the session looked like an auto-generate
+ * purchase, and a credit-report buyer got a paid (~$3) valuation report
+ * generated and emailed to them (2026-08-05).
+ *
+ * The tag is the real check; the kind fallback keeps sessions created before
+ * the tag shipped fulfillable, and still excludes foreign products (which never
+ * set `kind`).
+ */
+function isOwnSession(m: Stripe.Metadata): boolean {
+  return m.product === VALUATION_PRODUCT_TAG || OWN_KINDS.has(m.kind ?? '')
+}
+
 async function fulfilSession(session: Stripe.Checkout.Session) {
   const m = session.metadata ?? {}
+  if (!isOwnSession(m)) {
+    // Not an error: it's another product's payment arriving here by design.
+    // Logged (not silent) so a metadata regression on our own checkout shows up
+    // as unfulfilled orders rather than as nothing at all.
+    console.warn('stripe webhook: session is not an arvonmääritys purchase, ignoring', {
+      sessionId: session.id,
+      product: m.product ?? null,
+      reportType: m.reportType ?? null,
+    })
+    return
+  }
   const kind = m.kind === 'import' || m.kind === 'creditsafe' ? m.kind : 'existing'
   const companyName = m.companyName || 'Tuntematon yritys'
   const businessId = m.businessId || ''
