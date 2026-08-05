@@ -60,6 +60,7 @@ type ForecastData = {
   years: number[]
   rev: number[]
   ebit: number[]
+  raw: number[] // cr_raw_materials_pct, prosenttilukuna
   actualYear: number | null
   actualRev: number | null
   actualEbit: number | null
@@ -68,7 +69,7 @@ type ForecastData = {
 // Loosely-typed view of a stage-0 FAKTAT object (parsed JSON — fields validated
 // at runtime below, so the shape is optional/unknown rather than `any`).
 type Stage0 = {
-  forecast?: { years?: unknown; net_sales?: unknown; ebit?: unknown }
+  forecast?: { years?: unknown; net_sales?: unknown; ebit?: unknown; raw_materials_pct?: unknown }
   actuals?: {
     years?: unknown
     income_statement?: { net_sales?: unknown; ebit?: unknown }
@@ -89,10 +90,12 @@ function extractForecastData(stage0: Stage0 | null | undefined): ForecastData | 
   const lastIdx = Array.isArray(aYears) ? aYears.length - 1 : -1
   const pick = (arr: unknown, i: number) =>
     Array.isArray(arr) && typeof arr[i] === 'number' ? arr[i] : null
+  const wc = fc?.raw_materials_pct
   return {
     years,
     rev,
     ebit,
+    raw: Array.isArray(wc) ? (wc as number[]) : [],
     actualYear: lastIdx >= 0 ? pick(aYears, lastIdx) : null,
     actualRev: lastIdx >= 0 ? pick(income?.net_sales, lastIdx) : null,
     actualEbit: lastIdx >= 0 ? pick(income?.ebit, lastIdx) : null,
@@ -1239,9 +1242,12 @@ function _toMillions(teur: number): number {
 }
 
 const _FC_ROWS = [
-  { key: 'rev' as const, varname: 'ns' as const, name: 'Liikevaihto', pctLabel: 'kasvu-%' },
-  { key: 'ebit' as const, varname: 'ebit' as const, name: 'EBIT', pctLabel: 'EBIT-%' },
+  { key: 'rev' as const, varname: 'ns' as const, name: 'Liikevaihto', pctLabel: 'kasvu-%', plain: false },
+  { key: 'ebit' as const, varname: 'ebit' as const, name: 'EBIT', pctLabel: 'EBIT-%', plain: false },
+  { key: 'raw' as const, varname: 'cr_raw_materials_pct' as const, name: 'Raaka-aineet (testi)', pctLabel: '', plain: true },
 ]
+
+type RowKey = 'rev' | 'ebit' | 'raw'
 
 // Collapsible revenue/EBIT forecast table. Edits are absolute tEUR in local
 // state; per-row a tEUR ↔ % toggle converts in the browser (revenue = YoY
@@ -1266,15 +1272,16 @@ function ForecastEditor({
   const [open, setOpen] = useState(bare)
   const [rev, setRev] = useState<number[]>(() => data.years.map((_, i) => data.rev[i]))
   const [ebit, setEbit] = useState<number[]>(() => data.years.map((_, i) => data.ebit[i]))
-  const [mode, setMode] = useState<{ rev: Unit; ebit: Unit }>({ rev: 'abs', ebit: 'abs' })
+  const [raw, setRaw] = useState<number[]>(() => data.years.map((_, i) => data.raw[i]))
+  const [mode, setMode] = useState<Record<RowKey, Unit>>({ rev: 'abs', ebit: 'abs', raw: 'abs' })
   const [description, setDescription] = useState('')
   const [aiPreview, setAiPreview] = useState<ForecastPreview | null>(null)
   const [aiBusy, setAiBusy] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
   const [acceptedSummary, setAcceptedSummary] = useState<string | null>(null)
 
-  const cur = { rev, ebit }
-  const set = { rev: setRev, ebit: setEbit }
+  const cur = { rev, ebit, raw }
+  const set = { rev: setRev, ebit: setEbit, raw: setRaw }
 
   const revPct = (arr: number[], i: number) => {
     const prev = i === 0 ? data.actualRev : arr[i - 1]
@@ -1285,8 +1292,11 @@ function ForecastEditor({
     if (!revArr[i] || !Number.isFinite(ebitArr[i])) return NaN
     return (ebitArr[i] / revArr[i]) * 100
   }
-  const changed = (key: 'rev' | 'ebit', i: number) =>
-    Number.isFinite(cur[key][i]) && Math.abs(cur[key][i] - data[key][i]) > 0.5
+  const changed = (key: RowKey, i: number) =>
+    key === 'raw'
+      ? Number.isFinite(cur.raw[i]) &&
+        (!Number.isFinite(data.raw[i]) || Math.abs(cur.raw[i] - data.raw[i]) > 0.01)
+      : Number.isFinite(cur[key][i]) && Math.abs(cur[key][i] - data[key][i]) > 0.5
 
   // Report edits (in millions) to the parent whenever a cell changes.
   //
@@ -1302,27 +1312,34 @@ function ForecastEditor({
   // (paid, ~100 s) import off edits.length — so emit nothing until a cell differs
   // from the baseline.
   useEffect(() => {
-    const anyEdited = data.years.some((_, i) => changed('rev', i) || changed('ebit', i))
+    const anyEdited = data.years.some(
+      (_, i) => changed('rev', i) || changed('ebit', i) || changed('raw', i),
+    )
     const edits: ForecastEdit[] = []
     if (anyEdited) {
       data.years.forEach((year, i) => {
         _FC_ROWS.forEach((row) => {
           if (Number.isFinite(cur[row.key][i])) {
-            edits.push({ varname: row.varname, year, value: _toMillions(cur[row.key][i]) })
+            const v = cur[row.key][i]
+            edits.push({
+              varname: row.varname,
+              year,
+              value: row.plain ? Math.round((v / 100) * 1e8) / 1e8 : _toMillions(v),
+            })
           }
         })
       })
     }
     onEditsChange(edits)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rev, ebit, data])
+  }, [rev, ebit, raw, data])
 
-  function commit(key: 'rev' | 'ebit', i: number, raw: string) {
-    const v = _parseNum(raw)
+  function commit(key: RowKey, i: number, text: string) {
+    const v = _parseNum(text)
     if (v === null) return // ignore unparseable; input reverts to state on re-render
     set[key]((arr) => {
       const next = arr.slice()
-      if (mode[key] === 'abs') {
+      if (mode[key] === 'abs' || key === 'raw') {
         next[i] = v
       } else if (key === 'rev') {
         const prev = i === 0 ? data.actualRev : next[i - 1]
@@ -1337,6 +1354,7 @@ function ForecastEditor({
   function reset() {
     setRev(data.years.map((_, i) => data.rev[i]))
     setEbit(data.years.map((_, i) => data.ebit[i]))
+    setRaw(data.years.map((_, i) => data.raw[i]))
     setAcceptedSummary(null)
   }
 
@@ -1370,7 +1388,9 @@ function ForecastEditor({
     setAiPreview(null)
   }
 
-  const anyChanged = data.years.some((_, i) => changed('rev', i) || changed('ebit', i))
+  const anyChanged = data.years.some(
+    (_, i) => changed('rev', i) || changed('ebit', i) || changed('raw', i),
+  )
 
   return (
     <div className={bare ? 'mt-6' : ''}>
@@ -1559,8 +1579,9 @@ function ForecastEditor({
               </thead>
               <tbody className="divide-y divide-mist">
                 {_FC_ROWS.map((row) => {
-                  const isAbs = mode[row.key] === 'abs'
-                  const actualVal = row.key === 'rev' ? data.actualRev : data.actualEbit
+                  const isAbs = mode[row.key] === 'abs' || row.plain
+                  const actualVal =
+                    row.plain ? null : row.key === 'rev' ? data.actualRev : data.actualEbit
                   const actualPct =
                     row.key === 'ebit' && data.actualRev && actualVal != null
                       ? (actualVal / data.actualRev) * 100
@@ -1569,7 +1590,7 @@ function ForecastEditor({
                     <tr key={row.key}>
                       <td className="whitespace-nowrap py-3 pr-3 text-left align-top">
                         <span className="block text-[13.5px] font-medium text-charcoal">{row.name}</span>
-                        <span className="mt-1.5 inline-flex overflow-hidden rounded-full border border-mist">
+                        <span className={`mt-1.5 inline-flex overflow-hidden rounded-full border border-mist ${row.plain ? 'hidden' : ''}`}>
                           {(['abs', 'pct'] as const).map((m) => (
                             <button
                               key={m}
@@ -1602,11 +1623,14 @@ function ForecastEditor({
                         </td>
                       )}
                       {data.years.map((y, i) => {
-                        const pct =
-                          row.key === 'rev' ? revPct(cur.rev, i) : ebitPct(cur.rev, cur.ebit, i)
+                        const pct = row.plain
+                          ? NaN
+                          : row.key === 'rev'
+                            ? revPct(cur.rev, i)
+                            : ebitPct(cur.rev, cur.ebit, i)
                         const shown = isAbs
                           ? Number.isFinite(cur[row.key][i])
-                            ? _fmt0.format(cur[row.key][i])
+                            ? (row.plain ? _fmt1 : _fmt0).format(cur[row.key][i])
                             : ''
                           : Number.isFinite(pct)
                             ? _fmt1.format(pct)
@@ -1639,11 +1663,11 @@ function ForecastEditor({
                             {deriv && (
                               <span className="mt-1 block text-[11.5px] tabular-nums text-steel">{deriv}</span>
                             )}
-                            {isChanged && (
+                            {isChanged && Number.isFinite(data[row.key][i]) && (
                               <span className="mt-0.5 block text-[11.5px] tabular-nums text-green-deep/70">
                                 alkup.{' '}
                                 {isAbs
-                                  ? _fmt0.format(data[row.key][i])
+                                  ? (row.plain ? _fmt1 : _fmt0).format(data[row.key][i])
                                   : `${_fmt1.format(
                                       row.key === 'rev'
                                         ? revPct(data.rev, i)

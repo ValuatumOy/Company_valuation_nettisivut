@@ -132,7 +132,7 @@ export async function getRun(key: string, rid: string): Promise<any> {
   return r.json()
 }
 
-export type ForecastEdit = { varname: 'ns' | 'ebit'; year: number; value: number }
+export type ForecastEdit = { varname: 'ns' | 'ebit' | 'cr_raw_materials_pct'; year: number; value: number }
 
 export type ForecastPreview = {
   edits: ForecastEdit[]
