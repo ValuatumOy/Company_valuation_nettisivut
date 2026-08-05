@@ -1290,24 +1290,27 @@ function ForecastEditor({
 
   // Report edits (in millions) to the parent whenever a cell changes.
   //
-  // ValuBuild's forecast import applies values year-by-year and STOPS at the first
-  // year with no value, so sending only the changed cells (e.g. 2027-2029) drops
-  // them when an earlier year (2025/2026) has none — verified end-to-end. So we
-  // send a CONTIGUOUS block from the first forecast year through the last changed
-  // year, filling untouched years with their current (baseline) value.
-  // ponytail: workaround for ValuBuild dropping sparse years; drop back to
-  // changed-only once ValuBuild sets values directly (PSD2-style, see handoff).
+  // We send the WHOLE grid — every forecast year of both rows, untouched cells at
+  // their baseline value — not just the cells the user touched. Two reasons:
+  // ValuBuild's import applies values year-by-year and STOPS at the first year
+  // with no value, so a sparse payload silently drops the years after the gap
+  // (verified end-to-end); and a full grid makes the imported model's forecast
+  // exactly the table the user approved, with no cell left to ValuBuild's own
+  // generation.
+  //
+  // An empty list still means "the user changed nothing" — every caller keys the
+  // (paid, ~100 s) import off edits.length — so emit nothing until a cell differs
+  // from the baseline.
   useEffect(() => {
-    let lastChanged = -1
-    data.years.forEach((_, i) => {
-      if (changed('rev', i) || changed('ebit', i)) lastChanged = i
-    })
+    const anyEdited = data.years.some((_, i) => changed('rev', i) || changed('ebit', i))
     const edits: ForecastEdit[] = []
-    for (let i = 0; i <= lastChanged; i++) {
-      _FC_ROWS.forEach((row) => {
-        if (Number.isFinite(cur[row.key][i])) {
-          edits.push({ varname: row.varname, year: data.years[i], value: _toMillions(cur[row.key][i]) })
-        }
+    if (anyEdited) {
+      data.years.forEach((year, i) => {
+        _FC_ROWS.forEach((row) => {
+          if (Number.isFinite(cur[row.key][i])) {
+            edits.push({ varname: row.varname, year, value: _toMillions(cur[row.key][i]) })
+          }
+        })
       })
     }
     onEditsChange(edits)
