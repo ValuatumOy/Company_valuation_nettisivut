@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { companyDisplayName, getCompany } from '@/lib/companies'
 import { BuyBox } from '@/components/BuyBox'
+import { OrderProcess } from '@/components/OrderProcess'
 import { Reveal } from '@/components/Reveal'
 
 // Was force-dynamic, which re-ran the ~1.4 s Valuatum lookup on every single
@@ -90,6 +91,10 @@ export default async function CompanyPage({ params }: { params: Params }) {
             </Reveal>
 
             <Reveal delay={100}>
+              <OrderProcess />
+            </Reveal>
+
+            <Reveal delay={150}>
               <div className="mt-8 rounded-3xl border border-mist bg-white p-8">
                 <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
                   Raportin sisältö
@@ -120,7 +125,7 @@ export default async function CompanyPage({ params }: { params: Params }) {
             </Reveal>
           </div>
 
-          <Reveal delay={150} className="lg:sticky lg:top-28 lg:self-start">
+          <Reveal delay={200} className="lg:sticky lg:top-28 lg:self-start">
             <BuyBox
               companyId={company.id}
               // Name and businessId stay raw here — they are forwarded to
