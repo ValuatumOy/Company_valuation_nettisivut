@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 // carries the figures.
 
 // Mirrors the section list of the actual delivered report — see the sample PDF
-// at /samples/esimerkki_ilmainen.pdf before changing this.
+// at /samples/heeros-oyj.pdf before changing this.
 const FEATURES = [
   'Tiivistelmä, avainluvut ja luottamustaso',
   'Datan laatuluokka, lähteet ja rajoitteet',
@@ -117,6 +117,14 @@ export default async function CompanyPage({ params }: { params: Params }) {
                     </li>
                   ))}
                 </ul>
+                <a
+                  href="/samples/heeros-oyj.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-7 inline-flex items-center text-sm font-medium text-green-deep transition-colors hover:text-green"
+                >
+                  Avaa esimerkkiraportti: Heeros Oyj →
+                </a>
                 <p className="mt-7 border-t border-mist pt-4 text-[13px] leading-relaxed text-steel">
                   Raportti on analyysi päätöksenteon tueksi. Se ei ole tilintarkastus, fairness
                   opinion eikä sijoitusneuvontaa.

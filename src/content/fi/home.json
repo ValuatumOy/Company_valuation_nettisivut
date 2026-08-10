@@ -65,15 +65,15 @@
       "reports": [
         {
           "id": "sample-free",
-          "name": "St1 Nordic Oy",
+          "name": "Heeros Oyj",
           "tag": "Todellinen esimerkkiraportti",
-          "description": "26-sivuinen raportti julkisista tilinpäätöstiedoista. Näyttää rakenteen, menetelmien pisteytyksen, DCF- ja EVA-laskelmat, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
+          "description": "Raportti julkisista tilinpäätöstiedoista. Näyttää rakenteen, menetelmien pisteytyksen, DCF- ja EVA-laskelmat, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
           "features": [
             "DCF ja EVA-täsmäytys",
             "Skenaariot ja odotusarvo",
             "Arvon ajurit ja riskit"
           ],
-          "pdfUrl": "/samples/esimerkki_ilmainen.pdf"
+          "pdfUrl": "/samples/heeros-oyj.pdf"
         },
         {
           "id": "sample-services",
