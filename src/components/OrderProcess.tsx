@@ -149,6 +149,62 @@ export function OrderProcess() {
           </div>
         </div>
 
+        <details className="group mt-4 overflow-hidden rounded-2xl border border-mist bg-white">
+          <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 text-sm font-semibold text-green-deep marker:content-none sm:px-6">
+            <span className="flex items-center gap-3">
+              <span className="grid h-8 w-8 place-items-center rounded-full bg-green-faint text-green">
+                <RefineIcon />
+              </span>
+              Katso esimerkki tarkennuskierroksesta
+            </span>
+            <ChevronIcon />
+          </summary>
+
+          <div className="border-t border-mist bg-off-white/60 px-5 py-6 sm:px-6 sm:py-7">
+            <div className="max-w-3xl">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-green-deep">
+                Esimerkki: Heeros Oyj
+              </p>
+              <h3 className="mt-2 text-xl font-light tracking-[-0.015em] text-charcoal">
+                Haluatko tarkentaa raporttia?
+              </h3>
+              <p className="mt-2 text-[13px] leading-relaxed text-charcoal-mid">
+                Raportin valmistuttua tekoäly voi pyytää tarkennuksia kohtiin, joita se ei pystynyt
+                varmentamaan julkisista lähteistä. Voit vastata, korjata ennusteita tai jättää kohdan tyhjäksi.
+              </p>
+
+              <div className="mt-6 rounded-xl border border-mist bg-white p-4 sm:p-5">
+                <div className="flex items-baseline gap-2">
+                  <p className="text-sm font-semibold text-charcoal">Tekoäly ei pystynyt varmentamaan näitä</p>
+                  <span className="text-[12px] text-steel">2 kysymystä</span>
+                </div>
+
+                <ExampleQuestion
+                  question="Jatkaako Heeros toimintaansa itsenäisenä tytäryhtiönä omalla brändillään, vai sulautetaanko sen tuotteet osaksi Procountoria?"
+                  impact="Korkea: itsenäinen kasvu vs. konsernin sisäinen tuotekehitysyksikkö johtavat täysin erilaisiin kassavirtaprofiileihin."
+                />
+                <ExampleQuestion
+                  question="Huhtikuussa 2025 aloitetut muutosneuvottelut tähtäävät 1,0 M€ vuotuisiin säästöihin. Ovatko nämä säästöt pysyviä ja kohdistuvatko ne pääasiassa hallintoon vai tuotekehitykseen?"
+                  impact="Korkea: 1,0 M€ pysyvä säästö nostaa suoraan DCF-mallin vapaata kassavirtaa ja yrityksen arvoa."
+                />
+              </div>
+
+              <div className="mt-4 rounded-xl border border-mist bg-white p-4 sm:p-5">
+                <p className="text-sm font-semibold text-charcoal">Muuta täydennettävää <span className="font-normal text-steel">(valinnainen)</span></p>
+                <div className="mt-3 rounded-lg border border-mist bg-off-white px-4 py-3 text-[13px] text-steel/70">
+                  Esim. yrityskohtaisia tietoja, joita julkisista lähteistä ei löydy.
+                </div>
+                <div className="mt-4 flex flex-wrap items-center gap-3">
+                  <span className="rounded-full bg-green-faint px-4 py-2 text-[13px] font-medium text-green-deep">
+                    Tarkennus sisältyy hintaan
+                  </span>
+                  <span className="text-[12px] text-steel">Vastaa haluamiisi kohtiin tai jätä tyhjäksi.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+
         <div className="mt-4 flex flex-col gap-4 rounded-2xl border border-gold/30 bg-gold-faint/90 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold text-charcoal">Haluatko tarkentaa vielä lisää?</p>
@@ -164,6 +220,20 @@ export function OrderProcess() {
         </div>
       </div>
     </section>
+  )
+}
+
+function ExampleQuestion({ question, impact }: { question: string; impact: string }) {
+  return (
+    <div className="border-t border-mist pt-5 first:mt-5">
+      <p className="text-[13px] font-medium leading-relaxed text-charcoal">{question}</p>
+      <p className="mt-1 text-[11.5px] leading-relaxed text-steel">
+        <span className="font-medium text-green-deep">Vaikutus arvoon:</span> {impact}
+      </p>
+      <div className="mt-3 rounded-lg border border-mist bg-off-white px-4 py-3 text-[13px] text-steel/70">
+        Vastauksesi. Jätä tyhjäksi, jos et tiedä.
+      </div>
+    </div>
   )
 }
 
@@ -224,6 +294,21 @@ function LoopIcon() {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden className="text-gold">
       <path d="M20 7v5h-5M4 17v-5h5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M18.5 12a7 7 0 0 0-12-4L4 10m16 4-2.5 2a7 7 0 0 1-12-4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+function ChevronIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden
+      className="shrink-0 transition-transform duration-200 group-open:rotate-180"
+    >
+      <path d="m6 9 6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   )
 }
