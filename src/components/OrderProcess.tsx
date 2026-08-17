@@ -46,7 +46,12 @@ export function OrderProcess() {
       className="relative mt-8 overflow-hidden rounded-3xl border border-mist bg-white"
     >
       <Image
-        src="/images/report-process-bg.png"
+        // WebP, not the 1.5 MB PNG this started as. next/image already shielded
+        // visitors from that (it re-encodes and serves ~20 KB), so this is a
+        // repo-size fix, not a bandwidth one — 1.5 MB -> 50 KB for a texture
+        // that renders at opacity 0.16 under a white gradient. Kept at q90 so
+        // the optimizer's own re-encode doesn't stack a second generation loss.
+        src="/images/report-process-bg.webp"
         alt=""
         fill
         loading="eager"
