@@ -262,8 +262,14 @@ class ValuatumDataSource implements DataSource {
     url.searchParams.set('q', query)
     // Cached rather than no-store: this lookup costs ~1.4 s upstream, and the
     // same query gets repeated constantly (search-as-you-type, then getById
-    // when the visitor clicks a result). Company master data tolerates 5 min.
-    const res = await fetch(url, { next: { revalidate: 300 } })
+    // when the visitor clicks a result).
+    //
+    // An hour, not the 5 minutes this used to be: Next takes the *shortest*
+    // revalidate in a segment, so this value also caps how long `/yritys/[id]`
+    // can be served from the CDN — at 300 it silently overrode that page's
+    // `revalidate = 3600`. Company master data (name, kotipaikka, toimiala) is
+    // the only thing either path reads, and that does not change hourly.
+    const res = await fetch(url, { next: { revalidate: 3600 } })
     if (!res.ok) throw new Error(`Company search failed: ${res.status}`)
     const rows = (await res.json()) as ValuatumCandidate[]
     return rows.slice(0, limit).map((c) => this.toCompany(c))

@@ -9,17 +9,44 @@ import { Reveal } from '@/components/Reveal'
 // Was force-dynamic, which re-ran the ~1.4 s Valuatum lookup on every single
 // visit. Company master data (name, y-tunnus, toimiala) doesn't change by the
 // minute, so cache the rendered page and let it revalidate in the background.
-export const revalidate = 300
+export const revalidate = 3600
+
+// `revalidate` alone did NOT do that. Next only puts a dynamic segment on the
+// ISR path if `generateStaticParams` exists — "You must always return an array
+// from generateStaticParams, even if it's empty. Otherwise, the route will be
+// dynamically rendered." Without it the build marked this route `ƒ` and prod
+// served `Cache-Control: private, no-store` with `X-Vercel-Cache: MISS` on
+// every hit, so `revalidate = 300` was dead code for as long as it has existed.
+//
+// The bill for that: 585k function invocations and 13 GB of origin transfer in
+// one 30-day window, against ~300 real human pageviews — the whole Vercel
+// allowance, spent on crawlers walking the id space. See also robots.ts, which
+// now keeps them out of `/yritys/` in the first place.
+//
+// Empty array = nothing prerendered at build (we have no company list to
+// enumerate), every path rendered once on first visit and then served from the
+// CDN for an hour.
+export async function generateStaticParams() {
+  return []
+}
 
 type Params = Promise<{ id: string }>
+
+// noindex on top of the robots.txt Disallow: robots.txt stops the well-behaved
+// crawlers, this also covers anything that ignores it but reads the tag, and it
+// de-indexes the handful of these URLs that already leaked in. There is nothing
+// to lose — one template with three facts swapped is not a page that ranks, and
+// `/yritys` (the search page, indexed) is the entry point we actually want.
+const NOINDEX = { index: false, follow: true } as const
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { id } = await params
   const company = await getCompany(id)
-  if (!company) return { title: 'Yritystä ei löytynyt | Valuatum' }
+  if (!company) return { title: 'Yritystä ei löytynyt | Valuatum', robots: NOINDEX }
   return {
     title: `${companyDisplayName(company)} — yrityksen arvonmääritys | Valuatum`,
     description: `Tilaa tekoälyavusteinen arvonmääritysraportti yritykselle ${company.name} (${company.businessIdFormatted}). DCF, EVA-täsmäytys, skenaariot ja riskiarvio yhdessä PDF-raportissa.`,
+    robots: NOINDEX,
   }
 }
 
