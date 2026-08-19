@@ -5,13 +5,16 @@ import { SITE_URL } from '@/lib/site'
 // PerplexityBot, Google-Extended) — being citable by AI assistants is a goal.
 // That goal is about the content pages; it is NOT about `/yritys/*`.
 //
-// `/yritys/:id` is an unbounded, per-request-rendered URL space: any y-tunnus
-// (real or invented) resolves to a page, so a crawler that finds the pattern
-// can generate unlimited server renders, each with a ~1.4 s Valuatum lookup
-// behind it. In one 30-day window that produced 585k function invocations and
-// 13 GB of origin transfer against ~300 real human pageviews, which blew
-// through the whole Vercel allowance. The pages are also thin and duplicative
+// `/yritys/:id` is an unbounded URL space: any y-tunnus (real or invented)
+// resolves to a page, and crawlers walk it. Two 30-day windows of the Vercel
+// allowance went that way before the page stopped being server-rendered at all
+// (it is now one static shell — see next.config.ts and CompanyDetail.tsx).
+//
+// Keep the Disallow anyway. It costs nothing, it keeps the polite crawlers off
+// a page that is noindex regardless, and the pages are thin and duplicative
 // (same template, three facts swapped) — nothing of SEO value is lost here.
+// Just don't rely on it: the crawler that emptied the allowance the second
+// time ignored this file completely.
 const CRAWL_TRAPS = [
   '/api/',
   '/yritys/', // unbounded id space, server-rendered per request

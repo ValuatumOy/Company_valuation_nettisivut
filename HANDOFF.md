@@ -17,7 +17,7 @@ One sellable thing: a 79 € AI valuation report on a Finnish company whose
 financials Valuatum already holds. Buy → Stripe → the backend generates →
 the customer reads it at `/raportti` and can refine it.
 
-- **`/yritys`** search → **`/yritys/[id]`** → `BuyBox` → `POST /api/checkout`
+- **`/yritys`** search → **`/yritys/:id`** → `BuyBox` → `POST /api/checkout`
   → Stripe Checkout.
 - **`POST /api/stripe/webhook`** is the durable fulfilment path;
   **`/kassa/valmis`** does the same call on page load as a fallback.
@@ -30,6 +30,24 @@ the customer reads it at `/raportti` and can refine it.
   sit in customer inboxes and in Stripe redirect URLs; never delete it.
 
 ## Things that will bite you
+
+- **`/yritys/:id` has no server route and must not get one back.** There is no
+  `[id]` segment any more. `next.config.ts` rewrites every `/yritys/:id` to the
+  single prerendered `/yritys/detail` shell, and `CompanyDetail.tsx` fetches the
+  company client-side from the CDN-cached `/api/search`. This is not a
+  micro-optimisation — the unbounded id space (every y-tunnus resolves) is what
+  exhausted the whole Vercel allowance twice. `revalidate` + ISR was the first
+  attempt and did not help, because ISR caches per path and a crawler walking
+  the id space produces nothing but fresh paths. Live logs on 2026-08-19 showed
+  the walk still running at ~30 ids/minute — 88 % of all production traffic —
+  and ignoring the robots.txt Disallow. The only thing that actually holds is
+  having no per-id server render at all.
+
+  Consequences to keep in mind: no `generateMetadata`, so the title is set in a
+  `useEffect` (fine — the page is noindex); the id comes from `usePathname()`,
+  not `useParams()`, because the rewrite means there is no route param; and
+  `matchCompany()` in `lib/companies.ts` is what picks konserni vs emo out of
+  the search response, so it must stay in sync with `ValuatumDataSource.getById`.
 
 - **`pricing.ts` still defines `import` and `creditsafe` kinds.** Those flows
   (upload your own statements / we fetch them for you) were never built and

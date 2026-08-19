@@ -339,6 +339,23 @@ export async function getCompany(id: string): Promise<Company | null> {
 }
 
 /**
+ * Pick the row a `/yritys/:id` URL refers to out of a search response.
+ *
+ * Same precedence ValuatumDataSource.getById uses, lifted out so the client can
+ * apply it to `/api/search` results: exact code first (`26466749K` from the URL
+ * matches the konserni row), then K-insensitively so a plain y-tunnus still
+ * finds a group-only company, then the first hit.
+ */
+export function matchCompany(rows: Company[], id: string): Company | null {
+  return (
+    rows.find((c) => c.businessId.toUpperCase() === id.toUpperCase()) ||
+    rows.find((c) => idKey(c.businessId) === idKey(id)) ||
+    rows[0] ||
+    null
+  )
+}
+
+/**
  * A curated set of companies for browse/listing views. Always the bundled
  * sample — a live Valuatum search has no sensible "browse everything" query.
  */
