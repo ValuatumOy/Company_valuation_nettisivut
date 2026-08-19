@@ -1,8 +1,6 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { companyDisplayName, MIN_QUERY_LENGTH, type Company } from '@/lib/companies'
 
 type Props = {
@@ -17,7 +15,6 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
   const [open, setOpen] = useState(false)
   const [searched, setSearched] = useState(false)
   const boxRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
   const dark = variant === 'dark'
 
   useEffect(() => {
@@ -59,9 +56,12 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
     return () => document.removeEventListener('mousedown', onClick)
   }, [])
 
+  // A full document navigation, not router.push — see the note on the result
+  // links below. Same reason: the WAF challenge on /yritys/ cannot be solved by
+  // a client-side RSC fetch.
   function submitSearch() {
     if (results[0]) {
-      router.push(`/yritys/${results[0].id}`)
+      window.location.assign(`/yritys/${results[0].id}`)
     }
   }
 
@@ -108,19 +108,22 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
             <ul className="max-h-96 overflow-auto py-1">
               {results.map((c) => (
                 <li key={c.id}>
-                  <Link
+                  {/* A plain <a>, deliberately — NOT next/link.
+                      The WAF rule that challenges /yritys/ (the mitigation for
+                      the id-walk that exhausted the Vercel allowance) also
+                      challenges the RSC request a client-side navigation makes.
+                      That request cannot solve a challenge, so it 429s and the
+                      router silently stays put — clicking a result did nothing
+                      at all. A document navigation is challenged too, but the
+                      browser solves it transparently and continues.
+
+                      Nothing is lost: the target is one static shell the CDN
+                      serves instantly and the company data is fetched after
+                      mount either way, so there was no soft-navigation benefit
+                      left to give up. Verify a result click in production
+                      before turning this back into a <Link>. */}
+                  <a
                     href={`/yritys/${c.id}`}
-                    // Never prefetch. There is nothing left to prefetch: the
-                    // target is one static shell the CDN already serves
-                    // instantly, and the company data is fetched client-side
-                    // after mount. The old hover-to-prefetch dance existed only
-                    // because this route used to be a ~1.4 s server render.
-                    //
-                    // It also actively hurt: the WAF rule that challenges
-                    // /yritys/ (the id-walk mitigation) challenges the RSC
-                    // prefetch too, so every hover produced a failed 429 in the
-                    // console before the real navigation went through anyway.
-                    prefetch={false}
                     className="flex w-full items-center justify-between gap-4 border-b border-mist/70 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-faint"
                   >
                     <span className="min-w-0">
@@ -140,7 +143,7 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                         Tiedot valmiina
                       </span>
                     )}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
