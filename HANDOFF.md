@@ -49,6 +49,30 @@ the customer reads it at `/raportti` and can refine it.
   `matchCompany()` in `lib/companies.ts` is what picks konserni vs emo out of
   the search response, so it must stay in sync with `ValuatumDataSource.getById`.
 
+- **There is a WAF rule on `/yritys/` that lives outside this repo.** Vercel
+  Firewall custom rule "Challenge company-id walk": `path starts with /yritys/`
+  → **challenge**. Manage it with `vercel firewall rules list` / `edit` /
+  `publish` (changes stage as drafts until published; `vercel firewall discard`
+  undoes them). It is free on every plan, and Vercel does not bill CDN Requests
+  or Fast Data Transfer for challenge-mitigated traffic — which is the whole
+  point, because the static-shell rewrite fixed every overage metric *except*
+  Edge Requests, and a static file still costs one edge request per hit.
+
+  Two consequences you must not undo by accident:
+
+  1. **The search results are plain `<a>`, not `<Link>`, on purpose.** The
+     challenge also applies to the RSC request a client-side navigation makes,
+     and an RSC fetch cannot solve a challenge — it 429s and the router
+     silently stays put, so clicking a result did nothing at all. A document
+     navigation is challenged too, but the browser solves it transparently.
+     Same reason `submitSearch` uses `window.location.assign`, not
+     `router.push`. If you turn either back into client-side navigation, click
+     a search result **in production** and confirm you actually land.
+  2. `/yritys` (the search page, no trailing slash) is deliberately not
+     matched, and neither is `/api/search`. Keep it that way — challenging the
+     search page would put a verification screen on the funnel entrance, and
+     challenging `/api/search` would break the company page's own data fetch.
+
 - **`pricing.ts` still defines `import` and `creditsafe` kinds.** Those flows
   (upload your own statements / we fetch them for you) were never built and
   every page offering them was removed. The kinds stay only so a pre-removal
