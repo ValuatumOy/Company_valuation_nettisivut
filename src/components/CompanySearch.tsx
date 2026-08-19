@@ -16,8 +16,6 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
   const [loading, setLoading] = useState(false)
   const [open, setOpen] = useState(false)
   const [searched, setSearched] = useState(false)
-  // Which result row the pointer is on — drives the hover-only route prefetch.
-  const [hovered, setHovered] = useState<string | null>(null)
   const boxRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const dark = variant === 'dark'
@@ -112,13 +110,17 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                 <li key={c.id}>
                   <Link
                     href={`/yritys/${c.id}`}
-                    // prefetch={false} until hovered, then a full route+data
-                    // prefetch of just that row. Leaving it on `auto` would
-                    // prefetch every visible result, and each one costs a
-                    // separate ~1.4 s company lookup on the backend.
-                    prefetch={hovered === c.id}
-                    onMouseEnter={() => setHovered(c.id)}
-                    onFocus={() => setHovered(c.id)}
+                    // Never prefetch. There is nothing left to prefetch: the
+                    // target is one static shell the CDN already serves
+                    // instantly, and the company data is fetched client-side
+                    // after mount. The old hover-to-prefetch dance existed only
+                    // because this route used to be a ~1.4 s server render.
+                    //
+                    // It also actively hurt: the WAF rule that challenges
+                    // /yritys/ (the id-walk mitigation) challenges the RSC
+                    // prefetch too, so every hover produced a failed 429 in the
+                    // console before the real navigation went through anyway.
+                    prefetch={false}
                     className="flex w-full items-center justify-between gap-4 border-b border-mist/70 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-faint"
                   >
                     <span className="min-w-0">
