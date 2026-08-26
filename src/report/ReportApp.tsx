@@ -979,6 +979,7 @@ function ForecastGate({
   onPreview: (text: string) => Promise<ForecastPreview>
   onContinue: () => void
 }) {
+  const [previewPending, setPreviewPending] = useState(false)
   const edited = edits.length > 0
   return (
     <div className="mt-8">
@@ -996,6 +997,7 @@ function ForecastGate({
           bare
           onPreview={onPreview}
           onEditsChange={onEditsChange}
+          onPendingPreviewChange={setPreviewPending}
         />
       ) : (
         <p className={`mt-6 rounded-2xl bg-gold-faint px-4 py-3 text-[13px] text-charcoal-mid`}>
@@ -1004,14 +1006,19 @@ function ForecastGate({
       )}
 
       <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <button onClick={onContinue} className={BTN}>
+        <button onClick={onContinue} disabled={previewPending} className={BTN}>
           {edited ? 'Luo raportti näillä ennusteilla' : 'Luo raportti Valuatumin ennusteilla'}
         </button>
-        {edited && (
+        {previewPending ? (
+          <span className="text-[12.5px] text-red-600">
+            Ennustemuutokset odottavat hyväksyntää — paina &quot;Käytä nämä muutokset&quot; tai
+            &quot;Muokkaa kuvausta&quot; ennen jatkamista.
+          </span>
+        ) : edited ? (
           <span className="text-[12.5px] text-steel">
             Muokatut ennusteet viedään ensin Valuatumin malliin (n. 1–2 min).
           </span>
-        )}
+        ) : null}
       </div>
     </div>
   )
@@ -1040,6 +1047,7 @@ function ClarifyPanel({
   const [freeText, setFreeText] = useState('')
   const [showOldNumbers, setShowOldNumbers] = useState(false)
   const [forecastEdits, setForecastEdits] = useState<ForecastEdit[]>([])
+  const [previewPending, setPreviewPending] = useState(false)
   const [probs, setProbs] = useState({ pessimistic: '', base: '', optimistic: '' })
   const probsFilled = [probs.pessimistic, probs.base, probs.optimistic].filter(
     (v) => v.trim() !== ''
@@ -1160,6 +1168,7 @@ function ClarifyPanel({
             busy={busy}
             onPreview={onForecastPreview}
             onEditsChange={setForecastEdits}
+            onPendingPreviewChange={setPreviewPending}
           />
         </div>
       )}
@@ -1204,13 +1213,15 @@ function ClarifyPanel({
                 forecastEdits
               )
             }
-            disabled={busy || nothingToSend || probsError}
+            disabled={busy || nothingToSend || probsError || previewPending}
             className={BTN}
           >
             Tarkenna raporttia
           </button>
-          <span className="text-[12.5px] text-steel">
-            {nothingToSend
+          <span className={`text-[12.5px] ${previewPending ? 'text-red-600' : 'text-steel'}`}>
+            {previewPending
+              ? 'Ennustemuutokset odottavat hyväksyntää — paina "Käytä nämä muutokset" tai "Muokkaa kuvausta" ennen jatkamista.'
+              : nothingToSend
               ? 'Vastaa vähintään yhteen kohtaan tai muuta ennusteita.'
               : forecastEdits.length > 0
                 ? 'Ennusteita muutettu: malli ja raportti lasketaan uudelleen, kesto 10–20 min.'
@@ -1252,12 +1263,19 @@ function ForecastEditor({
   busy,
   onPreview,
   onEditsChange,
+  onPendingPreviewChange,
   bare = false,
 }: {
   data: ForecastData
   busy: boolean
   onPreview: (text: string) => Promise<ForecastPreview>
   onEditsChange: (edits: ForecastEdit[]) => void
+  // True while an AI proposal is on screen that the user has not accepted or
+  // dismissed. The proposal is local state: submitting past it silently throws
+  // the forecast change away, which is exactly what happened on the NoCFO
+  // refinement (2026-08-26) — a good proposal was generated, never accepted,
+  // and the round ran on the untouched numbers.
+  onPendingPreviewChange?: (pending: boolean) => void
   // `bare` = the forecast-review screen, where editing forecasts IS the task:
   // no disclosure to open, no "why would I click this" label. Inside the
   // refinement panel it stays collapsed, because there it is one option of four.
@@ -1313,6 +1331,11 @@ function ForecastEditor({
     onEditsChange(edits)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rev, ebit, data])
+
+  useEffect(() => {
+    onPendingPreviewChange?.(Boolean(aiPreview && aiPreview.edits.length > 0))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aiPreview])
 
   function commit(key: 'rev' | 'ebit', i: number, raw: string) {
     const v = _parseNum(raw)

@@ -11,6 +11,28 @@ The valuation backend is a separate repo
 of truth for anything API-shaped. ⛔ Never trigger a report generation against
 prod without asking — there is no cancel endpoint and each run costs real money.
 
+## 2026-08-26 — a pending AI forecast proposal no longer submits as nothing
+
+NoCFO refinement (backend runs `2429d74b` → `a13e34a5`): the CEO described a
+forecast change, `ForecastEditor` produced a good proposal, he never clicked
+"Käytä nämä muutokset", and "Tarkenna raporttia" ran anyway — free text alone
+cleared `nothingToSend`. The proposal is local state, so the round ran on the
+untouched numbers and the new report was numerically identical.
+
+`ForecastEditor` now reports a pending, un-accepted proposal up via
+`onPendingPreviewChange`. Both parents — `ClarifyPanel` (round 2) and
+`ForecastGate` (round-1 checkpoint) — disable their submit button while one is
+open and show a red line naming the two buttons that clear it. Not auto-accepted:
+these are financial inputs, the user has to look at them.
+
+Verified on `/raportti/mock?state=forecast`: after "Muodosta muutokset" the
+button is `disabled`, after "Käytä nämä muutokset" it re-enables and its label
+flips to "Luo raportti näillä ennusteilla". `tsc --noEmit` clean.
+
+The matching backend work (the writer dropping free-text corrections, and a
+`GET /api/runs/{rid}/comments` trail so what a customer wrote is visible at all)
+is in the backend repo's HANDOFF.md.
+
 ## What the product is, today
 
 One sellable thing: a 79 € AI valuation report on a Finnish company whose
