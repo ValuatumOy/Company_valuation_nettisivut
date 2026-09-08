@@ -125,6 +125,7 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
   const [run, setRun] = useState<any>(mock?.run ?? null)
   const [busy, setBusy] = useState(mock?.busy ?? false)
   const [reportSrc, setReportSrc] = useState<string | null>(mock?.reportSrc ?? null)
+  const [pdfBusy, setPdfBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
   // Free rounds (2) used up: hold the answers the user just typed so the
   // "buy extra round" button can send the same payload to checkout.
@@ -314,11 +315,21 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
   )
 
   async function downloadPdf(open: boolean) {
-    if (!runId) return
+    if (!runId || pdfBusy) return
+    // The tab has to be opened inside the click's own task. The fetch below
+    // takes seconds — the backend renders the PDF with headless Chrome — and by
+    // the time it resolves the browser no longer counts this as a user gesture,
+    // so window.open is blocked silently: no popup, no error, a button that
+    // does nothing. Every retry starts another full render (2026-09-08: five
+    // renders from one person pressing the button five times).
+    const tab = open ? window.open('', '_blank') : null
+    if (tab) tab.document.write('Ladataan raporttia…')
+    setPdfBusy(true)
     try {
       const url = URL.createObjectURL(await reportPdf(key, runId))
       if (open) {
-        window.open(url, '_blank')
+        if (tab) tab.location.href = url
+        else window.open(url, '_blank')
       } else {
         const a = document.createElement('a')
         a.href = url
@@ -327,7 +338,10 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
       }
       setTimeout(() => URL.revokeObjectURL(url), 60000)
     } catch (e: any) {
+      tab?.close()
       setError('PDF:n haku epäonnistui: ' + (e?.message || e))
+    } finally {
+      setPdfBusy(false)
     }
   }
 
@@ -828,10 +842,14 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
               <h2 className={`mt-1.5 ${TITLE}`}>Raportti</h2>
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <button onClick={() => downloadPdf(false)} className={`${BTN} px-5 py-2.5`}>
-                Lataa PDF
+              <button
+                onClick={() => downloadPdf(false)}
+                disabled={pdfBusy}
+                className={`${BTN} px-5 py-2.5`}
+              >
+                {pdfBusy ? 'Valmistellaan…' : 'Lataa PDF'}
               </button>
-              <button onClick={() => downloadPdf(true)} className={BTN_GHOST}>
+              <button onClick={() => downloadPdf(true)} disabled={pdfBusy} className={BTN_GHOST}>
                 Avaa uuteen välilehteen
               </button>
             </div>
