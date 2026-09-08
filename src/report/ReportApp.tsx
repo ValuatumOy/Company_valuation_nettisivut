@@ -395,6 +395,32 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
       // Import failed → backend reset the run to awaiting_forecast; keep the
       // editor on screen so the user can retry or continue unchanged.
       setBusy(false)
+      // Unless the run has moved on without this tab. Polling stops as soon as
+      // the forecast screen appears, so a tab left open here can be looking at
+      // a run somebody else already continued — us, on 2026-09-08, while the
+      // customer was still working out his numbers. He would have pressed the
+      // button and been told "Run ei odota ennusteiden hyväksyntää."
+      try {
+        const fresh = await getRun(key, runId)
+        if (fresh?.status && fresh.status !== 'awaiting_forecast') {
+          setRun(fresh)
+          setError(
+            'Raportin luonti oli jo käynnistetty tälle tilaukselle, joten näitä ' +
+            'ennustemuutoksia ei otettu vastaan. Tuoreempi tilanne näkyy alla — ' +
+            'voit tehdä muutokset tarkennuskierroksella.',
+          )
+          if (fresh.status === 'running' || fresh.status === 'importing_forecast') {
+            setBusy(true)
+            poll(runId, key)
+          } else {
+            setBusy(true)
+            await finishRun(fresh, key)
+          }
+          return
+        }
+      } catch {
+        /* fall through to the original error */
+      }
       setError(e?.message || String(e))
     } finally {
       setImportingForecast(false)
