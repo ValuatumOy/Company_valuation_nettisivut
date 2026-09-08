@@ -113,7 +113,15 @@ export function mockSeed(state: MockState): MockSeed {
   }
   const base = {
     id: 'mock-run',
-    params: { company_name: 'Demo Oy', forecast_mode: state === 'forecast' },
+    params: {
+      company_name: 'Demo Oy',
+      forecast_mode: state === 'forecast',
+      // Stands in for what a buyer types at checkout, so the gate's
+      // automatic interpretation of it is visible in the mock.
+      user_input:
+        'Tappiollinen sivuliiketoiminta (liikevaihto n. 20 tEUR, tappio n. 3 tEUR/v) '
+        + 'siirretään pois yhtiöstä ennen kauppaa.',
+    },
   }
   if (state === 'progress') {
     return {

@@ -744,6 +744,7 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
           onEditsChange={setRound1Edits}
           onPreview={previewForecast}
           onContinue={() => continueFromForecast(round1Edits)}
+          orderInput={run?.params?.user_input}
         />
       )}
 
@@ -972,12 +973,17 @@ function ForecastGate({
   onEditsChange,
   onPreview,
   onContinue,
+  orderInput,
 }: {
   data: ForecastData | null
   edits: ForecastEdit[]
   onEditsChange: (edits: ForecastEdit[]) => void
   onPreview: (text: string) => Promise<ForecastPreview>
   onContinue: () => void
+  // What the buyer typed into "lisätiedot" at checkout. Read once here so a
+  // fact like "the loss-making side business is carved out before the sale"
+  // reaches the numbers instead of only the prose.
+  orderInput?: string
 }) {
   const [previewPending, setPreviewPending] = useState(false)
   const edited = edits.length > 0
@@ -1031,6 +1037,7 @@ function ForecastGate({
           onPreview={onPreview}
           onEditsChange={onEditsChange}
           onPendingPreviewChange={setPreviewPending}
+          autoPreviewText={orderInput}
         />
       ) : (
         <p className={`mt-6 rounded-2xl bg-gold-faint px-4 py-3 text-[13px] text-charcoal-mid`}>
@@ -1064,6 +1071,11 @@ function ClarifyPanel({
 }) {
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [freeText, setFreeText] = useState('')
+  // Free text is prose to the writer and nothing to the valuation engine, so
+  // anything in it that IS a forecast change has to be offered to the forecast
+  // editor. Handed over on blur, once per distinct text, and only while the
+  // customer has not edited the table by hand.
+  const [freeTextForForecast, setFreeTextForForecast] = useState('')
   const [showOldNumbers, setShowOldNumbers] = useState(false)
   const [forecastEdits, setForecastEdits] = useState<ForecastEdit[]>([])
   const [previewPending, setPreviewPending] = useState(false)
@@ -1135,11 +1147,19 @@ function ClarifyPanel({
           id="free-text"
           value={freeText}
           onChange={(e) => setFreeText(e.target.value)}
+          onBlur={() => {
+            if (forecastEdits.length === 0) setFreeTextForForecast(freeText.trim())
+          }}
           disabled={busy}
           rows={3}
           placeholder="Esim. yrityskohtaisia tietoja, joita julkisista lähteistä ei löydy."
           className={`mt-2 ${INPUT} resize-y`}
         />
+        <p className="mt-2 text-[12.5px] text-steel">
+          Jos kirjoitat jotain, mikä muuttaa liikevaihto- tai EBIT-ennustetta,
+          tarjoamme sitä alla ennustemuutoksena. Laskelma muuttuu vasta kun otat
+          muutokset käyttöön.
+        </p>
 
         <div className="mt-6">
           <span className={LABEL}>
@@ -1188,6 +1208,7 @@ function ClarifyPanel({
             onPreview={onForecastPreview}
             onEditsChange={setForecastEdits}
             onPendingPreviewChange={setPreviewPending}
+            autoPreviewText={freeTextForForecast}
           />
         </div>
       )}
@@ -1283,6 +1304,7 @@ function ForecastEditor({
   onPreview,
   onEditsChange,
   onPendingPreviewChange,
+  autoPreviewText,
   bare = false,
 }: {
   data: ForecastData
@@ -1295,6 +1317,16 @@ function ForecastEditor({
   // refinement (2026-08-26) — a good proposal was generated, never accepted,
   // and the round ran on the untouched numbers.
   onPendingPreviewChange?: (pending: boolean) => void
+  // Text the buyer already wrote somewhere else — the extra information given
+  // with the order, or the refinement panel's free-text box. Interpreted once,
+  // automatically, and shown as a proposal to accept or reject.
+  //
+  // Without this the forecast is only reachable by discovering this editor and
+  // typing the same thing again: Apogee Oy told us at checkout that a
+  // loss-making side business would be carved out before the sale, and the
+  // report said so in prose while the valuation kept the old numbers
+  // (2026-09-08). Whatever a customer writes now gets its shot at the numbers.
+  autoPreviewText?: string
   // `bare` = the forecast-review screen, where editing forecasts IS the task:
   // no disclosure to open, no "why would I click this" label. Inside the
   // refinement panel it stays collapsed, because there it is one option of four.
@@ -1309,6 +1341,10 @@ function ForecastEditor({
   const [aiBusy, setAiBusy] = useState(false)
   const [aiError, setAiError] = useState<string | null>(null)
   const [acceptedSummary, setAcceptedSummary] = useState<string | null>(null)
+  // Set when the proposal on screen came from text written elsewhere, so the
+  // reader is told where these numbers appeared from.
+  const [fromElsewhere, setFromElsewhere] = useState(false)
+  const autoDone = useRef<string | null>(null)
 
   const cur = { rev, ebit }
   const set = { rev: setRev, ebit: setEbit }
@@ -1351,10 +1387,17 @@ function ForecastEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rev, ebit, data])
 
+  // A proposal the customer asked for blocks submitting, because sending past it
+  // throws their own change away. A proposal WE generated from text they wrote
+  // elsewhere must never block: the whole point of the gate is that pressing the
+  // button is always available, and an offer they ignore just means "use
+  // Valuatum's numbers", which is what would have happened anyway.
   useEffect(() => {
-    onPendingPreviewChange?.(Boolean(aiPreview && aiPreview.edits.length > 0))
+    onPendingPreviewChange?.(
+      Boolean(aiPreview && aiPreview.edits.length > 0 && !fromElsewhere),
+    )
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [aiPreview])
+  }, [aiPreview, fromElsewhere])
 
   function commit(key: 'rev' | 'ebit', i: number, raw: string) {
     const v = _parseNum(raw)
@@ -1379,12 +1422,12 @@ function ForecastEditor({
     setAcceptedSummary(null)
   }
 
-  async function createAiPreview() {
-    const text = description.trim()
+  async function runAiPreview(text: string, fromOtherField = false) {
     if (!text) return
     setAiBusy(true)
     setAiError(null)
     setAiPreview(null)
+    setFromElsewhere(fromOtherField)
     try {
       setAiPreview(await onPreview(text))
     } catch (e: unknown) {
@@ -1393,6 +1436,22 @@ function ForecastEditor({
       setAiBusy(false)
     }
   }
+
+  function createAiPreview() {
+    void runAiPreview(description.trim())
+  }
+
+  // Interpret text from elsewhere once per distinct value. Manual edits win:
+  // if the customer has already touched the table, leave them alone.
+  useEffect(() => {
+    const text = (autoPreviewText || '').trim()
+    if (!text || autoDone.current === text) return
+    autoDone.current = text
+    if (!open) setOpen(true)
+    setDescription(text)
+    void runAiPreview(text, true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoPreviewText])
 
   function acceptAiPreview() {
     if (!aiPreview || aiPreview.edits.length === 0) return
@@ -1499,6 +1558,12 @@ function ForecastEditor({
                   <h4 className="text-[13.5px] font-medium text-charcoal">
                     Ehdotus, tarkista ennen käyttöönottoa
                   </h4>
+                  {fromElsewhere && (
+                    <p className="mt-1 text-[12.5px] leading-relaxed text-charcoal-mid">
+                      Tulkittu antamistasi lisätiedoista. Laskelma muuttuu vasta kun
+                      otat muutokset käyttöön — voit myös jatkaa ilman niitä.
+                    </p>
+                  )}
                   {aiPreview.summary && (
                     <p className="mt-1 text-[12.5px] leading-relaxed text-steel">{aiPreview.summary}</p>
                   )}

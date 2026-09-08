@@ -1,5 +1,31 @@
 # Handoff — 2026-09-08 (read this first)
 
+## 2026-09-08 (cont.) — Asiakkaan omat sanat viedään nyt ennusteen läpi
+
+Apogeen raportti kertoi proosassa, että ilmailuliiketoiminta eriytetään ennen
+kauppaa, ja lisäsi rehellisesti "eikä sitä ole viety valuaatiomoottorin
+ennusteeseen". Se on koko ongelma yhdessä lauseessa: `user_input` menee vain
+kirjoittajalle ja rikastukseen, ja ainoa kanava asiakkaan sanoista lukuihin on
+ennustemuokkaus (ns/ebit -> ValuBuild) — se sama näyttö, jonka hän ohitti.
+
+`ForecastEditor` saa nyt propin `autoPreviewText`: teksti, jonka asiakas on jo
+kirjoittanut muualle, tulkitaan kerran automaattisesti olemassa olevalla
+`/forecast-preview`-polulla ja näytetään tavallisena ehdotuksena.
+
+- Kierros 1 (ForecastGate): `orderInput={run.params.user_input}` eli tilauksen
+  lisätiedot tulkitaan heti kun näyttö aukeaa.
+- Kierros 2 (ClarifyPanel): vapaan tekstin `onBlur` syöttää tekstin samaan
+  tulkintaan, kun taulukkoa ei ole muokattu käsin.
+
+**Automaattinen ehdotus ei koskaan estä lähettämistä.** `onPendingPreviewChange`
+raportoi pendingiksi vain käyttäjän itse pyytämän ehdotuksen (`fromElsewhere`
+false). Muuten olisimme korvanneet "painiketta ei löydy" -ongelman
+"painike on disabloitu" -ongelmalla samalla maksetulla polulla.
+
+Todennettu mockilla molemmissa tiloissa (`/raportti/mock?state=forecast` ja
+`?state=clarify`): ehdotus ilmestyy, teksti "Tulkittu antamistasi
+lisätiedoista" näkyy, ja molemmat painikkeet pysyvät aktiivisina.
+
 ## 2026-09-08 — Ensimmäinen ulkopuolinen maksava asiakas ei saanut raporttiaan
 
 Niko Lamberg / Apogee Oy osti raportin klo 10.50 (79 €, `cs_live_b10Eru…`).
