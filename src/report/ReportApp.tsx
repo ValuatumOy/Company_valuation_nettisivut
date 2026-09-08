@@ -981,6 +981,30 @@ function ForecastGate({
 }) {
   const [previewPending, setPreviewPending] = useState(false)
   const edited = edits.length > 0
+
+  // The button is the whole point of this screen: nothing generates until it is
+  // pressed. It used to sit only BELOW the AI panel and the ten-year table, off
+  // the bottom of a laptop screen — the first paying customer read the page,
+  // left, and came back twice to a report that had never started (2026-09-08).
+  // So it leads, and the table follows.
+  const actions = (
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+      <button onClick={onContinue} disabled={previewPending} className={BTN}>
+        {edited ? 'Luo raportti näillä ennusteilla' : 'Luo raportti Valuatumin ennusteilla'}
+      </button>
+      {previewPending ? (
+        <span className="text-[12.5px] text-red-600">
+          Ennustemuutokset odottavat hyväksyntää — paina &quot;Käytä nämä muutokset&quot; tai
+          &quot;Muokkaa kuvausta&quot; ennen jatkamista.
+        </span>
+      ) : edited ? (
+        <span className="text-[12.5px] text-steel">
+          Muokatut ennusteet viedään ensin Valuatumin malliin (n. 1–2 min).
+        </span>
+      ) : null}
+    </div>
+  )
+
   return (
     <div className="mt-8">
       <p className={EYEBROW}>Ennen raporttia</p>
@@ -989,6 +1013,15 @@ function ForecastGate({
         Alla ovat Valuatumin ennusteet liikevaihdolle ja EBITille. Voit muokata niitä omilla
         näkemyksilläsi tai jättää ne ennalleen. Muokkaaminen on vapaaehtoista.
       </p>
+      <div className="mt-5 rounded-2xl border border-gold bg-gold-faint px-5 py-4">
+        <p className="text-[13.5px] font-medium text-charcoal">
+          Raportti ei käynnisty ennen kuin painat alla olevaa painiketta.
+        </p>
+        <p className={`mt-1 text-[12.5px] ${HELP}`}>
+          Jos ennusteet kelpaavat sellaisenaan, se on tässä ainoa tarvittava toimenpide.
+        </p>
+        <div className="mt-3">{actions}</div>
+      </div>
 
       {data ? (
         <ForecastEditor
@@ -1005,21 +1038,7 @@ function ForecastGate({
         </p>
       )}
 
-      <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-        <button onClick={onContinue} disabled={previewPending} className={BTN}>
-          {edited ? 'Luo raportti näillä ennusteilla' : 'Luo raportti Valuatumin ennusteilla'}
-        </button>
-        {previewPending ? (
-          <span className="text-[12.5px] text-red-600">
-            Ennustemuutokset odottavat hyväksyntää — paina &quot;Käytä nämä muutokset&quot; tai
-            &quot;Muokkaa kuvausta&quot; ennen jatkamista.
-          </span>
-        ) : edited ? (
-          <span className="text-[12.5px] text-steel">
-            Muokatut ennusteet viedään ensin Valuatumin malliin (n. 1–2 min).
-          </span>
-        ) : null}
-      </div>
+      <div className="mt-6">{actions}</div>
     </div>
   )
 }

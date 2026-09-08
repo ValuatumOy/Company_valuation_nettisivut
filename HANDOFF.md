@@ -1,3 +1,45 @@
+# Handoff — 2026-09-08 (read this first)
+
+## 2026-09-08 — Ensimmäinen ulkopuolinen maksava asiakas ei saanut raporttiaan
+
+Niko Lamberg / Apogee Oy osti raportin klo 10.50 (79 €, `cs_live_b10Eru…`).
+Kaksi vikaa, kumpikaan ei ollut kaatuminen.
+
+**1. Ostajan taustateksti katkesi 500 merkkiin.** `/api/checkout` kirjoitti
+`userInput: userInput.slice(0, 500)` Stripen metadataan, ja molemmat
+täyttöpolut (webhook + /kassa/valmis) lukivat vain sen. Textarea sallii 4000
+merkkiä eikä varoita. Asiakkaan teksti katkesi kesken sanan "Arvioitu realis",
+ja loppu on peruuttamattomasti poissa — mikään ei tallenna tekstiä ennen
+Stripeä. Sama oli osunut kahteen NoCFO-testiostoon (25.8. ja 27.8., molemmat
+tasan 500 merkkiä) eikä kukaan huomannut.
+
+Korjaus: `src/lib/userInputMetadata.ts` pilkkoo tekstin 500 merkin paloihin
+(`userInput`, `userInput2`, … enintään 8 = 4000) ja `readUserInput` kokoaa ne
+webhookissa ja kiitos-sivulla. Lukee myös vanhan yhden avaimen sessiot.
+Itsetarkistus: `node src/lib/userInputMetadata.check.ts` (Node 24 ajaa .ts
+suoraan; tiedosto on tsconfigin excludessa, koska import käyttää .ts-päätettä).
+
+**2. Maksettu ajo jäi ennustenäyttöön kahdeksi tunniksi.** `forecast_mode`
+pysäyttää ajon `awaiting_forecast`-tilaan, ja raportti käynnistyy vasta kun
+ostaja painaa painiketta. Painike oli AI-kuvauslaatikon ja 10 vuoden
+ennustetaulukon ALAPUOLELLA, eli läppärillä taitteen alla. Asiakas kävi
+sivulla kolmesti (10.51, 11.05, 11.16) eikä löytänyt sitä.
+
+Huom: muistutusmaili EI puuttunut — `send_forecast_ready` lähtee parkkeerauksen
+yhteydessä ja lähti myös tälle asiakkaalle. Vika oli yksinomaan siinä, mitä
+linkin takana näkyi.
+
+Korjaus: `ForecastGate` nostaa painikkeen heti otsikon alle omaan laatikkoonsa
+tekstillä "Raportti ei käynnisty ennen kuin painat alla olevaa painiketta".
+Alempi painike jäi paikalleen. Backend lähettää nyt myös meille hälytyksen
+(`send_admin_forecast_parked`) kun maksettu ajo parkkeeraa.
+
+Ajo `e709ab3480c542ac945246ed27ba5837` käynnistettiin käsin Valuatumin
+ennusteilla (`POST /generate-forecast`, `forecast_edits: []`) käyttäjän luvalla.
+
+Seuraava, jos tämä toistuu: ajastettu muistutus jos ajo on ollut
+`awaiting_forecast` yli ~20 min. Nyt hälytys tulee vain parkkeeraushetkellä.
+
 # Handoff — site repo (read `README.md` first for the map)
 
 Rewritten 2026-08-04. Everything before this entry described `/asiantuntija`,
