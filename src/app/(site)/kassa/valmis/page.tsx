@@ -5,6 +5,7 @@ import { CheckIcon } from '@/components/icons'
 import { getStripe } from '@/lib/stripe'
 import { eur, quote, type ReportKind } from '@/lib/pricing'
 import { postOrder, postCheckoutGenerate } from '@/lib/orders'
+import { readUserInput } from '@/lib/userInputMetadata'
 import { getSiteSettings } from '@/content/server'
 
 export const metadata: Metadata = {
@@ -115,7 +116,7 @@ async function resolveAndPostOrder(sp: Search): Promise<OrderResult> {
     const companyName = session.metadata?.companyName || 'Tuntematon yritys'
     const businessId = session.metadata?.businessId || ''
     const fid = asFid(session.metadata?.fid || '')
-    const userInput = session.metadata?.userInput || ''
+    const userInput = readUserInput(session.metadata)
     const forecast = session.metadata?.forecast === 'true'
     const email =
       session.customer_details?.email ||

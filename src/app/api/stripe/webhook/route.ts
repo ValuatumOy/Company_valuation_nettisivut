@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import type Stripe from 'stripe'
 import { getStripe, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
 import { postOrder, postCheckoutGenerate } from '@/lib/orders'
+import { readUserInput } from '@/lib/userInputMetadata'
 import { eur } from '@/lib/pricing'
 
 // Stripe SDK needs Node.js (crypto), not the edge runtime.
@@ -98,7 +99,7 @@ async function fulfilSession(session: Stripe.Checkout.Session) {
   // model heuristic instead of receiving a bogus 0/NaN.
   const fidNum = Number(m.fid)
   const fid = Number.isSafeInteger(fidNum) && fidNum > 0 ? fidNum : undefined
-  const userInput = m.userInput || ''
+  const userInput = readUserInput(m)
   const email =
     session.customer_details?.email || session.customer_email || m.customerEmail || ''
   const sessionId = session.id

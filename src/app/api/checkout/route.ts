@@ -1,6 +1,7 @@
 import { randomUUID } from 'crypto'
 import { NextResponse } from 'next/server'
 import { getStripe, siteUrl, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
+import { userInputMetadata } from '@/lib/userInputMetadata'
 import { quote, type ReportKind } from '@/lib/pricing'
 
 const STRIPE_AI_REPORT_PRICE_ID =
@@ -128,10 +129,11 @@ export async function POST(req: Request) {
         customerEmail,
         shareData: String(shareData),
         forecast: String(wantForecast),
-        // Stripe metadata values cap at 500 chars — the model/DB allow up to
-        // 4000, but that's for the immediate checkout-generate call below,
-        // not for round-tripping through Stripe.
-        userInput: userInput.slice(0, 500),
+        // A metadata value caps at 500 chars, so a longer description travels
+        // in numbered keys (see userInputMetadata) and is joined back on the
+        // fulfilment side. Slicing to 500 here dropped the rest at the moment
+        // of payment, mid-word and without telling anyone.
+        ...userInputMetadata(userInput),
       },
       success_url: `${siteUrl()}${successPath}`,
       cancel_url: `${siteUrl()}/kassa/peruutettu`,
