@@ -1,5 +1,26 @@
 # Handoff — 2026-09-08 (read this first)
 
+## 2026-09-08 (korjaus) — asiakas ei ollut jumissa, hän odotti tarkoituksella
+
+Niko vastasi: "Ennusteiden laskeminen on vielä kesken. Sen takia en ole vielä
+tarkoituksella käynnistänyt raportin muodostamista."
+
+Eli alla oleva juurisyyanalyysi oli VÄÄRÄ. Hän löysi näytön, ymmärsi sen ja
+jätti painamatta harkiten. Me käynnistimme ajon hänen puolestaan Valuatumin
+oletusennusteilla — juuri niillä luvuilla, jotka hän aikoi korvata omillaan.
+
+Mitä tästä jää voimaan:
+- Painikkeen siirto (`d2e5b1c`) on edelleen oikea korjaus, mutta se ei ollut
+  tämän tapauksen syy. Älä perustele sitä enää tällä asiakkaalla.
+- 500 merkin katkaisu (`f878109`) oli aito ja asiakkaasta riippumaton vika.
+- **Prosessisääntö: `awaiting_forecast` EI tarkoita jumia.** Uusi
+  admin-hälytys kertoo vain, että ajo odottaa asiakasta. Älä käynnistä
+  kenenkään ajoa hänen puolestaan pelkän hälytyksen perusteella — kysy
+  asiakkaalta ensin.
+- Vahinko rajoittui 0,50 $:n laskentakuluun. `ROUND2_MAX_PER_RUN=5` prodissa
+  ja perhelaskuri oli 0, joten asiakkaalla on kaikki maksuttomat
+  tarkennuskierrokset tallella ja ennustemuokkaus toimii niissä.
+
 ## 2026-09-08 (cont.) — Asiakkaan omat sanat viedään nyt ennusteen läpi
 
 Apogeen raportti kertoi proosassa, että ilmailuliiketoiminta eriytetään ennen
