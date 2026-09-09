@@ -1812,6 +1812,14 @@ function ForecastEditor({
             <span className="max-w-[70ch] text-[11.5px] leading-relaxed text-steel">
               Luvut tuhansina euroina (tEUR). Prosenttinäkymässä liikevaihto on kasvu-%
               edellisvuodesta ja EBIT osuus liikevaihdosta.
+              {' '}
+              <strong className="font-medium text-charcoal">
+                Viimeisen vuoden ({data.years[data.years.length - 1]}) kannattavuus jatkuu
+                laskelmassa sen jälkeenkin.
+              </strong>{' '}
+              Suuri osa arvosta muodostuu ennustejakson jälkeisistä vuosista, joten juuri
+              viimeisen vuoden EBIT-% vaikuttaa lopputulokseen enemmän kuin yksikään muu
+              syöttämäsi luku.
             </span>
             {anyChanged && (
               <button
