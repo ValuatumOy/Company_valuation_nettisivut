@@ -1,4 +1,5 @@
-// Central pricing config. All amounts in EUR cents (all prices + alv).
+// Central pricing config. All amounts in EUR cents, VAT-inclusive (Stripe Tax
+// splits the 25.5 % VAT out of the advertised price at checkout).
 // Override via env so finance/ops can tune prices without code changes.
 // Launch pricing: 79 € base — the ONLY price the site currently sells.
 //

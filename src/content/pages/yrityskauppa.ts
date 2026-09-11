@@ -11,7 +11,7 @@ export const yrityskauppaPage: ContentPageData = {
       "heading": "Miksi arvonmääritys kannattaa tehdä ennen hintaneuvotteluja?",
       "paragraphs": [
         "Yrityskauppaneuvottelussa ensimmäinen perusteltu luku ankkuroi koko keskustelun. Jos myyjä nimeää hintapyynnön ilman analyysiä, ostaja neuvottelee sitä alaspäin kohta kohdalta. Jos ostaja tarjoaa ilman omaa laskelmaa, myyjän pyynti määrittää keskustelun tason. Perusteltu arvostusväli siirtää neuvottelun mielipiteistä oletuksiin: kumpikin osapuoli näkee, mihin lukuihin arvo nojaa ja mikä oletus sitä eniten liikuttaa.",
-        "Suhteessa panoksiin analyysi on halpa vakuutus. Raportti maksaa 79 € + alv — jo yhden prosentin ero 500 000 euron kauppahinnassa on 5 000 €. Neuvotteluvirheen hintaan verrattuna kyse on murto-osasta. [Tilaa raportti](/yritys) ennen kuin nimeät ensimmäisen luvun."
+        "Suhteessa panoksiin analyysi on halpa vakuutus. Raportti maksaa 79 € (sis. alv) — jo yhden prosentin ero 500 000 euron kauppahinnassa on 5 000 €. Neuvotteluvirheen hintaan verrattuna kyse on murto-osasta. [Tilaa raportti](/yritys) ennen kuin nimeät ensimmäisen luvun."
       ],
       "listItems": [],
       "table": {
@@ -117,7 +117,7 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Mitä arvonmääritys maksaa yrityskaupassa?",
       "paragraphs": [
-        "Yksittäinen raportti maksaa 79 € + alv ja valmistuu tyypillisesti 10–20 minuutissa, kun tilinpäätöstiedot ovat jo hallussamme — näet edistymisen selaimessa ja saat raportin myös sähköpostiisi. Kolmen raportin paketti (199 € + alv, tulossa) sopii ostajalle tai neuvonantajalle, joka vertailee useampaa kohdetta. Hinnat ovat yrityksille vähennyskelpoisia asiantuntijakuluja — katso tarkemmin [hinnoittelu](/#hinnoittelu).",
+        "Yksittäinen raportti maksaa 79 € (sis. alv) ja valmistuu tyypillisesti 10–20 minuutissa, kun tilinpäätöstiedot ovat jo hallussamme — näet edistymisen selaimessa ja saat raportin myös sähköpostiisi. Kolmen raportin paketti (199 € (sis. alv), tulossa) sopii ostajalle tai neuvonantajalle, joka vertailee useampaa kohdetta. Hinnat ovat yrityksille vähennyskelpoisia asiantuntijakuluja — katso tarkemmin [hinnoittelu](/#hinnoittelu).",
         "Laadun voi arvioida ennen ostamista: [esimerkkiraportit](/#esimerkit) ovat avattavissa maksutta ilman rekisteröitymistä. Kun olet valmis, [tilaa raportti](/yritys) yrityksen nimellä tai Y-tunnuksella."
       ],
       "listItems": [],
@@ -154,5 +154,5 @@ export const yrityskauppaPage: ContentPageData = {
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ennen neuvottelupöytää",
-  "ctaText": "Tilaa AI-arvonmääritysraportti 79 € + alv. Saat perustellun arvostusvälin, skenaariot, riskit ja menetelmäperustelut — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Katso ensin laatu maksuttomista esimerkkiraporteista."
+  "ctaText": "Tilaa AI-arvonmääritysraportti 79 € (sis. alv). Saat perustellun arvostusvälin, skenaariot, riskit ja menetelmäperustelut — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Katso ensin laatu maksuttomista esimerkkiraporteista."
 } as ContentPageData
