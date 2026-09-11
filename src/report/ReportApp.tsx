@@ -1815,11 +1815,12 @@ function ForecastEditor({
               {' '}
               <strong className="font-medium text-charcoal">
                 Viimeisen vuoden ({data.years[data.years.length - 1]}) kannattavuus jatkuu
-                laskelmassa sen jälkeenkin.
+                laskelmassa muuttumattomana ikuisesti.
               </strong>{' '}
-              Suuri osa arvosta muodostuu ennustejakson jälkeisistä vuosista, joten juuri
-              viimeisen vuoden EBIT-% vaikuttaa lopputulokseen enemmän kuin yksikään muu
-              syöttämäsi luku.
+              Laskelmassa ei ole erikseen vuosia {data.years[data.years.length - 1] + 1}
+              {' '}eteenpäin, vaan viimeinen vuosi pätee niistä jokaiseen. Siksi juuri sen
+              vuoden EBIT-% vaikuttaa lopputulokseen enemmän kuin yksikään muu syöttämäsi
+              luku: valitse se pitkän aikavälin tasona, älä yhden vuoden tavoitteena.
             </span>
             {anyChanged && (
               <button
