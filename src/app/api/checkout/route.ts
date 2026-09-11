@@ -103,7 +103,9 @@ export async function POST(req: Request) {
     }
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      // No payment_method_types: Checkout offers whatever is enabled in the
+      // dashboard (MobilePay, Klarna, wallets…) and fits a one-off EUR payment.
+      // The webhook already handles async_payment_succeeded for delayed methods.
       line_items: [
         {
           price: price.id,
