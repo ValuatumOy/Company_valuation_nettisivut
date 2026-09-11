@@ -78,7 +78,7 @@ export function BuyBox({
         <div className="mt-4 flex items-end gap-2">
           <span className="text-[2.6rem] font-light leading-none tracking-tight">{eur(total)}</span>
         </div>
-        <p className="mt-2 text-xs text-white/50">Kertamaksu per raportti, ei tilausta. Hintoihin lisätään alv.</p>
+        <p className="mt-2 text-xs text-white/50">Kertamaksu per raportti, ei tilausta. Hinta sisältää alv:n 25,5 %.</p>
       </div>
 
       <form onSubmit={checkout} className="p-6">

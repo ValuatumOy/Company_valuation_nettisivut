@@ -46,7 +46,7 @@ function jsonLd(page: Awaited<ReturnType<typeof getPageContent>>) {
         '@type': 'Offer',
         price: '79',
         priceCurrency: 'EUR',
-        description: 'Yksittäinen raportti, 79 € + alv (aloitushinta)',
+        description: 'Yksittäinen raportti, 79 € sis. alv (aloitushinta)',
       },
     },
   ]

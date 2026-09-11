@@ -129,7 +129,7 @@ export function ContentPage({ page }: { page: ContentPageData }) {
             href="/yritys"
             className="rounded-xl bg-green px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-green-deep"
           >
-            Tilaa raportti — 79 € + alv
+            Tilaa raportti — 79 € (sis. alv)
           </Link>
           <Link
             href="/#esimerkit"

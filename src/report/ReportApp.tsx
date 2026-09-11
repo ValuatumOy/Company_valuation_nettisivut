@@ -806,7 +806,7 @@ export function ReportApp({ entry, mock }: { entry: Entry; mock?: MockSeed | nul
               </h2>
               <p className={`mt-2 max-w-[62ch] ${HELP}`}>
                 {me?.paid_rounds_enabled
-                  ? 'Vastauksesi ovat tallessa. Lisäkierros maksaa 5 € ja käynnistyy heti maksun jälkeen.'
+                  ? 'Vastauksesi ovat tallessa. Lisäkierros maksaa 5 € (sis. alv) ja käynnistyy heti maksun jälkeen.'
                   : `Raportti alla on viimeisin versio ja voit yhä ladata sen PDF:nä. Jos tarvitset lisää tarkennuksia, ota yhteyttä: ${SUPPORT_EMAIL}`}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">

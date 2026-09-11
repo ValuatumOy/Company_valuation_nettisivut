@@ -81,7 +81,7 @@ export default async function BlogPostPage({ params }: Params) {
         <h2 className="text-2xl font-light tracking-tight">Katso, miltä raportti näyttää käytännössä</h2>
         <p className="mt-3 text-[15px] font-light leading-relaxed text-white/75">
           AI-arvonmääritysraportti suomalaisesta yrityksestä — arvostusväli, menetelmät, skenaariot ja
-          arvon ajurit yhdessä PDF:ssä. 79 € + alv.
+          arvon ajurit yhdessä PDF:ssä. 79 € sis. alv.
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link href="/yritys" className="rounded-xl bg-green px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-green-deep">

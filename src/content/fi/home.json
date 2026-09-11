@@ -318,8 +318,8 @@
       "type": "pricing",
       "eyebrow": "Hinnoittelu",
       "title": "Selkeä hinta. Ei piilokuluja.",
-      "subtitle": "Näet raportin laadun esimerkeistä ennen ostamista. Kaikki hinnat + alv 25,5 %.",
-      "vatNote": "Hinnat + alv. Yrityksille verovähennyskelpoinen asiantuntijakulu.",
+      "subtitle": "Näet raportin laadun esimerkeistä ennen ostamista. Hinnat sisältävät alv:n 25,5 %.",
+      "vatNote": "Hinnat sisältävät alv:n 25,5 % (79 € = 62,95 € + alv 16,05 €). Yrityksille verovähennyskelpoinen asiantuntijakulu – laskulla alv eriteltynä. EU-yritys voi antaa alv-tunnuksen kassalla (käännetty verovelvollisuus).",
       "plans": [
         {
           "id": "plan-samples",
@@ -341,7 +341,7 @@
           "id": "plan-single",
           "name": "AI-arvonmääritysraportti",
           "price": "79 €",
-          "priceSuffix": "+ alv",
+          "priceSuffix": "sis. alv",
           "badge": "Launch-hinta",
           "description": "Yksi yrityskohtainen PDF-raportti. Kertamaksu, ei tilausta eikä käyttäjätiliä — generointi käynnistyy automaattisesti heti maksun jälkeen.",
           "features": [
@@ -360,7 +360,7 @@
           "id": "plan-bundle",
           "name": "3 raportin paketti",
           "price": "199 €",
-          "priceSuffix": "+ alv",
+          "priceSuffix": "sis. alv",
           "badge": "Tulossa",
           "description": "Sopii ostajille, tilitoimistoille ja konsulteille, jotka vertailevat useampaa yritystä. Ei vielä tilattavissa suoraan — ota yhteyttä.",
           "features": [

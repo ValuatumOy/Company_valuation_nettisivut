@@ -90,12 +90,12 @@ export async function POST(req: Request) {
   }
 
   // --- Real Stripe Checkout Session ------------------------------------------
-  // Stripe Tax is gated behind STRIPE_TAX_ENABLED: with automatic_tax on but Tax
-  // NOT set up in the dashboard, Stripe hard-errors EVERY checkout. So VAT stays
-  // off until the dashboard setup (origin address + Finland registration) is
-  // done, then flip STRIPE_TAX_ENABLED=1 — no code deploy needed. The advertised
-  // prices are "+ alv" (VAT-exclusive), so when on, Tax adds Finnish VAT on top.
-  const taxEnabled = process.env.STRIPE_TAX_ENABLED === '1'
+  // Stripe Tax is always on. The Stripe price is VAT-inclusive
+  // (tax_behavior=inclusive), so Tax splits the 25.5 % Finnish VAT out of the
+  // 79 € the site advertises; a valid EU VAT id from another member state
+  // reverse-charges at the same gross with a 0 VAT line. Requires Stripe Tax +
+  // a Finnish registration in the dashboard (both live and test mode), otherwise
+  // Stripe rejects every session.
   try {
     const price = await stripe.prices.retrieve(STRIPE_AI_REPORT_PRICE_ID)
     if (!price.active) {
@@ -103,7 +103,9 @@ export async function POST(req: Request) {
     }
 
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
+      // No payment_method_types: Checkout offers whatever is enabled in the
+      // dashboard (MobilePay, Klarna, wallets…) and fits a one-off EUR payment.
+      // The webhook already handles async_payment_succeeded for delayed methods.
       line_items: [
         {
           price: price.id,
@@ -113,9 +115,22 @@ export async function POST(req: Request) {
       mode: 'payment',
       allow_promotion_codes: true,
       customer_email: customerEmail || undefined,
-      ...(taxEnabled
-        ? { billing_address_collection: 'required' as const, automatic_tax: { enabled: true } }
-        : {}),
+      billing_address_collection: 'required',
+      automatic_tax: { enabled: true },
+      // Optional VAT-id field for business buyers (reverse charge inside the EU).
+      tax_id_collection: { enabled: true },
+      // Finnish Checkout with Finland preselected: a buyer this week ended up with
+      // country=US on an Espoo address because Checkout guessed the locale.
+      locale: 'fi',
+      // Post-payment invoice (PDF + hosted page) with the VAT breakdown, the
+      // buyer's VAT id and our VAT id (the account tax id set in the dashboard's
+      // invoice settings), on top of the plain Stripe receipt. Needs a Customer,
+      // hence customer_creation.
+      customer_creation: 'always',
+      invoice_creation: {
+        enabled: true,
+        invoice_data: { footer: 'Valuatum Oy – AI-arvonmääritysraportti' },
+      },
       metadata: {
         // Marks the session as OURS — everything downstream (our webhook, the
         // backend's checkout-generate) refuses to fulfil a session without it,

@@ -24,7 +24,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
       "heading": "Milloin yrityksen arvo kannattaa selvittää ennen sukupolvenvaihdosta?",
       "paragraphs": [
         "Onnistunut sukupolvenvaihdos kestää tyypillisesti vuosia. Arvo kannattaa selvittää ensimmäisen kerran jo silloin, kun luopuminen on vasta ajatus: silloin ehdit vaikuttaa arvoon vaikuttaviin tekijöihin ja suunnitella verokohtelun asiantuntijan kanssa rauhassa. Viime hetkellä vaihtoehdot ovat vähissä.",
-        "Toistuva seuranta ei kaadu kustannuksiin: yksittäinen raportti maksaa 79 € + alv ja kolmen raportin paketti 199 € + alv ([hinnoittelu](/#hinnoittelu))."
+        "Toistuva seuranta ei kaadu kustannuksiin: yksittäinen raportti maksaa 79 € (sis. alv) ja kolmen raportin paketti 199 € (sis. alv) ([hinnoittelu](/#hinnoittelu))."
       ],
       "listItems": [
         "3–5 vuotta ennen: selvitä lähtötaso. Ensimmäinen arvonmääritys näyttää arvon suuruusluokan, arvon ajurit ja suurimmat riskit — ja mitä kannattaa korjata ennen luovutusta.",
@@ -96,7 +96,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
           ],
           [
             "Arvon kehityksen seuranta vuosittain",
-            "Kyllä — 79 € + alv / raportti",
+            "Kyllä — 79 € (sis. alv) / raportti",
             "Harvoin kustannustehokasta"
           ],
           [
@@ -151,9 +151,9 @@ export const sukupolvenvaihdosPage: ContentPageData = {
     },
     {
       "question": "Mitä raportti maksaa ja miten saan sen?",
-      "answer": "Yksittäinen raportti maksaa 79 € + alv ja valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Kolmen raportin paketti (199 € + alv) on tulossa. Laadun näet ennen ostamista maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
+      "answer": "Yksittäinen raportti maksaa 79 € (sis. alv) ja valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Kolmen raportin paketti (199 € (sis. alv)) on tulossa. Laadun näet ennen ostamista maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ajoissa — ennen kuin sukupolvenvaihdos on käsillä.",
-  "ctaText": "Syötä yrityksen nimi tai Y-tunnus ja [tilaa raportti](/yritys) hintaan 79 € + alv. Saat perustellun arvostusvälin, skenaariot ja arvon ajurit — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF-raporttina. Laadun näet ennen ostamista [esimerkkiraporteista](/#esimerkit)."
+  "ctaText": "Syötä yrityksen nimi tai Y-tunnus ja [tilaa raportti](/yritys) hintaan 79 € (sis. alv). Saat perustellun arvostusvälin, skenaariot ja arvon ajurit — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF-raporttina. Laadun näet ennen ostamista [esimerkkiraporteista](/#esimerkit)."
 } as ContentPageData
