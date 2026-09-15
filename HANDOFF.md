@@ -1,3 +1,18 @@
+# Handoff — 2026-09-15 (read this first)
+
+## 2026-09-15 — Ennustenäyttö kertoo, miksi marginaali liikkuu
+
+`ForecastGate` näyttää ohjetekstin alla Valuatumin oman EBIT-%-uran
+(ensimmäinen → viimeinen ennustevuosi) ja sanoo, että se on mallin yleinen
+oletus (pääoman tuotto lähestyy pääoman kustannusta), ei näkemys tästä
+yhtiöstä. Lasketaan `ForecastData`sta (ebit/rev), ei uutta backend-kenttää.
+Mekanismin selitys ja Apogeen tapaus: backend-repon HANDOFF 2026-09-15.
+Raporttiin vastaava lohko "Mistä ennuste tulee" (backend `80c81cf`).
+
+Huomattu samalla: ALV-korjaus (Stripe Tax + laskutus, PR #5 / backend PR
+#11) tuli mergattuna toisesta koneesta. Apogeen 8.9. kuitti oli vielä
+ilman alv-erittelyä (Stripe-sessio: tax 0) — lähetä käsin.
+
 # Handoff — 2026-09-08 (read this first)
 
 ## 2026-09-08 (korjaus) — asiakas ei ollut jumissa, hän odotti tarkoituksella
