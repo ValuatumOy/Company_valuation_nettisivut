@@ -1031,6 +1031,17 @@ function ForecastGate({
 }) {
   const [previewPending, setPreviewPending] = useState(false)
   const edited = edits.length > 0
+  // First and last forecast EBIT-% of Valuatum's own path, so the customer sees
+  // the glide (and that it is a model convention) before deciding to edit.
+  const margins = useMemo(() => {
+    if (!data || data.years.length < 2) return null
+    const pct = (i: number) => (data.rev[i] ? (data.ebit[i] / data.rev[i]) * 100 : NaN)
+    const first = pct(0)
+    const last = pct(data.years.length - 1)
+    if (!Number.isFinite(first) || !Number.isFinite(last)) return null
+    const f = (v: number) => v.toFixed(1).replace('.', ',')
+    return { first: f(first), last: f(last), year: data.years[data.years.length - 1], raw: [first, last] }
+  }, [data])
 
   // The button is the whole point of this screen: nothing generates until it is
   // pressed. It used to sit only BELOW the AI panel and the ten-year table, off
@@ -1063,6 +1074,15 @@ function ForecastGate({
         Alla ovat Valuatumin ennusteet liikevaihdolle ja EBITille. Voit muokata niitä omilla
         näkemyksilläsi tai jättää ne ennalleen. Muokkaaminen on vapaaehtoista.
       </p>
+      {margins && (
+        <p className={`mt-2 max-w-[62ch] ${HELP}`}>
+          Valuatumin perusurassa EBIT-marginaali {margins.raw[1] < margins.raw[0] ? 'laskee' : 'nousee'}{' '}
+          {margins.first} %:sta {margins.last} %:iin vuoteen {margins.year} mennessä. Se ei ole
+          näkemys juuri tästä yhtiöstä vaan mallin yleinen oletus: pääoman tuotto lähestyy
+          pääoman kustannusta, koska ylituotto ei säily ikuisesti. Jos tunnet yhtiön paremmin,
+          korvaa luvut omillasi — viimeisen vuoden marginaali jatkuu laskelmassa ikuisesti.
+        </p>
+      )}
       <div className="mt-5 rounded-2xl border border-gold bg-gold-faint px-5 py-4">
         <p className="text-[13.5px] font-medium text-charcoal">
           Raportti ei käynnisty ennen kuin painat alla olevaa painiketta.
