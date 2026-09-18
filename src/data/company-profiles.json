@@ -1,0 +1,256 @@
+[
+  {
+    "slug": "kamrock-2749011-8",
+    "businessId": "2749011-8",
+    "fid": 278119,
+    "name": "Kamrock Oy",
+    "isGroup": false,
+    "city": "Kempele",
+    "industry": "Soran, hiekan, saven ja kaoliinin otto",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2749011-8/kamrock-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2749011-8",
+    "years": [
+      { "year": 2023, "revenueEur": 40151000, "ebitEur": 834000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 43583400, "ebitEur": 1678927, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 54019000, "ebitEur": 3385000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "lvi-aman-2655476-5",
+    "businessId": "2655476-5",
+    "fid": 261108,
+    "name": "LVI-ÅMAN OY",
+    "isGroup": false,
+    "city": "Härmä",
+    "industry": "Lämpö-, vesijohto- ja ilmastointiasennus",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2655476-5/lvi-man-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2655476-5",
+    "years": [
+      { "year": 2023, "revenueEur": 527000, "ebitEur": 37000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 365000, "ebitEur": 24000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 402000, "ebitEur": 42000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "sahkoliike-sahkowaasa-1844133-0",
+    "businessId": "1844133-0",
+    "fid": 78107,
+    "name": "Sähköliike SähköWaasa Oy",
+    "isGroup": false,
+    "city": "Vaasa",
+    "industry": "Sähköasennus",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1844133-0/sahkoliike-sahkowaasa-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1844133-0",
+    "years": [
+      { "year": 2023, "revenueEur": 5795280, "ebitEur": 186362, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 4989446, "ebitEur": -43458, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 4636000, "ebitEur": 208000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "veljekset-kellola-1490153-9",
+    "businessId": "1490153-9",
+    "fid": 14537,
+    "name": "Veljekset Kellola Oy",
+    "isGroup": false,
+    "city": "Kopsa",
+    "industry": "Puunkorjuu",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1490153-9/veljekset-kellola-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1490153-9",
+    "years": [
+      { "year": 2023, "revenueEur": 17021000, "ebitEur": 768000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 7020000, "ebitEur": 275000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 16421000, "ebitEur": 919000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "veraisen-leipomo-0521655-6",
+    "businessId": "0521655-6",
+    "fid": 50486,
+    "name": "Veraisen Leipomo Oy",
+    "isGroup": false,
+    "city": "Mynämäki",
+    "industry": "Leivän valmistus, tuoreiden leivonnaisten ja kakkujen valmistus",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0521655-6/veraisen-leipomo-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "0521655-6",
+    "years": [
+      { "year": 2022, "revenueEur": 4541000, "ebitEur": 104000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 4874000, "ebitEur": 73000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 5009000, "ebitEur": 11000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "joen-kiinteistorakennus-1892462-3",
+    "businessId": "1892462-3",
+    "fid": 55300,
+    "name": "Joen Kiinteistörakennus Oy",
+    "isGroup": false,
+    "city": "Joensuu",
+    "industry": "Talonrakentaminen",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1892462-3/joen-kiinteistorakennus-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1892462-3",
+    "years": [
+      { "year": 2022, "revenueEur": 12823724, "ebitEur": -60377, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 9079000, "ebitEur": -586000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 3551000, "ebitEur": -1275000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "kalevan-talonmiespalvelu-2125800-0",
+    "businessId": "2125800-0",
+    "fid": 75720,
+    "name": "Kalevan Talonmiespalvelu Oy",
+    "isGroup": false,
+    "city": "Tampere",
+    "industry": "Kiinteistönhoito",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2125800-0/kalevan-talonmiespalvelu-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2125800-0",
+    "years": [
+      { "year": 2022, "revenueEur": 368000, "ebitEur": 45000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 484000, "ebitEur": 89000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 525000, "ebitEur": 134000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "keski-suomen-vahinkopalvelut-2162528-8",
+    "businessId": "2162528-8",
+    "fid": 146187,
+    "name": "Keski-Suomen Vahinkopalvelut Oy",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2162528-8/keski-suomen-vahinkopalvelut-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2162528-8",
+    "years": [
+      { "year": 2022, "revenueEur": 3222000, "ebitEur": -34000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 3166000, "ebitEur": -43000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 3607652, "ebitEur": 24133, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "varusteleka-2082907-8",
+    "businessId": "2082907-8",
+    "fid": 111436,
+    "name": "Varusteleka Oy",
+    "isGroup": false,
+    "city": "Helsinki",
+    "industry": "Tekstiilien, vaatteiden, turkisten, jalkineiden ja nahkavalmisteiden agentuuritoiminta",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2082907-8/varusteleka-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2082907-8",
+    "years": [
+      { "year": 2022, "revenueEur": 23133000, "ebitEur": 1096000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 20399385, "ebitEur": -185899, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 18976000, "ebitEur": -114000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "kuopion-tila-auto-1844051-4",
+    "businessId": "1844051-4",
+    "fid": 105791,
+    "name": "Kuopion Tila-Auto Oy",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1844051-4/kuopion-tila-auto-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1844051-4",
+    "years": [
+      { "year": 2022, "revenueEur": 2688000, "ebitEur": 47000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 3238000, "ebitEur": 96000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 4735000, "ebitEur": 78000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "kuljetus-esko-joensuu-1880024-1",
+    "businessId": "1880024-1",
+    "fid": 22821,
+    "name": "KULJETUS ESKO JOENSUU OY",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1880024-1/kuljetus-esko-joensuu-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1880024-1",
+    "years": [
+      { "year": 2023, "revenueEur": 508000, "ebitEur": 26000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 518023, "ebitEur": 51959, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 606000, "ebitEur": 63000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "hiiltek-2394786-2",
+    "businessId": "2394786-2",
+    "fid": 194069,
+    "name": "Hiiltek Oy",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2394786-2/hiiltek-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "2394786-2",
+    "years": [
+      { "year": 2023, "revenueEur": 710000, "ebitEur": 16000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 845000, "ebitEur": 31000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 1243000, "ebitEur": 45000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "visa-auto-0724961-8",
+    "businessId": "0724961-8",
+    "fid": 80562,
+    "name": "Visa-Auto Oy",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0724961-8/visa-auto-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "0724961-8",
+    "years": [
+      { "year": 2022, "revenueEur": 9126000, "ebitEur": -112000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 8513000, "ebitEur": -330000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 7667000, "ebitEur": -279000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "trysil-rmm-1904000-2",
+    "businessId": "1904000-2",
+    "fid": 48352,
+    "name": "Trysil RMM Oy",
+    "isGroup": false,
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/1904000-2/trysil-rmm-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-09-18",
+    "orderId": "1904000-2",
+    "years": [
+      { "year": 2022, "revenueEur": 3109000, "ebitEur": 19000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 2354000, "ebitEur": -167000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 2482000, "ebitEur": -246000, "netDebtEur": null }
+    ]
+  }
+]

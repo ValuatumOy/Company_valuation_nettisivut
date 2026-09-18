@@ -54,6 +54,11 @@
   },
   "footerLinks": [
     {
+      "id": "foot-yritykset",
+      "label": "Yritysten taloustiedot",
+      "href": "/yritykset"
+    },
+    {
       "id": "foot-esimerkit",
       "label": "Esimerkkiraportit",
       "href": "/#esimerkit"

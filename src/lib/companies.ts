@@ -346,7 +346,11 @@ export async function getCompany(id: string): Promise<Company | null> {
  * matches the konserni row), then K-insensitively so a plain y-tunnus still
  * finds a group-only company, then the first hit.
  */
-export function matchCompany(rows: Company[], id: string): Company | null {
+export function matchCompany(rows: Company[], id: string, fid?: number): Company | null {
+  if (fid !== undefined) {
+    const code = id.replace(/[\s-]/g, '').toUpperCase()
+    return rows.find((c) => c.fid === fid && c.businessId.replace(/[\s-]/g, '').toUpperCase() === code) ?? null
+  }
   return (
     rows.find((c) => c.businessId.toUpperCase() === id.toUpperCase()) ||
     rows.find((c) => idKey(c.businessId) === idKey(id)) ||

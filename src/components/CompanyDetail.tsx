@@ -71,7 +71,11 @@ export function CompanyDetail() {
         const res = await fetch(`/api/search?q=${encodeURIComponent(id)}&limit=5`)
         const data = (await res.json()) as { companies?: Company[] }
         if (cancelled) return
-        const company = matchCompany(data.companies ?? [], id)
+        const requestedFid = new URLSearchParams(window.location.search).get('fid')
+        const fid = requestedFid === null ? undefined : Number(requestedFid)
+        const company = fid !== undefined && (!Number.isSafeInteger(fid) || fid <= 0)
+          ? null
+          : matchCompany(data.companies ?? [], id, fid)
         setResult({
           id,
           state: company ? { status: 'found', company } : { status: 'missing' },

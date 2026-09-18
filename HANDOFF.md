@@ -1,3 +1,12 @@
+# Handoff — 2026-09-18 — Public company financial profiles
+
+- Added a separate static `/yritykset` directory and 14 allowlisted `/yritykset/[slug]` pages. The route uses generateStaticParams, force-static and dynamicParams=false; unknown slugs return 404. No page visit fetches financial data or generates a forecast/report.
+- `src/data/company-profiles.json` contains three historical annual revenue/EBIT rows per company, EUR-normalized from read-only Valuatum modeldata and reconciled with the existing Luottoriskit public tables at their display precision. `retrievedAt` is the data check date, not the financial year. `netDebtEur` is deliberately null until source definitions reconcile. No customer data or forecasts included.
+- 4K Capital / old Jyväskylän Autovaruste identity and Kuljetus Tornikoski's null-vs-zero revenue discrepancy were excluded. Expansion requires exact company/FID identity and checked historical fields; do not synthesize missing values or call the normal company-json exporter (it regenerates estimates).
+- Profile links use the existing order shell with `?fid=...`; matchCompany now fails closed on exact normalized company code + FID when supplied. Keep these links as native anchors: CompanyDetail reads the query after a full navigation. Existing search and its static noindex rewrite remain intact.
+- Added directory/footer discovery and sitemap entries. No Luottoriskit repository or page was modified.
+- Validation: production build produces static directory + 14 SSG paths; changed-file ESLint passes; HTTP checks cover canonical/indexability/JSON-LD/order links/sitemap/404/noindex boundaries; mobile overflow fixed and exact Kamrock order-page transition verified without payment. Full-repository lint has 23 pre-existing errors in CompanySearch and report app files; existing Turbopack tracing warning remains outside this change.
+
 # Handoff — 2026-09-15 (read this first)
 
 ## 2026-09-15 — Ennustenäyttö kertoo, miksi marginaali liikkuu
