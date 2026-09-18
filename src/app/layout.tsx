@@ -1,10 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Script from "next/script";
 import { SITE_URL } from "@/lib/site";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import "./globals.css";
-
-const GA_ID = "G-K7HYM7Q10C";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,7 +25,6 @@ export const metadata: Metadata = {
     "AI-arvonmääritys",
     "yrityksen arvon laskeminen",
   ],
-  alternates: { canonical: "/" },
   verification: { google: "N_6FEYmvwiu25YBdxvqsuvE-lyUFSSiLcjrJF8_2RW0" },
   openGraph: {
     title: "AI-arvonmääritysraportti suomalaiselle yritykselle | Valuatum",
@@ -56,13 +53,7 @@ export default function RootLayout({
     <html lang="fi" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
         {children}
-        <Script src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`} strategy="afterInteractive" />
-        <Script id="ga4" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${GA_ID}');`}
-        </Script>
+        <GoogleAnalytics />
       </body>
     </html>
   );

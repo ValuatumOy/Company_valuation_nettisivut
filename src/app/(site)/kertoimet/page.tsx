@@ -19,11 +19,11 @@ export const metadata: Metadata = {
 const MULTIPLE_DEFINITIONS = [
   {
     term: 'EV/EBITDA',
-    text: 'Yritysarvo (velaton arvo) jaettuna käyttökatteella. Yleisin yrityskaupoissa käytetty kerroin, koska se ei riipu rahoitusrakenteesta tai poistokäytännöistä. Osakekannan arvo saadaan vähentämällä yritysarvosta nettovelka.',
+    text: 'Yritysarvo jaettuna käyttökatteella. Kerroin auttaa vertaamaan liiketoimintoja ennen rahoitusrakenteen huomioimista. Se antaa yritysarvon, ei suoraan osakkeiden hintaa: oman pääoman arvo saadaan vähentämällä yritysarvosta nettovelka.',
   },
   {
     term: 'EV/Liikevaihto',
-    text: 'Yritysarvo suhteessa liikevaihtoon. Käytetään erityisesti silloin, kun kannattavuus on vielä kehittymässä tai vaihtelee vuosittain — esimerkiksi kasvavissa ohjelmistoyhtiöissä.',
+    text: 'Yritysarvo suhteessa liikevaihtoon. Sitä voidaan käyttää, kun EBITDA ei vielä kuvaa liiketoimintaa mielekkäästi. Kerroin ei yksin kerro kannattavuudesta, joten sitä pitää tarkastella yhdessä marginaalien, kasvun ja riskien kanssa.',
   },
 ]
 
@@ -70,6 +70,11 @@ export default function KertoimetPage() {
               </Reveal>
             ))}
           </div>
+          <Reveal delay={200}>
+            <p className="mt-8 max-w-3xl text-[14px] leading-relaxed text-charcoal/75">
+              Yksinkertaistettu lasku käyttäen yrityspalvelujen 5–9× EV/EBITDA-haarukkaa: jos EBITDA on 1 M€, yritysarvo on 5–9 M€. Jos nettovelkaa on 1 M€, oman pääoman arvo on 4–8 M€ ennen muita kauppakohtaisia oikaisuja. Tämä on kaavaesimerkki, ei arvio tietystä yrityksestä.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -85,6 +90,8 @@ export default function KertoimetPage() {
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
               Haarukat on tarkoituksella pidetty leveinä. Ne on tarkoitettu kokoluokan
               hahmottamiseen — varsinainen raportti tarkentaa arvion yrityskohtaisella analyysilla.
+              Laskurin haarukat ovat Valuatumin kiinteitä suuntaa-antavia oletuksia; ne eivät
+              päivity automaattisesti alla olevan verrokkitaulukon luvuista.
             </p>
           </Reveal>
 
@@ -124,9 +131,10 @@ export default function KertoimetPage() {
               Esimerkkejä haarukoiden taustalla olevista yhtiöistä.
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Verrokkiotos perustuu Valuatum Wisdom -konsensusennusteisiin ja pörssikursseihin
-              kapeasta pohjoismaisesta listatusta universumista. Luvut miljoonina euroina,
-              osakekurssit euroina.
+              Verrokkiotos perustuu Valuatum Wisdom -konsensusennusteisiin ja pörssikursseihin.
+              Alla on kolme listattua esimerkkiyhtiötä, ei kattava toimialan markkinakeskiarvo.
+              2026e-luvut ovat ennusteita; jokaisen rivin päivityspäivä näkyy taulukossa. Luvut
+              miljoonina euroina, osakekurssit euroina.
             </p>
           </Reveal>
 
@@ -166,12 +174,22 @@ export default function KertoimetPage() {
 
           <Reveal delay={150}>
             <p className="mt-6 max-w-3xl text-[13px] font-light leading-relaxed text-charcoal/60">
-              Huomio rehellisyyden nimissä: listattujen yhtiöiden kertoimet yliarvioivat usein
-              listaamattoman yhtiön arvoa, koska pörssiyhtiöillä on parempi likviditeetti, suurempi
-              koko, laajempi raportointi ja helpompi pääsy rahoitukseen. Varsinainen raportti
-              täydentää markkinakertoimet kassavirta-analyysillä (DCF), tilinpäätöksen laadun
-              arvioinnilla ja riskianalyysillä. Kertoimet ja verrokkitiedot ovat suuntaa-antavia
-              eivätkä sijoitusneuvontaa.
+              Listattu yhtiö voi poiketa listaamattomasta koon, likviditeetin, riskin ja
+              raportoinnin osalta, joten kerroin ei siirry suoraan toiseen yhtiöön. Valuatumin
+              yrityskohtainen raportti voi hylätä markkinakertoimet, jos vertailutietoa ei ole tai
+              se ei sovi kohteeseen — näin käy myös {` `}
+              <Link href="/samples/heeros-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
+                julkisessa Heeros-esimerkissä
+              </Link>
+              . Lue lisää {` `}
+              <Link href="/blogi/miten-yrityksen-arvo-maaritetaan" className="text-green-deep underline underline-offset-2 hover:text-green">
+                arvonmääritysmenetelmistä
+              </Link>
+              {` `}tai kokeile {` `}
+              <Link href="/laskuri" className="text-green-deep underline underline-offset-2 hover:text-green">
+                laskuria
+              </Link>
+              .
             </p>
           </Reveal>
         </div>

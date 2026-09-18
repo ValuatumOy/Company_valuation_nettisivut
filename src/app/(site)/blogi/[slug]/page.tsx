@@ -35,7 +35,7 @@ export default async function BlogPostPage({ params }: Params) {
     headline: post.h1,
     description: post.metaDescription,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updatedDate ?? post.date,
     inLanguage: 'fi',
     author: { '@type': 'Organization', name: 'Valuatum Oy' },
     publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: SITE_URL },
@@ -50,11 +50,21 @@ export default async function BlogPostPage({ params }: Params) {
       <h1 className="mt-4 text-balance text-4xl font-light tracking-[-0.02em] text-charcoal lg:text-5xl">
         {post.h1}
       </h1>
-      <time dateTime={post.date} className="mt-4 block text-[13px] text-charcoal-mid">
-        Julkaistu{' '}
-        {new Date(post.date).toLocaleDateString('fi-FI', { day: 'numeric', month: 'long', year: 'numeric' })}{' '}
-        · Valuatum Oy
-      </time>
+      <div className="mt-4 flex flex-wrap gap-x-2 text-[13px] text-charcoal-mid">
+        <time dateTime={post.date}>
+          Julkaistu {new Date(post.date).toLocaleDateString('fi-FI', { day: 'numeric', month: 'long', year: 'numeric' })}
+        </time>
+        {post.updatedDate && post.updatedDate !== post.date ? (
+          <>
+            <span aria-hidden="true">·</span>
+            <time dateTime={post.updatedDate}>
+              Päivitetty {new Date(post.updatedDate).toLocaleDateString('fi-FI', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </time>
+          </>
+        ) : null}
+        <span aria-hidden="true">·</span>
+        <span>Valuatum Oy</span>
+      </div>
 
       {post.sections.map((s) => (
         <section key={s.heading} className="mt-10">

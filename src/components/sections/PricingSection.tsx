@@ -18,7 +18,7 @@ export function PricingSection({ eyebrow, title, subtitle, vatNote, plans }: Pro
           </p>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-14 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {plans.map((plan, index) => (
             <Reveal key={plan.id} delay={index * 100}>
               <article

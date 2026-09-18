@@ -10,6 +10,7 @@ export type BlogPost = {
   metaDescription: string
   h1: string
   date: string
+  updatedDate?: string
   excerpt: string
   sections: BlogSection[]
 }
@@ -23,21 +24,22 @@ const data = {
       "metaDescription": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii ja miksi yksi piste-estimaatti ei riitä yrityksen arvoksi.",
       "h1": "Miten yrityksen arvo määritetään? Menetelmät selkokielellä",
       "date": "2026-07-02",
+      "updatedDate": "2026-09-18",
       "excerpt": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii — ja miksi luotettava arvonmääritys hylkää osan menetelmistä ja antaa välin, ei yhtä lukua.",
       "sections": [
         {
           "heading": "Miten yrityksen arvo määritetään lyhyesti?",
           "paragraphs": [
-            "Yrityksen arvo määritetään kolmella päälähestymistavalla: tuottoarvolla eli tulevien kassavirtojen nykyarvolla (esimerkiksi DCF), markkinapohjaisilla verrokkikertoimilla (esimerkiksi P/E ja EV/EBITDA) sekä tasepohjaisella substanssiarvolla. Luotettava arvonmääritys käyttää useampaa menetelmää rinnakkain, perustelee myös hylätyt menetelmät ja ilmoittaa tuloksen arvostusvälinä sekä skenaarioiden odotusarvona — ei yhtenä tarkkana lukuna.",
-            "Menetelmät eivät ole vaihtoehtoisia tapoja laskea samaa asiaa, vaan ne vastaavat eri kysymyksiin. Substanssiarvo kertoo, mitä yhtiön omaisuus on velkojen jälkeen. Tuottoarvo kertoo, mitä yhtiön tuleva kassavirta on tänään arvostettuna. Verrokit kertovat, mitä vastaavista yhtiöistä on maksettu. Siksi menetelmän valinta on jo itsessään väite yhtiöstä — ja väärä valinta tuottaa väärän arvon uskottavan näköisenä."
+            "Yrityksen arvoa voidaan arvioida tulevien kassavirtojen nykyarvolla (kuten DCF), markkinaverrokeilla (kuten P/E ja EV/EBITDA) tai omaisuuserien ja velkojen perusteella. Menetelmä valitaan arvonmäärityksen tarkoituksen, yhtiön ja käytettävissä olevan tiedon mukaan. Menetelmiä ei pidä laskea yhteen tai keskiarvoistaa vain siksi, että ne tuottavat eri lukuja.",
+            "Menetelmät vastaavat eri kysymyksiin: DCF arvioi tulevan kassavirran arvoa tänään, verrokkikertoimet suhteuttavat tunnusluvun markkinahintaan ja substanssiarvo tarkastelee varoja ja velkoja. Valuatumin julkisessa Heeros-esimerkissä DCF on päämenetelmä 100 %:n painolla ja EVA 0 %:n painolla tehtävä täsmäytys; verrokkikertoimet ja tasearvo hylätään tämän yhtiön aineiston perusteella. Muiden yhtiöiden menetelmävalinta voi olla erilainen."
           ],
           "listItems": []
         },
         {
           "heading": "Mitä substanssiarvo kertoo yrityksen arvosta?",
           "paragraphs": [
-            "Substanssiarvo on yhtiön omaisuuserien käypä arvo vähennettynä veloilla. Se vastaa kysymykseen: mitä omistajille jäisi, jos toiminta lopetettaisiin ja omaisuus myytäisiin. Laskenta lähtee taseesta, mutta kirjanpitoarvot oikaistaan käypiin arvoihin — esimerkiksi kiinteistön tasearvo voi poiketa merkittävästi markkinahinnasta.",
-            "Substanssiarvo sopii holding-yhtiöille, omaisuusvaltaisille yhtiöille ja tilanteisiin, joissa tulos ei kanna arvoa: tappiolliselle yhtiölle substanssi antaa arvon lattian. Kannattavalle palvelu- tai ohjelmistoyhtiölle se on väärä menetelmä, koska arvo syntyy kassavirrasta eikä taseesta — kevyellä taseella toimiva kannattava yhtiö näyttäisi substanssilla mitattuna lähes arvottomalta."
+            "Substanssiarvo kuvaa yhtiön varoja vähennettynä veloilla arvonmäärityksessä käytetyillä arvoilla. Se voi auttaa hahmottamaan, mitä taseeseen sisältyy, mutta kirjanpitoarvo ei välttämättä vastaa varan käypää arvoa. Arvioon voivat vaikuttaa myös esimerkiksi myyntikulut ja vastuut, joita tase ei yksin kuvaa.",
+            "Substanssiarvo voi olla hyödyllinen omaisuusvaltaisessa yhtiössä tai silloin, kun tuottoja on vaikea ennustaa. Se ei automaattisesti ole markkina-arvon vähimmäistaso eikä sama asia kuin selvitystilan jako-osuus. Verohallinnon perintö- ja lahjaverotuksen ohje käyttää tuotto- ja substanssiarvoa tietyissä tilanteissa verotusarvon määrittämiseen; [ohje](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/152995/yritysvarallisuuden-arvostaminen-perinto--ja-lahjaverotuksessa2/) koskee verotusta eikä kaikkia yrityskauppoja."
           ],
           "listItems": []
         },
@@ -45,8 +47,8 @@ const data = {
           "heading": "Miten tuottoarvo ja DCF-laskelma toimivat?",
           "paragraphs": [
             "DCF eli diskontattu kassavirta ennustaa yhtiön tulevat vapaat kassavirrat ja diskonttaa ne nykyhetkeen tuottovaatimuksella, joka heijastaa sijoituksen riskiä. Ennustejakson jälkeinen aika arvostetaan päätearvolla. Tulos on tuottoarvo: mitä yhtiön tuleva kassavirta on ostajalle arvoinen tänään.",
-            "DCF:n vahvuus on, että se pakottaa oletukset näkyviin: kasvu, kannattavuus, investoinnit ja tuottovaatimus on kirjoitettava auki. Sama on sen heikkous — pienet muutokset oletuksissa liikuttavat arvoa paljon, ja päätearvo muodostaa usein valtaosan koko arvosta. Siksi DCF ilman herkkyystarkastelua on vaarallinen.",
-            "DCF sopii yhtiöille, joiden kassavirta on kohtuudella ennustettavissa. Se ei sovi, jos ennusteelle ei ole uskottavaa pohjaa: hyvin nuori yhtiö, yksittäisen poikkeusvuoden varassa oleva tulos tai syvästi tappiollinen liiketoiminta ilman dokumentoitua käännettä."
+            "DCF:n vahvuus on oletusten näkyvyys: kasvu, kannattavuus, investoinnit ja tuottovaatimus kirjataan malliin. Samat oletukset ovat myös epävarmuuden lähde. Pitkän ennustejakson jälkeinen päätearvo voi muodostaa suuren osan arvosta, joten tulosta on hyvä tarkastella eri kasvun ja tuottovaatimuksen oletuksilla.",
+            "DCF on käyttökelpoisempi silloin, kun kassavirralle voidaan muodostaa perusteltu ennuste. Jos yhtiön tulos vaihtelee voimakkaasti tai ennusteeseen liittyy suurta epävarmuutta, se pitää tuoda näkyviin skenaarioissa ja rajoitteissa."
           ],
           "listItems": []
         },
@@ -54,7 +56,7 @@ const data = {
           "heading": "Mitä EVA-menetelmä mittaa?",
           "paragraphs": [
             "EVA eli taloudellinen lisäarvo mittaa tulosta, joka ylittää pääoman kustannuksen. Yhtiön arvo on sitoutunut pääoma lisättynä tulevien lisäarvojen nykyarvolla. Jos yhtiö tuottaa pääomalleen vain sen kustannuksen verran, kasvu ei luo arvoa — EVA tekee tämän näkyväksi tavalla, jota pelkkä tuloslaskelma ei näytä.",
-            "Samoilla oletuksilla EVA ja DCF päätyvät samaan arvoon, mutta ne jakavat sen eri tavalla: EVA erottelee, kuinka suuri osa arvosta on jo taseessa ja kuinka suuri osa nojaa tulevaan arvonluontiin. Tämä on hyödyllinen ristitarkistus — jos valtaosa arvosta on tulevan lisäarvon varassa, oletusten on kestettävä tarkastelu."
+            "Yhteensopivilla ennusteilla ja tuottovaatimuksilla EVA ja DCF voivat toimia toisiaan täydentävinä näkökulmina. EVA auttaa tarkastelemaan pääoman tuoton suhdetta sen kustannukseen; DCF arvioi tulevien kassavirtojen nykyarvoa. Ne eivät ole toisistaan riippumattomia, jos laskelmat käyttävät samoja oletuksia."
           ],
           "listItems": []
         },
@@ -67,12 +69,20 @@ const data = {
           "listItems": []
         },
         {
+          "heading": "Mitä eroa on yritysarvolla (EV) ja oman pääoman arvolla?",
+          "paragraphs": [
+            "Yritysarvo (EV) kuvaa liiketoiminnan arvoa kaikille pääoman rahoittajille. Oman pääoman arvo kuvaa osakkeenomistajille kuuluvaa osuutta. Yksinkertaistettu laskukaava on oman pääoman arvo = yritysarvo − nettovelka, jossa nettovelka = korolliset velat − kassa. Esimerkiksi 6 M€:n yritysarvosta ja 1 M€:n nettovelasta seuraa 5 M€:n oman pääoman arvo ennen muita kauppakohtaisia oikaisuja.",
+            "EV/EBITDA-kerrointa käytetään yritysarvon arviointiin, joten sitä ei pidä verrata sellaisenaan osakkeista maksettavaan hintaan. [Yrityskaupan opas](/yrityskauppa) ja [arvonmäärityslaskuri](/laskuri) havainnollistavat eroa."
+          ],
+          "listItems": []
+        },
+        {
           "heading": "Mitä eroa arvonmääritysmenetelmillä on?",
           "paragraphs": [
             "Menetelmien erot tiivistettynä:"
           ],
           "listItems": [
-            "Substanssiarvo — mittaa: omaisuus velkojen jälkeen · sopii: holding- ja omaisuusvaltaiset yhtiöt, tappiollisen yhtiön arvon lattia · ei sovi: kannattava kevyttaseinen yhtiö",
+            "Substanssiarvo — mittaa: varat vähennettynä veloilla arvonmäärityksen oletuksin · sopii: omaisuusvaltaisen yhtiön taseen tarkasteluun · ei yksin kuvaa tulevia kassavirtoja",
             "DCF (tuottoarvo) — mittaa: tulevien kassavirtojen nykyarvo · sopii: ennustettava kassavirta · ei sovi: yhtiö, jonka ennusteelle ei ole uskottavaa pohjaa",
             "EVA — mittaa: pääoman kustannuksen ylittävä tulos · sopii: DCF:n ristitarkistus ja arvonluonnin erittely · ei sovi: käytettäväksi yksin ilman kassavirta-analyysiä",
             "Verrokkikertoimet (P/E, EV/EBITDA) — mittaa: markkinahinta suhteessa tulokseen · sopii: kun vertailukelpoisia yhtiöitä on ja tulos on normalisoitu · ei sovi: tappiollinen tai poikkeusvuoden varassa oleva yhtiö"
@@ -82,14 +92,14 @@ const data = {
           "heading": "Miksi osa menetelmistä pitää hylätä?",
           "paragraphs": [
             "Jokainen menetelmä olettaa jotain yhtiöstä. Jos oletus ei päde — P/E tappiolliselle yhtiölle, substanssi kevyttaseiselle kasvuyhtiölle — menetelmän tuottama luku ei ole varovainen arvio vaan kohinaa. Kohinan keskiarvoistaminen mielekkäiden tulosten kanssa ei paranna arviota, se laimentaa sen.",
-            "Siksi laadukas arvonmääritys kertoo paitsi käytetyt menetelmät perusteluineen, myös hylätyt menetelmät ja hylkäyksen syyt. Hylkäysperustelut ovat lukijalle laadun merkki: ne osoittavat, että menetelmät on valittu yhtiön profiilin mukaan eikä kaavamaisesti."
+            "Siksi raportin pitäisi kertoa, mitä menetelmää käytettiin, mitä hylättiin ja miksi. Hylkäysperustelu auttaa lukijaa arvioimaan, sopiiko lähdeaineisto ja laskentatapa kyseiseen yhtiöön. Julkisessa Heeros-esimerkissä EV/EBITDA ja P/E hylättiin, koska vertailukertoimia ei ollut lähdeaineistossa."
           ],
           "listItems": []
         },
         {
           "heading": "Miksi yksi piste-estimaatti valehtelee?",
           "paragraphs": [
-            "Yhtiön tuleva kehitys on epävarma, joten yksi tarkka euromäärä antaa väärän kuvan varmuudesta. Rehellisempi tapa on rakentaa skenaariot — pessimistinen, realistinen ja optimistinen — antaa kullekin todennäköisyys ja laskea odotusarvo eli todennäköisyyksillä painotettu arvo.",
+            "Yhtiön tuleva kehitys on epävarma, joten yksi tarkka euromäärä voi antaa liiallisen varman vaikutelman. Skenaarioissa kuvataan vaihtoehtoisia kehityspolkuja ja niiden oletuksia. Jos todennäköisyyksiä käytetään, odotusarvo on näillä todennäköisyyksillä painotettu summa — se ei ole varma ennuste.",
             "Kuvitteellinen esimerkki: pessimistinen skenaario 0,5 M€ (30 %), realistinen 2,0 M€ (55 %) ja optimistinen 3,5 M€ (15 %). Odotusarvo on 0,30 × 0,5 + 0,55 × 2,0 + 0,15 × 3,5 = 1,8 M€ — vähemmän kuin realistisen skenaarion 2,0 M€, koska riskit painavat alaspäin. Tämän eron näkeminen on skenaarioanalyysin ydin: se kertoo, kumpaan suuntaan epävarmuus kallistaa arvoa.",
             "Sekä ostaja että myyjä hyötyvät välistä enemmän kuin yhdestä luvusta: väli näyttää, mistä oletuksesta arvo riippuu ja mistä hintaneuvottelussa todellisuudessa keskustellaan."
           ],
@@ -113,7 +123,7 @@ const data = {
         {
           "heading": "Missä näitä menetelmiä voi nähdä käytännössä?",
           "paragraphs": [
-            "Valuatumin AI-arvonmääritysraportti soveltaa juuri näitä menetelmiä suomalaisiin yhtiöihin: raportti kertoo käytetyt ja hylätyt menetelmät perusteluineen, laskee skenaariot todennäköisyyksineen ja odotusarvon sekä erittelee arvon ajurit ja riskit. Laadun voi tarkistaa etukäteen [ilmaisista esimerkkiraporteista](/#esimerkit) — mukana on todellinen, julkisista tiedoista laadittu [esimerkkiraportti](/samples/heeros-oyj.pdf). Yksittäinen raportti maksaa [79 € (sis. alv)](/#hinnoittelu), ja [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Tekoälyn roolista arvonmäärityksessä kerromme tarkemmin kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
+            "Valuatumin raportti näyttää yhtiökohtaisen arvion, skenaariot, käytetyt ja hylätyt menetelmät sekä datan rajoitteet. Julkisessa Heeros-esimerkissä DCF on päämenetelmä ja EVA täsmäytys; menetelmätaulukosta näet myös painot ja hylkäysperusteet. Avaa [Heeros-esimerkkiraportti](/samples/heeros-oyj.pdf), katso [hinta](/#hinnoittelu) tai [hae yritys](/yritys). Tekoälyn rajat käsittelemme kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
           ],
           "listItems": []
         },
@@ -123,11 +133,17 @@ const data = {
             "Lyhyet vastaukset yleisimpiin kysymyksiin:"
           ],
           "listItems": [
-            "Mikä on yleisin menetelmä yrityksen arvonmäärityksessä? Kassavirtapohjainen DCF ja markkinapohjaiset kertoimet ovat käytetyimmät kannattaville yhtiöille. Luotettava arvio ei kuitenkaan nojaa yhteen menetelmään, vaan useampaan rinnakkain — ja perustelee, miksi osa jätettiin pois.",
+            "Mikä on yleisin menetelmä yrityksen arvonmäärityksessä? DCF eli diskontattu kassavirta on yleinen tapa arvioida tulevien kassavirtojen arvoa. Verrokkikertoimet voivat täydentää arviota, jos vertailuaineistoa on. Menetelmät valitaan tapauksen mukaan, eikä niitä pidä keskiarvoistaa automaattisesti.",
             "Voiko yrityksen arvon laskea liikevaihdosta? Liikevaihtokerroin yksin kertoo vähän, koska sama liikevaihto voi tuottaa hyvin erikokoisen tuloksen. Kerroin toimii lähinnä apuvälineenä, kun se suhteutetaan kannattavuuteen.",
-            "Mikä menetelmä sopii tappiolliselle yritykselle? Substanssiarvo antaa arvolle lattian, ja tuottopohjainen arvo edellyttää uskottavaa käännettä. Rehellinen analyysi erottaa perusskenaarion ja käänteen optioarvon toisistaan — ja osakkeen arvo ei laske alle nollan.",
+            "Mikä menetelmä sopii tappiolliselle yritykselle? Menetelmä riippuu siitä, miksi yhtiö tekee tappiota ja ovatko tulevat kassavirrat ennustettavissa. Substanssiarvo, kassavirtaennusteet ja mahdollinen käänne pitää arvioida erikseen; substanssiarvo ei automaattisesti ole markkina-arvon alaraja.",
             "Miksi arvonmääritys antaa välin eikä yhtä lukua? Koska tulevaisuus on epävarma. Skenaarioiden todennäköisyyksillä painotettu odotusarvo ja arvostusväli kertovat enemmän kuin piste-estimaatti: ne näyttävät, mihin suuntaan riskit kallistavat arvoa.",
-            "Riittääkö itse tehty laskelma yrityskauppaan? Se on hyvä lähtökohta, mutta tyypilliset virheet — normalisoimaton tulos, unohtunut nettovelka, liian optimistinen päätearvo — toistuvat omissa laskelmissa usein. Perusteltu ulkopuolinen analyysi kannattaa hankkia vähintään toiseksi mielipiteeksi, ja isoihin transaktioihin myös asiantuntija-arvio."
+            "Riittääkö itse tehty laskelma yrityskauppaan? Se auttaa jäsentämään odotuksia, mutta ei korvaa sopimusten, taloudellisen aseman tai oikeudellisten riskien due diligence -tarkastusta. Isossa kaupassa kannattaa käyttää lisäksi talous- ja lakiasiantuntijaa."
+          ]
+        },
+        {
+          "heading": "Lähteet ja rajaus",
+          "paragraphs": [
+            "International Valuation Standards Councilin [sanasto](https://ivsc.org/standards-glossary/) kuvaa tuotto-, markkina- ja kustannuslähestymistapoja yleisinä arvonmäärityksen menetelmäperheinä. Suomen Verohallinnon [yritysvarallisuuden arvostamisohje](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/152995/yritysvarallisuuden-arvostaminen-perinto--ja-lahjaverotuksessa2/) koskee perintö- ja lahjaverotuksen tilanteita. Verotusarvoa ei pidä tulkita suoraan yrityskaupan kauppahinnaksi. Tämä artikkeli ei väitä Valuatumin raportin olevan IVS-standardin mukainen lausunto."
           ]
         }
       ]
@@ -135,58 +151,59 @@ const data = {
     {
       "slug": "tekoaly-yrityksen-arvonmaarityksessa",
       "seoTitle": "Tekoäly yrityksen arvonmäärityksessä: mihin se pystyy ja mihin ei",
-      "metaDescription": "Tekoäly nopeuttaa arvonmäärityksen ja lukee jokaisen tilinpäätösrivin — mutta lukuja se ei saa keksiä. Näin pakotettu numerokuri erottaa validoidun raportin arvauksesta.",
+      "metaDescription": "Selvitä, miten tekoälyä käytetään yrityksen arvonmäärityksessä, mihin laskenta perustuu ja mitä raportti ei voi korvata.",
       "h1": "Tekoäly yrityksen arvonmäärityksessä — mihin se pystyy ja mihin ei",
       "date": "2026-07-02",
-      "excerpt": "Tekoäly tekee arvonmäärityksessä osan työstä paremmin kuin ihminen — ja osaa sen ei pidä antaa tehdä lainkaan. Rehellinen erittely vahvuuksista, rajoista ja siitä, miksi keksitty luku kaataa koko raportin generoinnin.",
+      "updatedDate": "2026-09-18",
+      "excerpt": "Tekoäly voi auttaa aineiston tulkinnassa ja analyysin kirjoittamisessa, mutta arvio riippuu lähdetiedoista ja oletuksista. Tässä kerromme, mitä Valuatumin raportin laskentamoottori tekee, mihin tekoälyä käytetään ja mitä raportti ei voi korvata.",
       "sections": [
         {
           "heading": "Mitä tekoäly tekee yrityksen arvonmäärityksessä?",
           "paragraphs": [
-            "Tekoäly toimii arvonmäärityksessä analyytikon työvälineenä: se lukee tilinpäätösdatan rivi riviltä, käy läpi julkiset lähteet ja kirjoittaa analyysin, johon asiantuntijalta kuluisi päiviä. Lukuja se ei saa keksiä — luotettavassa toteutuksessa laskenta on determinististä ja jokainen tekstin euromäärä jäljitetään todennettuun dataan. Tekoäly nopeuttaa ja laajentaa analyysiä; tulkinta, neuvottelu ja vastuu jäävät ihmiselle.",
-            "Tässä kirjoituksessa käymme rehellisesti läpi, mihin tekoäly arvonmäärityksessä pystyy, mitä sen ei pidä antaa tehdä ja miksi validoitu laskentaprosessi antaa eri tuloksen kuin arvon kysyminen suoraan keskustelevalta kielimallilta."
+            "Valuatumin raportissa laskentamoottori tuottaa arvonmäärityksen numerot käytettävissä olevasta yhtiödatasta ja ennusteista. Tekoäly tulkitsee tuloksia ja kirjoittaa analyysitekstin; se ei laske DCF:ää uudelleen. Arvio riippuu silti lähdetietojen kattavuudesta ja valituista oletuksista.",
+            "Tässä käymme läpi, mikä osa raportista on laskentaa, mikä tekoälyn tuottamaa tulkintaa ja mitä raportti ei voi korvata."
           ],
           "listItems": []
         },
         {
           "heading": "Mihin tekoäly pystyy arvonmäärityksessä hyvin?",
           "paragraphs": [
-            "Tekoälyn vahvuudet ovat mekaanisia mutta merkittäviä:"
+            "Raportissa tekoälyn rooli on rajattu. Se auttaa selittämään laskennan tuloksia ja jäsentämään yrityksen taustatietoja; itse arvon laskenta tulee Valuatumin laskentamoottorista."
           ],
           "listItems": [
-            "Nopeus: raportti valmistuu tyypillisesti 10–20 minuutissa, kun perinteinen konsulttiselvitys vie viikkoja.",
-            "Kattavuus: tekoäly lukee jokaisen tilinpäätösrivin ja liitetiedon eikä ohita mitään aikapaineen takia — ihmisanalyytikko joutuu priorisoimaan, kone ei väsy.",
-            "Johdonmukaisuus: sama menetelmävalinnan logiikka ja sama kurinalaisuus jokaiselle yhtiölle, kohteen koosta ja kiinnostavuudesta riippumatta.",
-            "Perustelujen kirjoittaminen: kone jaksaa selittää jokaisen luvun taustan ja dokumentoida myös hylätyt menetelmät — työvaihe, joka käsityönä jää usein tekemättä."
+            "Nopeus: valmiiksi saatavilla olevaan tilinpäätösdataan perustuva raportti valmistuu tyypillisesti 10–20 minuutissa.",
+            "Tulkinnan tuki: tekoäly muotoilee selityksiä laskentatuloksista ja tuo esiin niitä koskevia oletuksia.",
+            "Dokumentointi: raportissa kuvataan käytetyt menetelmät, oletukset ja tunnistetut tietorajoitteet.",
+            "Rajattu työnjako: laskentamoottori laskee; tekoäly tulkitsee ja kirjoittaa."
           ]
         },
         {
           "heading": "Mitä tekoälyn ei pidä antaa tehdä arvonmäärityksessä?",
           "paragraphs": [
             "Keksiä lukuja. Kielimalli on rakennettu tuottamaan uskottavan kuuloista tekstiä — ja se tuottaa yhtä sujuvasti myös uskottavan kuuloisia lukuja. Tavallisessa tekstissä tämä on harmi; arvonmäärityksessä se tekee koko raportista arvottoman, koska yksikin keksitty euromäärä vie pohjan kaikilta muilta.",
-            "Siksi raportissamme numerokuri on pakotettu koodilla, ei pelkällä ohjeistuksella. Jokaisen analyysitekstin euromäärän on jäljityttävä todennettuun tilinpäätösdataan tai dokumentoituun laskentaan. Jos yksikin luku ei jäljity, raportin generointi epäonnistuu — puutteellista raporttia ei toimiteta. Sama kuri koskee laadullisia väitteitä: verkkolähteistä poimitut väitteet saavat tekstiin lähdeviitteen (lähde ja päivämäärä) ja päätyvät raportin klikattavaan lähdeluetteloon."
+            "Arvonmäärityksessä kielimallin tekstiä ei pidä tulkita itsenäiseksi taloudelliseksi näytöksi. Siksi lukijan kannattaa tarkistaa raportin lähderekisteri, oletukset ja tiedon rajoitteet. Heeros-esimerkissä nämä näkyvät raportin omissa osioissa; esimerkki kertoo yhdestä yhtiöstä eikä takaa kaikkien yhtiöiden aineiston samanlaista kattavuutta."
           ],
           "listItems": []
         },
         {
-          "heading": "Miten varmistetaan, ettei tekoäly keksi lukuja?",
+          "heading": "Miten laskenta ja tekoälyn tulkinta erotetaan?",
           "paragraphs": [
-            "Prosessi etenee kuudessa vaiheessa:"
+            "Valuatumin raportin työnjako on seuraava:"
           ],
           "listItems": [
-            "1. Yhtiön tilinpäätösdata haetaan ja todennetaan ennen analyysin aloittamista.",
-            "2. Arvonmäärityslaskenta — DCF, EVA, kertoimet, substanssi — tehdään deterministisillä laskentamalleilla, ei kielimallilla.",
-            "3. Tekoäly kirjoittaa analyysitekstin valmiiden laskentatulosten päälle ja perustelee menetelmävalinnat yhtiön profiilin mukaan.",
-            "4. Ohjelmalliset tarkistukset käyvät läpi tekstin jokaisen euromäärän ja vertaavat sitä dataan ja dokumentoituun laskentaan.",
-            "5. Jos luku ei jäljity, generointi keskeytyy ja raportti hylätään — virhe ei pääse asiakkaalle asti.",
-            "6. Verkkolähteisiin perustuvat laadulliset väitteet varustetaan lähdeviitteillä, jotka lukija voi tarkistaa itse."
+            "1. Raportti käyttää Valuatumin aineistossa olevia yrityksen tilinpäätös- ja taloustietoja.",
+            "2. Laskentamoottori tuottaa ennusteet ja arvonmäärityslaskelmat.",
+            "3. Tekoäly tulkitsee laskennan tuloksia ja kirjoittaa analyysitekstin.",
+            "4. Raportti näyttää käytetyt menetelmät, oletukset, lähteet ja tunnistetut rajoitteet.",
+            "5. Halutessaan tilaaja voi tarkistaa liikevaihto- ja EBIT-ennusteet ennen raportin luontia.",
+            "6. Raportti ei korvaa tilintarkastusta, johdon haastattelua, due diligence -tarkastusta tai asiantuntijan arviota."
           ]
         },
         {
           "heading": "Miksi ChatGPT antaa eri tuloksen kuin validoitu arvonmääritys?",
           "paragraphs": [
-            "Kun kysyt yleiskäyttöiseltä kielimallilta yrityksen arvoa, se vastaa sen perusteella, mitä sille kerrot ja mitä se on oppinut. Sillä ei ole todennettua tilinpäätösdataa, deterministisiä laskentamalleja eikä tarkistuksia, jotka estäisivät aukkojen paikkaamisen uskottavilla luvuilla. Sama kysymys voi tuottaa eri päivinä eri arvon, eikä kumpaakaan voi jäljittää mihinkään.",
-            "Tämä ei tarkoita, että kielimallit olisivat huonoja — hahmotteluun ja kysymysten muotoiluun ne sopivat hyvin. Ero ei ole mallin älykkyydessä vaan rakenteessa sen ympärillä: neuvotteluun tai dokumentointiin tarvitaan toistettavuus ja jäljitettävyys. Validoidussa prosessissa sama data tuottaa saman laskennan, ja jokainen tekstin luku on tarkistettu sitä vasten. Kyse on eri työkalusta eri tarkoitukseen."
+            "Keskustelevan kielimallin vastaus riippuu sille annetusta aineistosta, tehtävästä ja käytettävistä työkaluista. Ilman erikseen tuotua lähdedataa ja mallia vastaus ei itsessään kerro, mitä oletuksia yhtiön arvolle käytettiin.",
+            "Valuatumin raportin keskeinen ero on laskentamoottorin, yritysaineiston ja raportissa näkyvien oletusten yhdistelmä. Lähteet ja rajaukset voi tarkistaa raportista. Tämä tekee vastauksesta arvioitavamman, mutta ei takaa datan täydellisyyttä tai korvaa ihmisen tekemää tarkastusta."
           ],
           "listItems": []
         },
@@ -204,15 +221,15 @@ const data = {
         {
           "heading": "Voiko raportin oletuksiin vaikuttaa itse?",
           "paragraphs": [
-            "Kyllä. Tilauksen yhteydessä voi antaa lisätietoja ja omia oletuksia: skenaarioiden todennäköisyydet, tiedossa olevat sopimukset tai omistajan aikomukset. Analyysi ottaa ne huomioon — mutta numerokuri ei jousta. Myös omiin oletuksiin perustuvat luvut jäljitetään ja dokumentoidaan, joten raportti kertoo aina, mikä perustuu dataan ja mikä annettuun oletukseen.",
-            "Samasta rehellisyydestä seuraa myös raportin oikea käyttötapa: se on analyysiraportti päätöksenteon tueksi — ei fairness opinion, tilintarkastus, sijoitusneuvonta tai oikeudellinen käyvän arvon lausunto."
+            "Tilauksen yhteydessä voi antaa lisätietoja, jotka täydentävät julkista aineistoa. Niitä ei varmenneta itsenäisesti. Lisäksi tilaaja voi valita liikevaihto- ja EBIT-ennusteiden tarkistuksen ja muokata niitä ennen raportin luontia; raportti erottaa vahvistetut luvut lähdedatasta.",
+            "Raportti on analyysi päätöksenteon tueksi — ei fairness opinion, tilintarkastus, sijoitusneuvonta tai oikeudellinen käyvän arvon lausunto."
           ],
           "listItems": []
         },
         {
           "heading": "Mitä AI-arvonmääritysraportti maksaa ja miten sen saa?",
           "paragraphs": [
-            "Raportin laadun voi tarkistaa ilmaiseksi: [esimerkkiraportit](/#esimerkit) ovat avoimia ilman rekisteröitymistä, ja mukana on julkisista tiedoista laadittu todellinen [esimerkkiraportti](/samples/heeros-oyj.pdf). Yksittäinen yrityskohtainen raportti maksaa [79 € (sis. alv)](/#hinnoittelu) (kolmen raportin paketti 199 € (sis. alv) on tulossa). Raportti valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä — [tilaukseen](/yritys) riittää yrityksen nimi tai Y-tunnus. Jos arvonmääritysmenetelmät ovat vieraita, aloita kirjoituksesta [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)"
+            "Raportin rakennetta voi tarkastella maksuttomasta, julkisista tiedoista laaditusta [Heeros-esimerkkiraportista](/samples/heeros-oyj.pdf). Yksittäinen raportti maksaa [79 € (sis. Suomen alv:n)](/#hinnoittelu) ja valmistuu tyypillisesti 10–20 minuutissa, kun yhtiön tilinpäätöstiedot ovat aineistossa. [Hae yritys ja tilaa raportti](/yritys). Jos menetelmät ovat vieraita, aloita artikkelista [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)."
           ],
           "listItems": []
         },
@@ -222,10 +239,10 @@ const data = {
             "Lyhyet vastaukset yleisimpiin kysymyksiin:"
           ],
           "listItems": [
-            "Keksiikö tekoäly lukuja raporttiin? Ei. Ohjelmalliset tarkistukset vertaavat tekstin jokaista euromäärää todennettuun dataan ja dokumentoituun laskentaan. Jos luku ei jäljity, raportin generointi epäonnistuu eikä raporttia toimiteta.",
-            "Onko tekoälyn tekemä arvonmääritys luotettava? Luotettavuus riippuu rakenteesta, ei mallista: deterministinen laskenta, pakotettu numerokuri, lähdeviitteet ja näkyvät datan rajoitteet erottavat validoidun raportin vapaasta tekstintuotannosta. Raportti kertoo itse, mihin sen luvut perustuvat.",
-            "Miten AI-raportti eroaa siitä, että kysyn arvoa ChatGPT:ltä? Keskusteleva kielimalli vastaa ilman todennettua dataa ja ilman tarkistuksia, ja sama kysymys voi tuottaa eri kerroilla eri vastauksen. Validoitu prosessi tuottaa samasta datasta saman laskennan ja tarkistetun tekstin.",
-            "Korvaako tekoäly arvonmäärityksen asiantuntijan? Ei isoissa transaktioissa. Raportti on nopea ja edullinen ensimmäinen askel tai toinen mielipide; neuvottelu, due diligence ja vastuu jäävät ihmisille.",
+            "Keksiikö tekoäly lukuja raporttiin? Valuatumin arvon laskenta tulee laskentamoottorista, ja tekoäly tulkitsee tuloksia sekä kirjoittaa analyysin. Tarkista raportista käytetyt tiedot, oletukset ja rajoitteet; raportti ei varmista kaikkea lähdeaineistoa.",
+            "Onko tekoälyn tekemä arvonmääritys luotettava? Luotettavuus riippuu aineiston laadusta, oletuksista ja sovelletusta menetelmästä. Raportin lähteet, menetelmät ja rajoitteet auttavat lukijaa arvioimaan tulosta, mutta raportti ei takaa arvion oikeellisuutta.",
+            "Miten AI-raportti eroaa siitä, että kysyn arvoa ChatGPT:ltä? Valuatumin raportti käyttää yrityksen tilinpäätösaineistoa ja arvonmäärityksen laskentamoottoria, ja näyttää käytetyt oletukset sekä menetelmät. Yleiskäyttöisen kielimallin vastaus riippuu sille annetusta aineistosta ja työkaluista; kumpaakaan ei pidä käyttää due diligence -tarkastuksen korvikkeena.",
+            "Korvaako tekoäly arvonmäärityksen asiantuntijan? Ei. Raportti voi olla nopea lähtökohta tai toinen näkemys; neuvottelu, due diligence, verotus ja oikeudelliset kysymykset vaativat ihmisen harkintaa ja tarvittaessa asiantuntijaa.",
             "Onko raportti virallinen käyvän arvon lausunto? Ei. Se on analyysiraportti päätöksenteon tueksi — ei tilintarkastus, fairness opinion, sijoitusneuvonta tai oikeudellinen lausunto, eikä sellaisenaan verotukseen kelpaava arvo."
           ]
         }

@@ -5,13 +5,13 @@ export const yrityskauppaPage: ContentPageData = {
   "seoTitle": "Yrityksen arvonmääritys yrityskaupassa – 79 € | Valuatum",
   "metaDescription": "Miten yrityksen arvo määritetään yrityskaupassa? Perusteltu arvostusväli DCF-, EVA- ja skenaarioanalyysillä antaa myyjälle ja ostajalle neuvotteluankkurin.",
   "h1": "Yrityksen arvonmääritys yrityskaupassa",
-  "leadParagraph": "Yrityskaupassa yrityksen arvo määritetään tilinpäätösdatasta useilla menetelmillä: kassavirtapohjainen DCF, taloudellinen lisäarvo (EVA) ja skenaarioanalyysi. Tulos on perusteltu arvostusväli, ei yksi luku. Arvo ei ole sama kuin kauppahinta — hinta syntyy neuvottelussa, mutta perusteltu arvio antaa sekä myyjälle että ostajalle ankkurin, johon tarjoukset ja hintapyynnöt suhteutetaan.",
+  "leadParagraph": "Yrityksen arvonmääritys yrityskaupassa tuottaa perustellun arvion, ei valmista kauppahintaa. Raportin päämenetelmä on DCF eli diskontattu kassavirta; EVA toimii saman ennusteen täsmäytyksenä. Skenaariot näyttävät, miten oletukset vaikuttavat oman pääoman arvoon.",
   "sections": [
     {
       "heading": "Miksi arvonmääritys kannattaa tehdä ennen hintaneuvotteluja?",
       "paragraphs": [
-        "Yrityskauppaneuvottelussa ensimmäinen perusteltu luku ankkuroi koko keskustelun. Jos myyjä nimeää hintapyynnön ilman analyysiä, ostaja neuvottelee sitä alaspäin kohta kohdalta. Jos ostaja tarjoaa ilman omaa laskelmaa, myyjän pyynti määrittää keskustelun tason. Perusteltu arvostusväli siirtää neuvottelun mielipiteistä oletuksiin: kumpikin osapuoli näkee, mihin lukuihin arvo nojaa ja mikä oletus sitä eniten liikuttaa.",
-        "Suhteessa panoksiin analyysi on halpa vakuutus. Raportti maksaa 79 € (sis. alv) — jo yhden prosentin ero 500 000 euron kauppahinnassa on 5 000 €. Neuvotteluvirheen hintaan verrattuna kyse on murto-osasta. [Tilaa raportti](/yritys) ennen kuin nimeät ensimmäisen luvun."
+        "Perusteltu arvostusväli auttaa ostajaa ja myyjää vertaamaan odotuksia samoihin lähtötietoihin ja näkemään, mitkä oletukset selittävät eron. Se ei yksin määritä hintaa: kauppahinta syntyy osapuolten sopimuksesta ja kaupan ehdoista.",
+        "Raportti maksaa 79 € (sis. Suomen alv:n). Se tukee keskustelua, mutta ei korvaa due diligence -tarkastusta tai kauppakohtaista neuvonantoa. Katso [esimerkkiraportti](/#esimerkit) tai [tilaa raportti](/yritys)."
       ],
       "listItems": [],
       "table": {
@@ -22,7 +22,8 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Mitä raportti antaa myyjälle ja ostajalle?",
       "paragraphs": [
-        "Sama raportti palvelee kaupan molempia osapuolia, koska se ei aja kummankaan etua: menetelmien pisteytys, painot, oletukset ja datan rajoitteet dokumentoidaan avoimesti. 16 osiota kattavat tiivistelmän ja datan laatuluokan, liiketoimintaprofiilin ja markkinasignaalit, historiallisen kehityksen, kymmenen vuoden ennusteen, DCF-laskelman ja EVA-täsmäytyksen, skenaariot todennäköisyyksineen, riskit ja arvon ajurit — lopussa tilinpäätöstaulukot, lähderekisteri, metodologia ja vastuuvapaus."
+        "Raportti kokoaa lähtöaineiston, oletukset, menetelmävalinnan ja tunnistetut riskit yhteen. Ostaja tai myyjä voi käyttää sitä kysymysten ja neuvottelun valmisteluun. Tilaaja voi antaa lisätietoja, joten raportti ei ole osapuolista riippumaton fairness opinion.",
+        "Julkisessa Heeros-esimerkissä on 16 osiota, muun muassa tilinpäätösanalyysi, ennusteet, DCF-laskelma, EVA-täsmäytys, skenaariot, riskit, lähderekisteri ja metodologia. [Avaa esimerkkiraportti](/samples/heeros-oyj.pdf) ja [lue menetelmistä lisää](/blogi/miten-yrityksen-arvo-maaritetaan)."
       ],
       "listItems": [],
       "table": {
@@ -45,12 +46,12 @@ export const yrityskauppaPage: ContentPageData = {
           [
             "Riskit",
             "Ennakoi ostajan kysymykset ja hinnanalennusperusteet",
-            "Valmis tarkistuslista due diligence -vaiheeseen"
+            "Kysymyksiä jatkoselvitykseen ja due diligence -vaiheeseen"
           ],
           [
-            "Arvon ajurit ja toimenpiteet",
-            "Mitä kannattaa laittaa kuntoon ennen myyntiprosessia",
-            "Mistä arvo syntyy ja säilyy kaupan jälkeen"
+            "Arvon ajurit ja herkkyydet",
+            "Mitä ennusteen toteutuminen edellyttää",
+            "Mistä arvion oletukset ja herkkyydet muodostuvat"
           ],
           [
             "Käytetyt ja hylätyt menetelmät",
@@ -63,16 +64,28 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Millä menetelmillä yrityksen arvo lasketaan yrityskaupassa?",
       "paragraphs": [
-        "Raportti laskee arvon menetelmillä, jotka sopivat yhtiön taloudelliseen profiiliin. Kannattavalle yhtiölle keskeisiä ovat kassavirtapohjainen DCF ja taloudellinen lisäarvo (EVA). Niiden rinnalla arvo testataan kolmella skenaariolla:",
+        "Raportin päämenetelmä on DCF, joka diskonttaa ennustetut vapaat kassavirrat nykyhetkeen yrityskohtaisella tuottovaatimuksella (WACC). EVA näyttää saman ennusteen pohjalta, miten tuotto suhteutuu sitoutuneen pääoman kustannukseen. Julkisessa Heeros-esimerkissä DCF:n paino on 100 % ja EVA:n 0 %:n täsmäytys; P/E, EV/EBITDA ja tasearvo on hylätty kyseisen aineiston perusteella. Muissa raporteissa valinnat voivat riippua kohteen tiedoista.",
         "Kullekin skenaariolle annetaan todennäköisyys, ja niistä lasketaan arvon odotusarvo. Neuvottelussa tämä on käyttökelpoisempi työkalu kuin yksi piste-estimaatti: osapuolet voivat olla eri mieltä todennäköisyyksistä ja silti keskustella samoista luvuista.",
-        "Uskottavuuden kannalta ratkaisevaa on myös se, mitä raportti ei käytä. Soveltumattomat menetelmät hylätään ja hylkäys perustellaan — esimerkiksi miksi tulospohjainen kerroin ei sovellu tappiolliselle yhtiölle. Kun vastapuoli vetoaa menetelmään, joka antaisi sille edullisemman luvun, raportista näkyy valmiiksi, miksi menetelmä ei sovellu juuri tähän yhtiöön.",
-        "Raportin luvuille on kova kuri: jokainen tekstissä esiintyvä euromäärä jäljittyy varmennettuun tilinpäätösdataan tai dokumentoituun laskelmaan, ja tämä tarkistetaan ohjelmallisesti ennen toimitusta. Verkkolähteisiin perustuvat laadulliset väitteet merkitään lähdeviittein, ja raportin lopussa on klikattava lähdeluettelo. Laadun voi todeta itse [esimerkkiraporteista](/#esimerkit) — mukana on julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
+        "Raportti perustelee myös hylätyt menetelmät. Lähdeluettelo ja metodologia näyttävät, mitä tietoja käytettiin ja mitä jäi aineiston ulkopuolelle.",
+        "Tarkista rajaukset itse [julkisesta esimerkkiraportista](/samples/heeros-oyj.pdf). Arvio ei korvaa kauppakohteen sopimusten, taloudellisen aseman tai oikeudellisten riskien due diligence -tarkastusta."
       ],
       "listItems": [
         "Pessimistinen skenaario: keskeiset riskit toteutuvat — mitä arvolle jää.",
         "Realistinen skenaario: perusura nykyisen kehityksen ja ennusteen varassa.",
         "Optimistinen skenaario: mitä arvon yläpää edellyttää toteutuakseen."
       ],
+      "table": {
+        "columns": [],
+        "rows": []
+      }
+    },
+    {
+      "heading": "Mitä eroa on yritysarvolla ja oman pääoman arvolla?",
+      "paragraphs": [
+        "Yritysarvo (EV) kuvaa liiketoiminnan arvoa rahoitusrakenteesta riippumatta. Oman pääoman arvo on omistajille jäävä osuus: yksinkertaistetusti osakekannan arvo = yritysarvo − nettovelka, jossa nettovelka tarkoittaa korollisia velkoja miinus kassa. Esimerkiksi 6 M€:n yritysarvosta ja 1 M€:n nettovelasta seuraa 5 M€:n oman pääoman arvo ennen muita kauppakohtaisia oikaisuja.",
+        "Siksi EV/EBITDA-kerrointa ei voi lukea suoraan osakkeiden kauppahintana. [Arvonmäärityslaskuri](/laskuri) näyttää yksinkertaisen EV–nettovelka-laskelman, ja [toimialakertoimien sivu](/kertoimet) selittää kertoimien rajaukset."
+      ],
+      "listItems": [],
       "table": {
         "columns": [],
         "rows": []
@@ -93,8 +106,8 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Miten omat tiedot ja saadut tarjoukset tarkentavat analyysiä?",
       "paragraphs": [
-        "Julkinen tilinpäätösdata ei kerro kaikkea kaupan kannalta olennaista. Tilauksen yhteydessä voit antaa lisätietoja ja omia oletuksia: pitkät asiakas- tai toimitussopimukset, saadut ostotarjoukset, omistajan tavoitteet tai omat skenaariotodennäköisyydet. Analyysi ottaa ne huomioon.",
-        "Omat syötteet eivät kuitenkaan murra laskentakuria. Raportti erottelee, mitkä oletukset tulevat tilaajalta, ja näyttää, miten ne vaikuttavat laskelmaan. Saatu ostotarjous ei siis muuta laskettua arvoa — raportti suhteuttaa tarjouksen arvostusväliin ja skenaarioihin, jolloin näet, kummassa päässä väliä tarjous on ja mitä sen hyväksyminen tai hylkääminen edellyttää oletuksilta."
+        "Julkinen tilinpäätösdata ei kerro kaikkea kaupan kannalta olennaista. Tilauksen yhteydessä voit antaa lisätietoja, kuten asiakassopimuksia, tarjouksia tai liiketoiminnan taustaa. Ne ovat tilaajan toimittamaa tietoa, eivät itsenäisesti varmennettuja tosiasioita.",
+        "Voit myös valita liikevaihto- ja EBIT-ennusteiden tarkistuksen ennen raportin luontia. Raportissa käyttäjän vahvistamat ennusteet erotetaan lähdedatasta. Lisätiedot eivät automaattisesti muuta laskentaa; lopullinen tulkinta ja neuvottelupäätös jäävät osapuolille."
       ],
       "listItems": [],
       "table": {
@@ -117,7 +130,7 @@ export const yrityskauppaPage: ContentPageData = {
     {
       "heading": "Mitä arvonmääritys maksaa yrityskaupassa?",
       "paragraphs": [
-        "Yksittäinen raportti maksaa 79 € (sis. alv) ja valmistuu tyypillisesti 10–20 minuutissa, kun tilinpäätöstiedot ovat jo hallussamme — näet edistymisen selaimessa ja saat raportin myös sähköpostiisi. Kolmen raportin paketti (199 € (sis. alv), tulossa) sopii ostajalle tai neuvonantajalle, joka vertailee useampaa kohdetta. Hinnat ovat yrityksille vähennyskelpoisia asiantuntijakuluja — katso tarkemmin [hinnoittelu](/#hinnoittelu).",
+        "Yksittäinen raportti maksaa 79 € (sis. Suomen alv:n) ja valmistuu tyypillisesti 10–20 minuutissa, kun tilinpäätöstiedot ovat jo aineistossa. Näet edistymisen selaimessa ja saat PDF:n sähköpostiisi. Raportit tilataan yrityskohtaisesti; useamman raportin pakettia ei ole tällä hetkellä tarjolla. Katso [hinnoittelu](/#hinnoittelu).",
         "Laadun voi arvioida ennen ostamista: [esimerkkiraportit](/#esimerkit) ovat avattavissa maksutta ilman rekisteröitymistä. Kun olet valmis, [tilaa raportti](/yritys) yrityksen nimellä tai Y-tunnuksella."
       ],
       "listItems": [],
@@ -130,7 +143,7 @@ export const yrityskauppaPage: ContentPageData = {
   "faq": [
     {
       "question": "Riittääkö 79 euron raportti yrityskaupan päätöksiin?",
-      "answer": "Se on analyysiraportti päätöksenteon tueksi: perusteltu arvostusväli, menetelmät perusteluineen, skenaariot ja riskit. Neuvottelun pohjaksi ja kohteiden vertailuun se riittää hyvin. Suurissa kaupoissa ja riitatilanteissa kannattaa lisäksi käyttää omaa neuvonantajaa — raportti on nopea ensimmäinen askel, ei asiantuntijan korvike."
+      "answer": "Raportti antaa yhden analyysin lähtötiedoista: arvion, menetelmät perusteluineen, skenaariot ja riskit. Se voi auttaa valmistelussa, mutta ei yksin riitä kaupan due diligence -tarkastukseen tai kauppapäätökseksi. Suurissa kaupoissa ja riitatilanteissa käytä lisäksi omaa neuvonantajaa."
     },
     {
       "question": "Miksi laskettu arvo ja lopullinen kauppahinta eroavat toisistaan?",
@@ -138,21 +151,21 @@ export const yrityskauppaPage: ContentPageData = {
     },
     {
       "question": "Sopiiko sama raportti sekä myyjälle että ostajalle?",
-      "answer": "Kyllä. Raportti ei aja kummankaan osapuolen etua: menetelmät, painotukset ja rajoitteet dokumentoidaan avoimesti. Myyjä käyttää sitä hintapyynnön perusteluun, ostaja tarjouksen mitoitukseen ja due diligence -kysymysten pohjana."
+      "answer": "Raportti voi auttaa kumpaakin osapuolta vertaamaan oletuksia ja laatimaan jatkokysymyksiä. Sen tilaaja voi antaa lisätietoja, joten raportti ei ole osapuolista riippumaton fairness opinion eikä due diligence -tarkastus."
     },
     {
       "question": "Voinko antaa raporttiin omia tietoja, kuten saadun ostotarjouksen?",
-      "answer": "Kyllä. Tilauksen yhteydessä voit kertoa sopimuksista, ostotarjouksista, omistajan tavoitteista tai omista skenaariotodennäköisyyksistä. Analyysi ottaa ne huomioon, ja raportti erottelee, mitkä oletukset tulevat tilaajalta ja miten ne vaikuttavat laskelmaan."
+      "answer": "Voit antaa tilauksen yhteydessä lisätietoja, jotka esitetään tilaajan toimittamina oletuksina, ei itsenäisesti varmennettuina tosiasioina. Voit myös valita liikevaihto- ja EBIT-ennusteiden tarkistuksen ennen raportin luontia."
     },
     {
       "question": "Miten raportti käsittelee tappiollista tai velkaista kohdeyhtiötä?",
-      "answer": "Rehellisesti. Osakkeen arvo ei mene alle nollan, ja vaikeuksissa olevan yhtiön perusskenaario ja mahdollinen optioarvo erotellaan toisistaan. Jos data ei riitä luotettavaan arvioon, kerromme sen ennen maksua emmekä toimita puutteellista raporttia."
+      "answer": "Arvio riippuu käytettävissä olevista tiedoista ja ennusteista. Raportti kuvaa datan rajoitteet, skenaariot ja keskeiset riskit. Se ei takaa vähimmäisarvoa eikä korvaa maksukykyä, velkoja tai sopimuksia koskevaa erillistä selvitystä."
     },
     {
       "question": "Kuinka nopeasti saan raportin neuvotteluja varten?",
-      "answer": "Kun tilinpäätöstiedot ovat jo hallussamme, raportti alkaa syntyä heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — sekä selaimessa että sähköpostiisi PDF:nä. Laadun voi arvioida etukäteen maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
+      "answer": "Kun yrityksen tilinpäätöstiedot ovat Valuatumin aineistossa, raportti alkaa syntyä maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa. Näet edistymisen selaimessa ja saat PDF:n sähköpostiisi. Voit tutustua etukäteen [julkiseen Heeros-esimerkkiraporttiin](/samples/heeros-oyj.pdf)."
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ennen neuvottelupöytää",
-  "ctaText": "Tilaa AI-arvonmääritysraportti 79 € (sis. alv). Saat perustellun arvostusvälin, skenaariot, riskit ja menetelmäperustelut — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Katso ensin laatu maksuttomista esimerkkiraporteista."
+  "ctaText": "Tilaa yrityskohtainen AI-arvonmääritysraportti 79 € (sis. Suomen alv:n). Raportti näyttää lähtöaineiston, oletukset, valitut menetelmät ja datan rajoitteet. Tyypillinen valmistumisaika on 10–20 minuuttia; tutustu ensin [julkiseen Heeros-esimerkkiraporttiin](/samples/heeros-oyj.pdf)."
 } as ContentPageData

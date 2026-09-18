@@ -11,8 +11,8 @@
       "id": "hero",
       "visible": true,
       "type": "hero",
-      "title": "Selvitä yrityksen arvo ilman raskasta konsulttiprosessia.",
-      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Saat analyytikkotasoisen AI-arvonmääritysraportin, jossa näkyvät yrityksen arvioitu arvo, skenaariohaarukka, käytetyt ja hylätyt menetelmät, riskit ja arvon tärkeimmät ajurit.",
+      "title": "Yrityksen arvonmääritys selkeästi ja perustellusti.",
+      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Saat AI-avusteisen arvonmääritysraportin, joka näyttää arvion, skenaariot, yhtiölle soveltuvat ja hylätyt menetelmät perusteluineen sekä keskeiset oletukset, riskit ja datan rajoitteet.",
       "trustLine": "Rakennettu Valuatumin 25+ vuoden arvonmääritys-, credit risk- ja equity research -osaamisen päälle.",
       "secondaryCta": {
         "label": "Katso esimerkkiraportti",
@@ -60,14 +60,14 @@
       "type": "sampleReports",
       "eyebrow": "Esimerkkiraportit",
       "title": "Katso laatu ennen tilaamista.",
-      "subtitle": "Avaa oikea, julkisista tilinpäätöstiedoista laadittu raportti kokonaisuudessaan — sama rakenne ja sama laatu kuin tilaamassasi.",
+      "subtitle": "Avaa julkisiin tilinpäätös- ja lähdetietoihin perustuva Heeros Oyj -esimerkkiraportti kokonaisuudessaan. Näet raportin rakenteen, menetelmävalinnan ja lähderajaukset.",
       "ctaLabel": "Avaa esimerkkiraportti",
       "reports": [
         {
           "id": "sample-free",
           "name": "Heeros Oyj",
           "tag": "Todellinen esimerkkiraportti",
-          "description": "Raportti julkisista tilinpäätöstiedoista. Näyttää rakenteen, menetelmien pisteytyksen, DCF- ja EVA-laskelmat, skenaariot ja arvon ajurit sellaisina kuin ne toimitetaan asiakkaalle.",
+          "description": "Julkisiin tietoihin perustuva Heeros Oyj -raportti. Tässä esimerkissä DCF on päämenetelmä 100 %:n painolla ja EVA täsmäytys 0 %:n painolla; P/E, EV/EBITDA ja tasearvo hylätään perusteluineen.",
           "features": [
             "DCF ja EVA-täsmäytys",
             "Skenaariot ja odotusarvo",
@@ -319,7 +319,7 @@
       "eyebrow": "Hinnoittelu",
       "title": "Selkeä hinta. Ei piilokuluja.",
       "subtitle": "Näet raportin laadun esimerkeistä ennen ostamista. Hinnat sisältävät alv:n 25,5 %.",
-      "vatNote": "Hinnat sisältävät alv:n 25,5 % (79 € = 62,95 € + alv 16,05 €). Yrityksille verovähennyskelpoinen asiantuntijakulu – laskulla alv eriteltynä. EU-yritys voi antaa alv-tunnuksen kassalla (käännetty verovelvollisuus).",
+      "vatNote": "Suomen hinta 79 € sisältää 25,5 %:n arvonlisäveron (veroton hinta 62,95 € ja alv 16,05 €). Stripe näyttää sovellettavan veron maksun yhteydessä; laskulla vero eritellään.",
       "plans": [
         {
           "id": "plan-samples",
@@ -337,57 +337,40 @@
           "ctaHref": "#esimerkit",
           "highlighted": false
         },
-        {
-          "id": "plan-single",
+      {
+        "id": "plan-single",
           "name": "AI-arvonmääritysraportti",
           "price": "79 €",
           "priceSuffix": "sis. alv",
           "badge": "Launch-hinta",
-          "description": "Yksi yrityskohtainen PDF-raportti. Kertamaksu, ei tilausta eikä käyttäjätiliä — generointi käynnistyy automaattisesti heti maksun jälkeen.",
+          "description": "Yksi yrityskohtainen PDF-raportti. Kertamaksu, ei jatkuvaa tilausta eikä käyttäjätiliä. Raportin luonti alkaa maksun jälkeen, ellei valitse ennusteiden tarkistusta.",
           "features": [
             "Arvo, skenaariohaarukka ja odotusarvo",
-            "DCF, EVA-täsmäytys ja menetelmien pisteytys",
+            "Yhtiökohtainen menetelmävalinta ja perustelut",
             "Riskit, arvon ajurit ja herkkyysanalyysi",
             "Valmis 10–20 minuutissa, näet edistymisen selaimessa",
-            "Halutessasi tarkistat ja muokkaat ennusteet ennen raporttia",
+            "Halutessasi tarkistat liikevaihto- ja EBIT-ennusteet ennen raporttia",
             "Tarkentavat kysymykset ja päivitetty versio"
           ],
           "ctaLabel": "Tilaa raportti",
           "ctaHref": "/yritys",
           "highlighted": true
-        },
-        {
-          "id": "plan-bundle",
-          "name": "3 raportin paketti",
-          "price": "199 €",
-          "priceSuffix": "sis. alv",
-          "badge": "Tulossa",
-          "description": "Sopii ostajille, tilitoimistoille ja konsulteille, jotka vertailevat useampaa yritystä. Ei vielä tilattavissa suoraan — ota yhteyttä.",
-          "features": [
-            "Kolme yrityskohtaista raporttia",
-            "Käytä 12 kuukauden sisällä",
-            "Sama sisältö kuin yksittäisessä"
-          ],
-          "ctaLabel": "Kysy pakettia",
-          "ctaHref": "mailto:company-valuation@valuatum.com?subject=Kysely%3A%203%20raportin%20paketti",
-          "highlighted": false
-        },
-        {
-          "id": "plan-pro",
-          "name": "Asiantuntija / yrityskäyttö",
-          "price": "Pyydä tarjous",
-          "priceSuffix": "",
-          "badge": "",
-          "description": "Suuremmat raporttimäärät, integraatiot, white-label tai jatkuva käyttö.",
-          "features": [
-            "Volyymihinnoittelu",
-            "Integraatiot ja API",
-            "White-label-raportit"
-          ],
-          "ctaLabel": "Ota yhteyttä",
-          "ctaHref": "mailto:company-valuation@valuatum.com?subject=Tarjouspyynt%C3%B6%3A%20AI-arvonm%C3%A4%C3%A4ritysraportit",
-          "highlighted": false
-        }
+      },
+      {
+        "id": "plan-business",
+        "name": "Useampi raportti tai yrityskäyttö",
+        "price": "Ota yhteyttä",
+        "priceSuffix": "",
+        "badge": "",
+        "description": "Kysy Valuatumilta, sopiiko raportti käyttötarkoitukseesi tai useamman yrityksen tarpeeseen.",
+        "features": [
+          "Käydään tarpeesi läpi ennen tilaamista",
+          "Yrityskohtaiset raportit tilataan erikseen"
+        ],
+        "ctaLabel": "Ota yhteyttä",
+        "ctaHref": "mailto:company-valuation@valuatum.com?subject=Kysely%3A%20yritysk%C3%A4ytt%C3%B6",
+        "highlighted": false
+      }
       ]
     },
     {
@@ -396,7 +379,7 @@
       "type": "methodology",
       "eyebrow": "Menetelmä ja luotettavuus",
       "title": "Rakennettu Valuatumin analyysiosaamisen päälle.",
-      "intro": "Laskenta tulee Valuatumin arvonmääritysmoottorista, ei kielimallilta. Tekoälyn rooli on tulkita luvut, pisteyttää menetelmien soveltuvuus ja kirjoittaa analyysi — se ei laske DCF:ää uudelleen eikä keksi lukuja. Tavoite ei ole musta laatikko, vaan näyttää mikä oletus arvon kannalta on ratkaiseva.",
+      "intro": "Raportin päämenetelmä on DCF eli diskontattu kassavirta. EVA toimii rinnakkaisena täsmäytyksenä, ja raportti kertoo, miksi muita menetelmiä käytetään tai rajataan pois. Tekoäly tulkitsee laskennan tuloksia ja kirjoittaa analyysin; se ei laske DCF:ää uudelleen.",
       "points": [
         {
           "id": "point-experience",
@@ -411,12 +394,12 @@
         {
           "id": "point-method-selection",
           "title": "Menetelmät pisteytetään, hylkäys perustellaan",
-          "description": "Ehdottomat hylkäyssäännöt karsivat ensin soveltumattomat menetelmät. Jäljelle jäävät pisteytetään 0–100 dokumentoiduilla kriteereillä, ja painot muodostetaan pisteistä. Verrokkikertoimet hylätään näkyvästi, jos vertailukelpoisia yhtiöitä ei ole."
+          "description": "Raportti perustelee menetelmien soveltuvuuden ja näyttää niiden painot. Julkisessa Heeros-esimerkissä DCF:n paino on 100 % ja EVA toimii 0 %:n täsmäytyksenä; verrokkikertoimet ja tasearvo hylätään tässä tapauksessa. Tutustu Heeros-esimerkkiraporttiin esimerkkiraporttien osiossa."
         },
         {
           "id": "point-crosscheck",
           "title": "Arvo ristiintarkistetaan",
-          "description": "EVA täsmäytetään samaan ennusteeseen ja WACCiin, ja tulos verrataan Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo). Jos mallien välillä on ero, se näytetään — ei tasata piiloon."
+          "description": "EVA täsmäytetään samaan ennusteeseen ja WACCiin kuin DCF. Julkisessa esimerkkiraportissa näkyy lisäksi vertailu Verohallinnon perintö- ja lahjaverotuksen ohjeen tuotto- ja substanssiarvoihin; se ei tee raportista verotusarvoa."
         },
         {
           "id": "point-limitations",
@@ -437,8 +420,8 @@
         },
         {
           "id": "stat-transparency",
-          "value": "100 %",
-          "label": "oletukset, painotukset ja rajoitteet näkyvissä"
+          "value": "Auki",
+          "label": "käytetyt painot, keskeiset oletukset ja datan rajoitteet"
         }
       ],
       "disclaimer": "Raportti ei ole fairness opinion, tilintarkastus tai oikeudellinen käyvän arvon lausunto. Se on analyysiraportti päätöksenteon tueksi.",
@@ -459,12 +442,12 @@
         {
           "id": "faq-basis",
           "question": "Mihin raportin arvo perustuu?",
-          "answer": "Päämenetelmä on kassavirtapohjainen DCF, joka lasketaan yhtiön toteutuneista luvuista ja 10 vuoden ennusteesta yrityskohtaisella WACCilla. EVA lasketaan samasta ennusteesta täsmäytyksenä, ja arvo ristiintarkistetaan Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo). Verrokkikertoimet (P/E, EV/EBITDA) ja tasearvo ovat mukana ehdokkaina, mutta ne hylätään näkyvästi perusteluineen, jos ne eivät sovellu yhtiöön tai vertailukelpoista dataa ei ole. Raportti näyttää jokaisen menetelmän pisteet, painon ja hylkäysperustelun."
+          "answer": "Raportin päämenetelmä on DCF eli diskontattu kassavirta. EVA lasketaan samasta ennusteesta ja WACCista täsmäytyksenä, eikä sen tulosta keskiarvoisteta DCF:n kanssa. Muut menetelmät, kuten verrokkikertoimet ja tasearvo, otetaan mukaan vain, jos aineisto ja yhtiö tukevat niitä; hylkäyksen syyt näytetään. Julkisessa Heeros-esimerkissä DCF:n paino on 100 % ja EVA:n 0 %."
         },
         {
           "id": "faq-coverage",
           "question": "Voiko raportin saada mistä tahansa suomalaisesta yrityksestä?",
-          "answer": "Lähtökohtaisesti kyllä, kun yhtiöllä on rekisteröityjä tilinpäätöksiä. Haku kertoo heti, löytyykö yhtiö — konserneista voit valita emo- tai konsernitason mallin. Jos data ei riitä luotettavaan arvonmääritykseen, kerromme sen emmekä toimita puutteellista raporttia."
+          "answer": "Raportin voi tilata yrityksille, joiden tilinpäätöstiedot löytyvät Valuatumin aineistosta. Hae yhtiö ensin ja valitse tarvittaessa emo- tai konsernitason aineisto. Hakuun löytyminen ei takaa, että kaikki tilinpäätösvuodet tai arvonmäärityksessä tarvittavat tiedot ovat mukana; raportti kertoo käytetyn aineiston ja sen rajoitteet."
         },
         {
           "id": "faq-delivery",
@@ -474,7 +457,7 @@
         {
           "id": "faq-data-quality",
           "question": "Mitä jos data ei riitä luotettavaan arvonmääritykseen?",
-          "answer": "Raportti sisältää aina arvion datan laadusta ja rajoitteista. Jos luotettavaa arviota ei voi tehdä, kerromme sen ennen toimitusta — emme laskuta raportista, jota emme voi perustella."
+          "answer": "Raportti näyttää, mitä aineistoa käytettiin ja mitä tietoja puuttuu tai ei voitu varmentaa. Julkisesta Heeros-esimerkistä näet, miltä lähteiden ja rajoitteiden kuvaus näyttää. Tarkista raportin rajaukset ennen kuin käytät arviota päätöksenteossa."
         },
         {
           "id": "faq-mna",
@@ -484,7 +467,7 @@
         {
           "id": "faq-multiple",
           "question": "Voinko tilata useamman raportin?",
-          "answer": "Kyllä, tilaa useampi raportti erikseen samalla hinnalla per yritys. Kolmen raportin paketti (199 €) on tulossa suoraan tilattavaksi — ota toistaiseksi yhteyttä, jos haluat sen jo nyt. Suuremmista määristä, integraatioista tai white-label-käytöstä saat tarjouksen."
+          "answer": "Voit tilata yrityskohtaisen raportin kullekin yhtiölle erikseen. Tällä hetkellä sivusto myy yksittäisiä raportteja, eikä useamman raportin pakettia tai jatkuvaa yrityskäyttöpalvelua ole tilattavissa."
         },
         {
           "id": "faq-clarify",
@@ -494,7 +477,7 @@
         {
           "id": "faq-forecast",
           "question": "Voinko vaikuttaa raportin ennusteisiin?",
-          "answer": "Kyllä. Ennusteet tuotetaan järjestelmän deterministisillä ennustesäännöillä, mutta voit tilatessasi valita, että näet liikevaihto- ja EBIT-ennusteet ennen raporttia ja muokkaat niitä omilla näkemyksilläsi. Raportti lasketaan silloin sinun luvuillasi, ja se kerrotaan raportissa näkyvästi. Myös skenaarioiden todennäköisyydet ovat muokattavia oletuksia, eivät ennuste."
+          "answer": "Kyllä. Voit valita tilauksen yhteydessä, että näet liikevaihto- ja EBIT-ennusteet maksun jälkeen ja muokkaat niitä ennen raportin luontia. Raportti käyttää vahvistamiasi lukuja ja kertoo, että ne ovat käyttäjän antamia oletuksia. Skenaarioiden todennäköisyydet ovat oletuksia, eivät varmoja ennusteita."
         }
       ]
     },

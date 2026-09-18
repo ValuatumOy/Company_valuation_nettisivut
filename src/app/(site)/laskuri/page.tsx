@@ -62,6 +62,46 @@ export default function LaskuriPage() {
         </div>
       </section>
 
+      <section className="border-y border-mist bg-white py-16 lg:py-20">
+        <div className="mx-auto max-w-4xl px-6 lg:px-10">
+          <Reveal>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
+              Miten laskelma toimii
+            </p>
+            <h2 className="mt-3 text-balance text-3xl font-light tracking-[-0.02em] text-charcoal lg:text-4xl">
+              EBITDA-kertoimesta yritysarvoon ja osakearvoon
+            </h2>
+            <p className="mt-5 text-[16px] leading-relaxed text-charcoal-mid">
+              Laskuri laskee ensin käyttökatteen (liikevaihto × EBITDA-%), kertoo käyttökatteen toimialalle asetetulla EV/EBITDA-haarukalla ja vähentää nettovelan. Näin se antaa karkean yritysarvon (EV) ja oman pääoman arvon haarukan. Nettovelka tarkoittaa tässä korollisia velkoja miinus kassa.
+            </p>
+          </Reveal>
+
+          <Reveal delay={100}>
+            <div className="mt-8 rounded-3xl bg-off-white p-6 md:p-8">
+              <h3 className="text-lg font-medium text-forest">Havainnollistava lasku</h3>
+              <p className="mt-3 text-[15px] leading-relaxed text-charcoal/75">
+                Esimerkiksi yrityspalvelujen 5–9× EV/EBITDA-haarukalla: jos liikevaihto on 5 M€ ja EBITDA-marginaali 20 %, käyttökate on 1 M€ ja yritysarvo 5–9 M€. Kun nettovelkaa on 1 M€, oman pääoman arvo on 4–8 M€ ennen muita kauppakohtaisia oikaisuja.
+              </p>
+              <p className="mt-4 text-[13.5px] leading-relaxed text-steel">
+                Esimerkki havainnollistaa laskukaavaa, ei anna markkinahintaa tai arviota tietystä yrityksestä. {` `}
+                <Link href="/kertoimet" className="text-green-deep underline underline-offset-2 hover:text-green">
+                  Katso laskurissa käytetyt kertoimet ja niiden rajat.
+                </Link>
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal delay={150}>
+            <p className="mt-8 text-[14px] leading-relaxed text-charcoal/75">
+              Työkalu ei arvioi tappiollista yritystä: EBITDA-marginaalin alaraja on nolla, ja osakearvon tulos rajataan vähintään nollaan. Se ei mallinna kassavirtaennusteita, yrityskohtaisia riskejä, käyttöpääomaa eikä kaupanteon muita oikaisuja. Lue myös {` `}
+              <Link href="/blogi/miten-yrityksen-arvo-maaritetaan" className="text-green-deep underline underline-offset-2 hover:text-green">
+                miten yrityksen arvoa määritetään eri menetelmillä
+              </Link>.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="bg-white py-20 lg:py-28">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal className="max-w-2xl">
@@ -72,8 +112,9 @@ export default function LaskuriPage() {
               Kerroin kertoo kokoluokan — analyysi kertoo perustelut.
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Varsinainen arvonmääritysraportti yhdistää markkinakertoimet kassavirta-analyysiin,
-              riskiarvioon ja skenaarioihin. Rehellisyyden nimissä: raportti on analyysi päätöksenteon
+              Varsinainen arvonmääritysraportti käyttää yhtiölle soveltuvaa menetelmää, ennusteita,
+              riskiarviota ja skenaarioita. Esimerkkiraportista näet myös, milloin markkinakertoimet
+              hylätään. Raportti on analyysi päätöksenteon
               tueksi, ei tilintarkastus, fairness opinion tai sijoitusneuvontaa.
             </p>
           </Reveal>

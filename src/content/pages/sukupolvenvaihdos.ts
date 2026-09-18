@@ -5,14 +5,13 @@ export const sukupolvenvaihdosPage: ContentPageData = {
   "seoTitle": "Yrityksen arvonmääritys sukupolvenvaihdoksessa | Valuatum",
   "metaDescription": "Selvitä yrityksen arvo ennen sukupolvenvaihdosta. AI-arvonmääritysraportti antaa perustellun arvostusvälin suunnittelun ja asiantuntijakeskustelujen pohjaksi.",
   "h1": "Yrityksen arvonmääritys sukupolvenvaihdoksessa",
-  "leadParagraph": "Sukupolvenvaihdoksessa yrityksen arvo vaikuttaa lahja- ja perintöveroon, kauppahintaan ja perillisten väliseen tasapuolisuuteen. Siksi arvo kannattaa selvittää vuosia ennen luovutusta — ei vasta, kun asiakirjat ovat allekirjoitusta vaille valmiit. AI-arvonmääritysraportti antaa perustellun arvostusvälin suunnittelun ja asiantuntijakeskustelujen pohjaksi. Se ei korvaa Verohallinnon arvostamiskäytäntöä eikä vero- tai lakiasiantuntijaa, vaan tukee niitä.",
+  "leadParagraph": "Sukupolvenvaihdoksessa yrityksen arvo vaikuttaa luovutuksen suunnitteluun ja voi vaikuttaa lahja- tai perintöverotukseen. Verohallinto määrittää verotuksessa käytettävän arvon omien ohjeidensa mukaan. Valuatumin raportti antaa taloudellisen arvion suunnittelun tueksi, mutta se ei ole verotusarvo, ennakkoratkaisu eikä vero- tai lakineuvonta.",
   "sections": [
     {
       "heading": "Miksi yrityksen arvo pitää selvittää sukupolvenvaihdoksessa?",
       "paragraphs": [
-        "Sukupolvenvaihdoksessa yrityksen arvo ei ole vain neuvottelukysymys, vaan se vaikuttaa suoraan verotukseen. Jos yritys tai sen osakkeita siirretään jatkajalle lahjana, lahjavero määräytyy yrityksen käyvän arvon perusteella. Perintötilanteessa sama koskee perintöveroa. Jos kauppahinta alittaa käyvän arvon selvästi, erotus voidaan verottaa lahjana. Ilman perusteltua käsitystä arvosta luopuja ja jatkaja suunnittelevat järjestelyä sokkona: veroseuraamukset, kauppahinta ja jatkajan rahoitustarve jäävät arvailun varaan.",
-        "Tärkeä rajaus: Verohallinnolla on oma arvostamiskäytäntönsä, jolla se määrittää yrityksen käyvän arvon verotusta varten. Tämä raportti ei ole verotukseen sellaisenaan kelpaava arvo eikä virallinen käyvän arvon lausunto. Sen tehtävä on antaa perusteltu, dokumentoitu arvostusväli, jonka pohjalta suunnittelet järjestelyä ja keskustelet vero- ja lakiasiantuntijan kanssa — tiedät, mistä suuruusluokasta puhutaan, ennen kuin sitoudut mihinkään.",
-        "Raportti sisältää 16 osiota tiivistelmästä ja tilinpäätösanalyysistä DCF- ja EVA-laskelmiin, skenaarioihin, riskeihin, arvon ajureihin ja lähdeluetteloon. Käytetyt ja hylätyt menetelmät perustellaan avoimesti, ja arvo ristiintarkistetaan Verohallinnon arvostusmalliin (tuottoarvo ja substanssiarvo) — se on raportissa karkeana julkisena vertailukohtana, ei ensisijaisena menetelmänä. Rakenteen ja laadun näet [esimerkkiraporteista](/#esimerkit) — mukana on julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
+        "Verohallinnon mukaan vastikkeellinen luovutus voi olla lahjanluonteinen, jos vastike on enintään 75 % omaisuuden käyvästä arvosta; luovutuksen ja huojennuksen ehdot ovat tapauskohtaisia. Katso Verohallinnon ohjeet [lahjanluonteisesta kaupasta](https://www.vero.fi/henkiloasiakkaat/omaisuus/lahja/lahjanluonteinen_kaupp/) ja [sukupolvenvaihdoshuojennuksesta](https://www.vero.fi/henkiloasiakkaat/omaisuus/lahja/sukupolvenvaihdos-ja-huojennus-lahjaveroon/).",
+        "Yritysvarallisuuden arvostamisohje koskee perintö- ja lahjaverotusta: arvoa voidaan arvioida vertailuluovutuksilla tai, kun niitä ei ole, tuotto- ja substanssiarvolla. Nämä säännöt eivät sellaisenaan määritä yrityskaupan markkinahintaa. Valuatumin raportti antaa taloudellisen arvion suunnittelun tueksi; julkisessa [Heeros-esimerkissä](/samples/heeros-oyj.pdf) näkyy myös vertailu verotuksen tuotto- ja substanssiarvoihin. Lue [Verohallinnon yritysvarallisuuden arvostamisohje](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/152995/yritysvarallisuuden-arvostaminen-perinto--ja-lahjaverotuksessa2/)."
       ],
       "listItems": [],
       "table": {
@@ -24,12 +23,12 @@ export const sukupolvenvaihdosPage: ContentPageData = {
       "heading": "Milloin yrityksen arvo kannattaa selvittää ennen sukupolvenvaihdosta?",
       "paragraphs": [
         "Onnistunut sukupolvenvaihdos kestää tyypillisesti vuosia. Arvo kannattaa selvittää ensimmäisen kerran jo silloin, kun luopuminen on vasta ajatus: silloin ehdit vaikuttaa arvoon vaikuttaviin tekijöihin ja suunnitella verokohtelun asiantuntijan kanssa rauhassa. Viime hetkellä vaihtoehdot ovat vähissä.",
-        "Toistuva seuranta ei kaadu kustannuksiin: yksittäinen raportti maksaa 79 € (sis. alv) ja kolmen raportin paketti 199 € (sis. alv) ([hinnoittelu](/#hinnoittelu))."
+        "Yksittäinen yrityskohtainen raportti maksaa 79 € (sis. Suomen alv:n) ([hinnoittelu](/#hinnoittelu)). Useamman raportin pakettia ei ole tällä hetkellä tarjolla."
       ],
       "listItems": [
-        "3–5 vuotta ennen: selvitä lähtötaso. Ensimmäinen arvonmääritys näyttää arvon suuruusluokan, arvon ajurit ja suurimmat riskit — ja mitä kannattaa korjata ennen luovutusta.",
+        "Kun luopuminen on vasta suunnitteilla: selvitä lähtötaso, arvon ajurit ja suurimmat riskit.",
         "Vuosittain: seuraa kehitystä. Päivitetty raportti kertoo, mihin suuntaan arvo liikkuu ja miten tehdyt toimenpiteet näkyvät luvuissa.",
-        "12–24 kuukautta ennen: ota vero- ja lakiasiantuntija mukaan. Perusteltu arvostusväli nopeuttaa asiantuntijatyötä ja keskustelua rahoittajan kanssa.",
+        "Kun luovutus lähestyy: ota vero- ja lakiasiantuntija mukaan hyvissä ajoin.",
         "Järjestelyn yhteydessä: dokumentoi tilannekuva. Tuore raportti toimii perheen yhteisenä tietopohjana, kun verosuunnitelma ja asiakirjat viimeistellään asiantuntijan kanssa."
       ],
       "table": {
@@ -42,7 +41,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
       "paragraphs": [
         "Kun yksi lapsista jatkaa yritystä ja muut eivät, kysymys tasapuolisuudesta nousee lähes aina esiin. Yritys on usein perheen suurin omaisuuserä, ja ilman ulkopuolista arviota jokaisella osapuolella on siitä oma käsityksensä: jatkaja näkee riskit ja työmäärän, muut näkevät menestyksen.",
         "Dokumentoitu arvonmääritys antaa keskustelulle yhteisen lähtökohdan. Raportti perustelee jokaisen luvun — käytetyt ja hylätyt menetelmät, oletukset ja datan rajoitteet ovat näkyvissä — joten arvosta voi keskustella asiapohjalta eikä mielikuvien varassa. Skenaariot näyttävät myös, miksi arvo ei ole yksi luku vaan väli.",
-        "Lukujen uskottavuus punnitaan juuri perhetilanteissa. Siksi raportin numerokuri on rakennettu ohjelmallisiin tarkistuksiin: jokainen tekstissä esitetty euromääräinen luku jäljittyy vahvistettuun tilinpäätösdataan tai dokumentoituun laskentaan — muuten raporttia ei synny. Perinnönjaon lopullinen toteutus ja dokumentointi kannattaa tehdä lakiasiantuntijan kanssa."
+        "Perhetilanteessa on tärkeää tietää, mistä luku tulee ja mitä tietoa siitä puuttuu. Esimerkkiraportti näyttää lähderekisterin, oletukset ja datan rajoitteet. Raportti ei vahvista kaikkia yhtiötä koskevia tietoja; perinnönjaon lopullinen toteutus ja dokumentointi kannattaa tehdä lakiasiantuntijan kanssa."
       ],
       "listItems": [],
       "table": {
@@ -54,7 +53,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
       "heading": "Miten skenaariot auttavat jatkajaa suunnittelemaan?",
       "paragraphs": [
         "Jatkajalle olennaisin kysymys ei ole, mikä yrityksen arvo on tänään, vaan mihin se voi kehittyä ja millä ehdoilla. Raportin skenaario-osio laskee kolme kehityspolkua — pessimistisen, realistisen ja optimistisen — todennäköisyyksineen sekä niistä johdetun odotusarvon. Jatkaja näkee, millaisiin lukuihin sitoutuminen perustuu myös silloin, jos kehitys jää odotettua heikommaksi.",
-        "Arvon ajurit ja toimenpide-ehdotukset kertovat, mitkä tekijät vaikuttavat arvoon eniten. Sukupolvenvaihdoksessa tämä on käytännön työlista: luopuja ja jatkaja näkevät, mitä ennen luovutusta kannattaa vahvistaa ja mitkä riskit — esimerkiksi asiakasrakenne tai riippuvuus luopuvasta omistajasta — vaativat huomiota.",
+        "Arvon ajurit ja riskit näyttävät, mitkä oletukset vaikuttavat tulokseen eniten. Ne auttavat luopujaa ja jatkajaa tunnistamaan selvitettävät asiat, kuten asiakasrakenteen tai riippuvuuden luopuvasta omistajasta. Raportti ei anna liiketoiminnan toimenpidesuosituksia.",
         "Jos vaihtoehtona on myynti perheen ulkopuolelle, sama raportti palvelee myös sitä vertailua. Katso [yrityksen arvonmääritys yrityskaupassa](/yrityskauppa)."
       ],
       "listItems": [],
@@ -66,8 +65,8 @@ export const sukupolvenvaihdosPage: ContentPageData = {
     {
       "heading": "Miten perheen omat tiedot ja oletukset huomioidaan raportissa?",
       "paragraphs": [
-        "Julkinen tilinpäätösdata ei kerro kaikkea perheyrityksestä. Tilauksen kohdassa Lisätiedot ja omat oletukset voit kertoa järjestelyn taustat: jatkajan roolin ja aikataulun, merkittävät sopimukset tai omat arviosi skenaarioiden todennäköisyyksistä.",
-        "Analyysi ottaa annetut tiedot huomioon rikkomatta numerokuria: omat oletukset merkitään raporttiin oletuksina, ja jokainen euromääräinen luku jäljittyy edelleen vahvistettuun dataan tai dokumentoituun laskentaan. Verkkolähteisiin perustuvat laadulliset havainnot merkitään lähdeviittein (lähde: verkkotunnus ja päivämäärä), ja raportin lopussa on klikattava lähdeluettelo."
+        "Julkinen tilinpäätösdata ei kerro kaikkea perheyrityksestä. Tilauksen lisätietokenttään voit kirjoittaa järjestelyn taustaa, kuten jatkajan roolin, aikataulun tai merkittävät sopimukset. Tiedot ovat tilaajan toimittamia, eikä niitä varmenneta itsenäisesti.",
+        "Voit lisäksi valita liikevaihto- ja EBIT-ennusteiden tarkistuksen ennen raportin luontia. Raportti erottaa annetut ennusteet historiallisesta lähdedatasta ja näyttää käytetyt lähteet sekä rajoitteet."
       ],
       "listItems": [],
       "table": {
@@ -97,7 +96,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
           [
             "Arvon kehityksen seuranta vuosittain",
             "Kyllä — 79 € (sis. alv) / raportti",
-            "Harvoin kustannustehokasta"
+            "Neuvoo verokohtelussa tarvittaessa"
           ],
           [
             "Skenaariot ja arvon ajurit jatkajalle",
@@ -122,7 +121,7 @@ export const sukupolvenvaihdosPage: ContentPageData = {
           [
             "Verotuksessa käytettävä käypä arvo",
             "Ei — Verohallinnolla oma arvostamiskäytäntö",
-            "Arvioi ja varmistaa tarvittaessa ennakkoratkaisulla"
+            "Neuvoo ja hakee tarvittaessa ennakkoratkaisua"
           ]
         ]
       }
@@ -131,11 +130,11 @@ export const sukupolvenvaihdosPage: ContentPageData = {
   "faq": [
     {
       "question": "Kelpaako raportti sellaisenaan Verohallinnolle sukupolvenvaihdoksen verotukseen?",
-      "answer": "Ei. Verohallinnolla on oma arvostamiskäytäntönsä, jolla se määrittää yrityksen käyvän arvon lahja- ja perintöverotusta varten, eikä tämä raportti ole virallinen käyvän arvon lausunto. Raportti tukee suunnittelua: tiedät arvon suuruusluokan ja voit keskustella vero- ja lakiasiantuntijan kanssa perustellulta pohjalta. Verokohtelun voi varmistaa etukäteen Verohallinnon ennakkoratkaisulla, jonka hakemisessa asiantuntija auttaa."
+      "answer": "Ei. Verohallinto määrittää perintö- ja lahjaverotuksessa käytettävän arvon oman arvostamisohjeensa mukaan; tämä raportti ei ole virallinen käyvän arvon lausunto eikä verotusarvo. Se voi tukea ennakkosuunnittelua, mutta huojennuksen edellytykset ja verokohtelu pitää selvittää tapauskohtaisesti asiantuntijan kanssa. Lue [Verohallinnon yritysvarallisuuden arvostamisohje](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/152995/yritysvarallisuuden-arvostaminen-perinto--ja-lahjaverotuksessa2/) ja [huojennuksen ehdot](https://www.vero.fi/henkiloasiakkaat/omaisuus/lahja/sukupolvenvaihdos-ja-huojennus-lahjaveroon/)."
     },
     {
       "question": "Kuinka aikaisin yrityksen arvo kannattaa selvittää ennen sukupolvenvaihdosta?",
-      "answer": "Mieluiten 3–5 vuotta ennen suunniteltua luovutusta. Silloin ehdit vaikuttaa arvoon vaikuttaviin tekijöihin ja suunnitella verokohtelun asiantuntijan kanssa rauhassa. Arvon kehitystä kannattaa seurata päivitetyllä raportilla esimerkiksi vuosittain."
+      "answer": "Jo suunnitteluvaiheessa on hyötyä lähtöarviosta, ja tilannetta voi päivittää yrityksen talouden muuttuessa. Kun luovutus lähestyy, käy verokohtelu ja järjestely asiantuntijan kanssa läpi."
     },
     {
       "question": "Miten raportti auttaa, jos perillisiä on useita?",
@@ -143,17 +142,17 @@ export const sukupolvenvaihdosPage: ContentPageData = {
     },
     {
       "question": "Voinko antaa raporttiin perheen omia tietoja ja oletuksia?",
-      "answer": "Kyllä. Tilauksen kohdassa Lisätiedot ja omat oletukset voit kertoa esimerkiksi jatkajan roolista, merkittävistä sopimuksista tai omista skenaariotodennäköisyyksistä. Analyysi ottaa ne huomioon ja merkitsee ne raporttiin oletuksina — jokainen euromääräinen luku jäljittyy silti vahvistettuun dataan tai dokumentoituun laskentaan."
+      "answer": "Voit antaa lisätietoja esimerkiksi jatkajan roolista ja merkittävistä sopimuksista. Ne ovat tilaajan toimittamia, itsenäisesti varmentamattomia tietoja. Voit myös valita liikevaihto- ja EBIT-ennusteiden tarkistuksen ennen raportin luontia; raportti erottaa nämä oletukset historiallisesta datasta."
     },
     {
       "question": "Mitä jos yritys on tappiollinen tai sen arvo on hyvin pieni?",
-      "answer": "Raportti käsittelee vaikeatkin tilanteet suoraan: osakkeen arvo ei laske alle nollan, ja taloudellisesti heikossa asemassa olevalla yhtiöllä perusskenaarion arvo ja mahdollinen optioarvo eritellään toisistaan. Sukupolvenvaihdoksen suunnittelussa rehellinen kuva on arvokkaampi kuin kaunisteltu luku."
+      "answer": "Raportin arvio riippuu käytettävissä olevista tiedoista ja ennusteista. Tutustu erityisesti raportin lähteisiin, oletuksiin, skenaarioihin ja rajoitteisiin. Verotusarvo ja mahdollinen huojennus pitää selvittää erikseen Verohallinnon ohjeen ja asiantuntijan avulla."
     },
     {
       "question": "Mitä raportti maksaa ja miten saan sen?",
-      "answer": "Yksittäinen raportti maksaa 79 € (sis. alv) ja valmistuu tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF:nä. Kolmen raportin paketti (199 € (sis. alv)) on tulossa. Laadun näet ennen ostamista maksuttomista esimerkkiraporteista, joihin kuuluu julkisista tiedoista laadittu [todellinen esimerkkiraportti](/samples/heeros-oyj.pdf)."
+      "answer": "Yksi raportti maksaa 79 € (sis. Suomen alv:n) ja valmistuu tyypillisesti 10–20 minuutissa. Saat raportin selaimessa ja PDF:nä sähköpostiisi. Useamman raportin pakettia ei ole tällä hetkellä tarjolla. Voit tutustua ennen tilausta [julkiseen Heeros-esimerkkiraporttiin](/samples/heeros-oyj.pdf)."
     }
   ],
   "ctaHeading": "Selvitä yrityksen arvo ajoissa — ennen kuin sukupolvenvaihdos on käsillä.",
-  "ctaText": "Syötä yrityksen nimi tai Y-tunnus ja [tilaa raportti](/yritys) hintaan 79 € (sis. alv). Saat perustellun arvostusvälin, skenaariot ja arvon ajurit — tyypillisesti 10–20 minuutissa, sekä selaimessa että sähköpostiisi PDF-raporttina. Laadun näet ennen ostamista [esimerkkiraporteista](/#esimerkit)."
+  "ctaText": "Syötä yrityksen nimi tai Y-tunnus ja [tilaa raportti](/yritys) hintaan 79 € (sis. Suomen alv:n). Raportti näyttää arvion, skenaariot, keskeiset oletukset ja datan rajoitteet. Tyypillinen valmistumisaika on 10–20 minuuttia. Katso ensin [julkinen Heeros-esimerkkiraportti](/samples/heeros-oyj.pdf)."
 } as ContentPageData

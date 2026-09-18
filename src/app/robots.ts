@@ -1,9 +1,11 @@
 import type { MetadataRoute } from 'next'
 import { SITE_URL } from '@/lib/site'
 
-// One allow-all rule covers Google + AI crawlers (GPTBot, ClaudeBot,
-// PerplexityBot, Google-Extended) — being citable by AI assistants is a goal.
-// That goal is about the content pages; it is NOT about `/yritys/*`.
+// The wildcard lets ordinary search crawlers (Googlebot, Bingbot) and
+// search-focused AI crawlers (OAI-SearchBot, PerplexityBot) access public
+// content. GPTBot and Google-Extended are training controls; allowing them
+// doesn't directly control search inclusion or citations. This policy is for
+// content pages, not `/yritys/*`.
 //
 // `/yritys/:id` is an unbounded URL space: any y-tunnus (real or invented)
 // resolves to a page, and crawlers walk it. Two 30-day windows of the Vercel
@@ -17,7 +19,7 @@ import { SITE_URL } from '@/lib/site'
 // time ignored this file completely.
 const CRAWL_TRAPS = [
   '/api/',
-  '/yritys/', // unbounded id space, server-rendered per request
+  '/yritys/', // unbounded id space behind one static, noindex shell
   '/raportti', // noindex customer app, needs a key
   '/testi', // redirect to /raportti
   '/kassa/', // Stripe return pages, noindex
