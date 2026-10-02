@@ -6,12 +6,12 @@ import { SECTOR_RANGES, WISDOM_PEERS } from '@/lib/marketMultiples'
 export const metadata: Metadata = {
   title: 'Arvostuskertoimet toimialoittain – EV/EBITDA ja EV/Liikevaihto',
   description:
-    'Suuntaa-antavat arvostuskertoimet toimialoittain: EV/EBITDA- ja EV/Liikevaihto-haarukat sekä listattujen verrokkien tunnusluvut yrityksen arvonmäärityksen tueksi.',
+    'Tutustu Valuatumin kiinteisiin, suuntaa-antaviin kerroinoletuksiin ja listattujen verrokkien tunnuslukuihin. Lue, miten EV/EBITDA- ja EV/Liikevaihto-kertoimia tulkitaan.',
   alternates: { canonical: '/kertoimet' },
   openGraph: {
     title: 'Arvostuskertoimet toimialoittain – EV/EBITDA ja EV/Liikevaihto',
     description:
-      'Toimialakohtaiset arvostuskertoimet ja listattujen verrokkien tunnusluvut arvonmäärityksen tueksi.',
+      'Valuatumin kiinteät, suuntaa-antavat kerroinoletukset ja niistä erilliset listattujen verrokkien tunnusluvut arvonmäärityksen tueksi.',
     type: 'article',
   },
 }
@@ -42,9 +42,9 @@ export default function KertoimetPage() {
               Arvostuskertoimet toimialoittain
             </h1>
             <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-white/75">
-              Listatut verrokkiyhtiöt eivät ole täydellisiä vertailukohtia listaamattomalle
-              yritykselle, mutta ne auttavat rajaamaan käyttökelpoisen ensihaarukan — kunhan
-              rajoitteet ovat selvillä.
+              Listattujen verrokkien tunnusluvut antavat vertailukohtia, mutta eivät sellaisinaan
+              kerro listaamattoman yrityksen arvoa. Laskurin kiinteät oletushaarukat ovat tästä
+              erillinen karkea lähtökohta.
             </p>
           </Reveal>
         </div>
@@ -71,10 +71,90 @@ export default function KertoimetPage() {
             ))}
           </div>
           <Reveal delay={200}>
-            <p className="mt-8 max-w-3xl text-[14px] leading-relaxed text-charcoal/75">
-              Yksinkertaistettu lasku käyttäen yrityspalvelujen 5–9× EV/EBITDA-haarukkaa: jos EBITDA on 1 M€, yritysarvo on 5–9 M€. Jos nettovelkaa on 1 M€, oman pääoman arvo on 4–8 M€ ennen muita kauppakohtaisia oikaisuja. Tämä on kaavaesimerkki, ei arvio tietystä yrityksestä.
-            </p>
+            <div className="mt-8 max-w-3xl rounded-3xl bg-green-faint p-6 md:p-8">
+              <h3 className="text-lg font-medium text-forest">Kuvitteellinen esimerkki euroilla</h3>
+              <p className="mt-3 text-[14px] leading-relaxed text-charcoal/75">
+                Oletetaan vain laskukaavan havainnollistamiseksi, että yrityksen EBITDA on 80 000 € ja valittu kerroin 6,0×. Tällöin yritysarvo (EV) olisi 480 000 €. Jos nettovelkaa olisi 25 000 €, oman pääoman laskennallinen arvo olisi 455 000 € ennen muita mahdollisia oikaisuja.
+              </p>
+              <p className="mt-3 text-[13px] leading-relaxed text-steel">
+                Luvut ja kerroin ovat keksittyjä. Esimerkki ei kuvaa markkinahintaa, tiettyä yritystä eikä laskurin toimialahaarukkaa.
+              </p>
+            </div>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="bg-off-white py-16 lg:py-24">
+        <div className="mx-auto max-w-4xl px-6 lg:px-10">
+          <Reveal>
+            <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
+              Usein kysyttyä
+            </p>
+            <h2 className="mt-3 text-balance text-3xl font-light tracking-[-0.02em] text-charcoal lg:text-4xl">
+              Miten yrityksen arvostuskerrointa kannattaa tulkita?
+            </h2>
+          </Reveal>
+
+          <div className="mt-8 divide-y divide-mist border-y border-mist">
+            <details className="group py-5" open>
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Milloin EV/EBITDA sopii yrityksen vertailuun?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Kerroin on hyödyllinen vertailun lähtökohta, kun yrityksillä on mielekkäästi vertailukelpoinen ja positiivinen EBITDA. EV sisältää oman pääoman ja velkarahoituksen arvon vähennettynä kassalla, kun taas EBITDAa tarkastellaan ennen korkoja. Siksi suhdeluku auttaa vertaamaan myös eri tavoin rahoitettuja yrityksiä. Se ei kuitenkaan huomioi suoraan investointeja tai käyttöpääoman muutoksia, joten rinnalle tarvitaan tietoa liiketoiminnasta. {` `}
+                <a href="https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples" target="_blank" rel="noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">CFA Instituten kuvaus yritysarvon kertoimista</a>.
+              </p>
+            </details>
+
+            <details className="group py-5">
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Mikä on hyvä EV/EBITDA-kerroin?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Yleispätevää hyvää kerrointa ei ole. Tulkintaan vaikuttavat muun muassa kasvunäkymä, kannattavuus, investointitarve, kassavirran ennustettavuus ja riski. Siksi kerrointa verrataan ensisijaisesti liiketoiminnaltaan ja taloudellisilta ominaisuuksiltaan riittävän samankaltaisiin yhtiöihin sekä tarkastellaan yhdessä oletusten kanssa. {` `}
+                <a href="https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures/vebitnote.html" target="_blank" rel="noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">NYU Sternin aineisto avaa EV/EBITDA-kertoimen taustatekijöitä</a>.
+              </p>
+            </details>
+
+            <details className="group py-5">
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Miten negatiivinen EBITDA vaikuttaa kertoimeen?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Kun EBITDA on nolla tai negatiivinen, EV/EBITDA ei anna käyttökelpoista vertailulukua. Liikevaihtoon perustuva kerroin voi joissakin yhteyksissä toimia yhtenä lisänäkökulmana, mutta se ei kerro, kuinka kannattavaa myynti on. Tappiollisen yrityksen arviointi edellyttää siksi muuta yrityskohtaista tarkastelua, kuten realistisia tulevaisuuden kassavirta- ja kannattavuusoletuksia.
+              </p>
+            </details>
+
+            <details className="group py-5">
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Miten omistajan palkka voi vaikuttaa EBITDAan?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Jos omistaja tekee yrityksessä työtä, arvioi vastaako kirjattu palkka tehtävän ja vastuiden mukaista korvausta. Vertailua voidaan oikaista perustellulla palkkaerolla, jos omistajan työ jatkuu tai se pitää korvata omistajan vaihtuessa. Koko omistajapalkkaa ei lisätä tulokseen automaattisesti: tehtävä, vertailupalkka ja mahdollinen korvaava työvoima vaikuttavat arvioon. {` `}
+                <a href="https://www.aicpa-cima.com/resources/download/assessing-reasonable-compensation-in-valuation-engagements" target="_blank" rel="noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">AICPA & CIMA käsittelee kohtuullisen korvauksen arviointia arvonmäärityksessä</a>.
+              </p>
+            </details>
+
+            <details className="group py-5">
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Miten yritysarvo eroaa oman pääoman arvosta?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Yritysarvo (EV) kuvaa liiketoiminnan arvoa ennen sen jakamista velka- ja oman pääoman rahoittajille. Yksinkertaistetussa laskussa oman pääoman arvo saadaan vähentämällä EV:stä nettovelka eli korolliset velat miinus kassa. Kaupan lopulliseen laskelmaan voi liittyä muitakin tapauskohtaisia oikaisuja. Lue lisää {` `}
+                <Link href="/laskuri" className="text-green-deep underline underline-offset-2 hover:text-green">laskurin EV- ja osakearvolaskusta</Link>.
+              </p>
+            </details>
+
+            <details className="group py-5">
+              <summary className="cursor-pointer list-none pr-8 text-[17px] font-medium text-forest after:float-right after:font-light after:text-green after:content-['+'] group-open:after:content-['−']">
+                Voiko listatun yhtiön kerrointa käyttää listaamattomaan yritykseen?
+              </summary>
+              <p className="mt-3 text-[14.5px] font-light leading-relaxed text-charcoal/75">
+                Listattu yhtiö voi olla hyödyllinen verrokki, mutta sen kerroin ei siirry suoraan listaamattomaan yritykseen. Koko, kasvuvaihe, asiakasrakenne, kannattavuus, riskit ja käytettävissä olevan tiedon määrä voivat erota. Verrokit pitää valita ja tulkita yrityskohtaisesti; {` `}
+                <a href="https://ivsc.org/standards-glossary/" target="_blank" rel="noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">IVSC:n sanasto kuvaa markkinamenetelmän perustuvan samanlaisten tai vertailukelpoisten kohteiden hintatietoon</a>.
+              </p>
+            </details>
+          </div>
         </div>
       </section>
 
@@ -88,10 +168,11 @@ export default function KertoimetPage() {
               Laskurin käyttämät toimialahaarukat.
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Haarukat on tarkoituksella pidetty leveinä. Ne on tarkoitettu kokoluokan
-              hahmottamiseen — varsinainen raportti tarkentaa arvion yrityskohtaisella analyysilla.
-              Laskurin haarukat ovat Valuatumin kiinteitä suuntaa-antavia oletuksia; ne eivät
-              päivity automaattisesti alla olevan verrokkitaulukon luvuista.
+              Haarukat on tarkoituksella pidetty leveinä ja ne havainnollistavat vain laskurin
+              käyttämää yksinkertaistusta. Ne ovat Valuatumin kiinteitä oletuksia, eivät ajantasaisia
+              markkinakertoimia tai yrityskauppojen hintoja. Ne eivät päivity automaattisesti alla
+              olevan listattujen yhtiöiden taulukon luvuista. Varsinainen raportti tarkastelee
+              yritystä yksilöllisesti.
             </p>
           </Reveal>
 
@@ -185,7 +266,15 @@ export default function KertoimetPage() {
               <Link href="/blogi/miten-yrityksen-arvo-maaritetaan" className="text-green-deep underline underline-offset-2 hover:text-green">
                 arvonmääritysmenetelmistä
               </Link>
-              {` `}tai kokeile {` `}
+              . Tutustu myös {` `}
+              <Link href="/blogi/yrityksen-arvonmaarityksen-hinta" className="text-green-deep underline underline-offset-2 hover:text-green">
+                arvonmääritysraportin hintaan
+              </Link>
+              {` `}tai lue, mitä kannattaa huomioida, kun olet {` `}
+              <Link href="/blogi/sain-ostotarjouksen-yrityksesta" className="text-green-deep underline underline-offset-2 hover:text-green">
+                saanut ostotarjouksen yrityksestä
+              </Link>
+              . Kokeile myös {` `}
               <Link href="/laskuri" className="text-green-deep underline underline-offset-2 hover:text-green">
                 laskuria
               </Link>

@@ -83,9 +83,31 @@ export default function CompanyProfilesPage() {
                 Avaa tilinpäätöshistoria
               </h2>
             </div>
-            <p className="max-w-md text-sm font-light leading-relaxed text-charcoal-mid">
-              Jokaisella sivulla näet tilikausittaiset luvut, laskennan rajat ja tiedon lähteen.
-            </p>
+            <div className="max-w-xl">
+              <p className="text-sm font-light leading-relaxed text-charcoal-mid">
+                Jokaisella sivulla näet tilikausittaiset luvut ja niiden lähteen. Historia kertoo toteutuneesta kehityksestä; arvonmääritysraportti arvioi tulevaa erikseen.
+              </p>
+              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+                <Link
+                  href="/yritys"
+                  className="inline-flex min-h-11 items-center rounded-full bg-green px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-deep focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold"
+                >
+                  Hae yritys raporttia varten
+                </Link>
+                <Link
+                  href="/laskuri"
+                  className="text-sm font-medium text-green-deep underline decoration-green/40 underline-offset-4 transition-colors hover:text-green"
+                >
+                  Kokeile arvonmäärityslaskuria
+                </Link>
+                <Link
+                  href="/blogi/yrityksen-arvonmaarityksen-hinta"
+                  className="text-sm font-medium text-green-deep underline decoration-green/40 underline-offset-4 transition-colors hover:text-green"
+                >
+                  Lue raportin hinnasta
+                </Link>
+              </div>
+            </div>
           </div>
 
           {profiles.length > 0 ? (

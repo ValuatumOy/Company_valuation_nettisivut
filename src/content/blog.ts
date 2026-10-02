@@ -247,6 +247,137 @@ const data = {
           ]
         }
       ]
+    },
+    {
+      "slug": "sain-ostotarjouksen-yrityksesta",
+      "seoTitle": "Sain ostotarjouksen yrityksestä – mitä ostajan ja myyjän kannattaa tarkistaa?",
+      "metaDescription": "Tarkista yrityksen ostotarjouksesta kaupan kohde, nettovelka, normalisoitu tulos, kassavirta ja ehdollinen lisäkauppahinta ennen neuvottelua.",
+      "h1": "Sain ostotarjouksen yrityksestä – mitä kannattaa tarkistaa?",
+      "date": "2026-10-02",
+      "excerpt": "Ostotarjouksen otsikkohinta ei yksin kerro, mitä ostaja maksaa heti tai mitä yrityksestä lopulta siirtyy. Näillä kysymyksillä saat tarjouksen luvut ja ehdot samaan kehykseen.",
+      "sections": [
+        {
+          "heading": "Ostotarjouksen hinta ja yrityksen arvo ovat eri asioita",
+          "paragraphs": [
+            "Ostotarjous on ehdotus kaupasta. Siihen voi sisältyä käteishinta, velkoihin ja kassaan liittyviä oikaisuja, ehtoja ja myöhemmin maksettavaa lisäkauppahintaa. Siksi otsikossa näkyvä summa ei vielä kerro, paljonko myyjä saa kaupanteossa tai millä oletuksilla ostaja on hinnan muodostanut.",
+            "Arvonmääritys puolestaan tuottaa arvion määritellyllä tarkoituksella, aineistolla ja oletuksilla. IVSC:n [sanastossa](https://ivsc.org/standards-glossary/) markkina-arvo kuvataan arvioksi, ei yksittäisen sopimuksen varmaksi hinnaksi. Ostajalle ja myyjälle hyödyllinen kysymys ei siis ole vain “onko hinta oikea?”, vaan “mitä tämän hinnan pitää olettaa toteutuvan?”"
+          ]
+        },
+        {
+          "heading": "Selvitä ensin, mitä tarjouksessa ostetaan",
+          "paragraphs": [
+            "Osakekaupassa omistaja myy osakeyhtiön osakkeet. Liiketoimintakaupassa sovitaan liiketoiminnan tai sen osan sekä siihen kuuluvan omaisuuden siirrosta. Kohteeseen, vastuisiin ja verokohteluun vaikuttavat kaupan rakenne ja sopimukset; nimike yksin ei ratkaise yksityiskohtia. Verohallinto kuvaa yrityksen omistajanvaihdoksen mahdollisuuksina sekä osakkeiden että liiketoiminnan varojen ja velkojen kokonaisuuden luovuttamisen [ohjeessaan](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/60519/osakeyhtion-sukupolvenvaihdos-verotuksessa2/).",
+            "Pyydä tarjous erittelemään kaupan kohde: osakkeet vai liiketoiminta, mukana olevat varat, sopimukset ja velat sekä mahdolliset kaupan ulkopuolelle jäävät erät. Ostajana näin näet, mitä olet hankkimassa. Myyjänä voit verrata tarjousta omiin odotuksiisi ilman, että eri rakenteiden summat näyttävät suoraan vertailukelpoisilta."
+          ]
+        },
+        {
+          "heading": "Vertaa yritysarvoa oman pääoman arvoon",
+          "paragraphs": [
+            "Tarjouksessa käytetty yritysarvo eli EV ja osakkeista maksettava hinta eivät ole sama luku. Yksinkertaistettuna oman pääoman arvo saadaan vähentämällä yritysarvosta nettovelka: korolliset velat vähennettynä kassalla. Esimerkiksi 1,2 miljoonan euron yritysarvosta ja 0,2 miljoonan nettovelasta saadaan 1,0 miljoonan euron oman pääoman arvo ennen käyttöpääomaa ja muita kauppakohtaisia oikaisuja. CFA Instituten [EV-kertoimia käsittelevä katsaus](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples) kuvaa EV:n velan, oman pääoman ja muiden pääomaerien kokonaisarvona vähennettynä kassavaroilla.",
+            "Lue sopimuksesta, miten kassa, korolliset velat, käyttöpääoma, vuokravastuut ja mahdolliset velanluonteiset erät määritellään. Laskukaava on hyödyllinen lähtökohta, mutta se ei korvaa ostotarjouksen tai kauppakirjan tarkkojen määritelmien läpikäyntiä."
+          ]
+        },
+        {
+          "heading": "Tarkista, kuvaako tulos yhtiön jatkuvaa toimintaa",
+          "paragraphs": [
+            "Yhden tilikauden tulos voi antaa harhaanjohtavan kuvan, jos vuoteen sisältyy poikkeuksellinen kulu tai tuotto. Tarkastele myös omistajayrittäjän palkkaa: jos palkka poikkeaa siitä, mitä vastaavan työn tekijälle maksettaisiin, oikaisu voi muuttaa vertailukelpoista tulosta. Yksittäinen oikaisu ei silti ole automaattisesti hyväksyttävä; sen pitää perustua aineistoon ja perusteluun.",
+            "Ostajan kannattaa katsoa tuloksen lisäksi kassavirtaa, investointitarpeita ja sitä, kuinka riippuvainen toiminta on yhdestä asiakkaasta tai avainhenkilöstä. Myyjän taas kannattaa varautua avaamaan tärkeimpien oletusten taustalla olevat luvut. CFA Instituten [yksityisten yritysten arvonmäärityksen katsaus](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/private-company-valuation) käsittelee muun muassa normalisoitua tulosta ja yksityisyritysten kassavirta-arvioiden erityiskysymyksiä."
+          ]
+        },
+        {
+          "heading": "Erota kaupanteossa maksettava raha lisäkauppahinnasta",
+          "paragraphs": [
+            "Tarjous voi sisältää earn-outin eli ehdollisen lisäkauppahinnan, joka maksetaan myöhemmin, jos sovitut tavoitteet täyttyvät. Se ei ole sama asia kuin kaupanteossa maksettava varma summa. Ehdot kannattaa lukea ainakin mittarin, mittauskauden, laskentatavan, raportoinnin ja sen kannalta, kuka voi vaikuttaa tulokseen. IFRS 3 käsittelee yritysjärjestelyn [ehdollista vastiketta](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-3-business-combinations/); sen kirjanpitokäsittely ei kuitenkaan kerro, mitä ostaja tai myyjä saa sopia.",
+            "Kuvitteellinen esimerkki: tarjous lupaa osakkeista yhteensä enintään 1,0 miljoonaa euroa. Siitä 850 000 euroa maksetaan kaupanteossa ja enintään 150 000 euroa myöhemmin, jos sovitut tulostavoitteet toteutuvat. Jos tavoite ei täyty, myyjä saa esimerkissä 850 000 euroa. Otsikkohinta on siis enimmäismäärä, ei koko kauppahinnan varma käteisosuus."
+          ]
+        },
+        {
+          "heading": "Ostajan ja myyjän tarkistuslista tarjouksen lukemiseen",
+          "paragraphs": [
+            "Ennen vastaamista kannattaa saada samalle sivulle hinta, laskentaperusteet ja ehdot. Käy ainakin nämä kohdat läpi:"
+          ],
+          "listItems": [
+            "Pyydä kirjallinen tarjous, josta käyvät ilmi kaupan kohde, hinta ja keskeiset ehdot.",
+            "Mikä on kaupan kohde, ja mitkä varat, velat, sopimukset tai vastuut sisältyvät siihen?",
+            "Onko tarjottu summa yritysarvo vai osakkeiden arvo, ja miten nettovelka sekä kassa lasketaan?",
+            "Mitä tuloksen oikaisuja on tehty ja millä tositteilla ne perustellaan?",
+            "Miten kassavirta kestää heikomman myynnin, suuremmat kulut tai välttämättömät investoinnit?",
+            "Kuinka paljon maksetaan heti, ja mikä osa riippuu myöhemmistä tavoitteista?",
+            "Millä aikataululla ostajan rahoitus, tarkastukset ja muut ehdot varmistuvat?",
+            "Mitä tietoja ja asiantuntija-arvioita tarvitaan ennen sitovaa päätöstä?"
+          ]
+        },
+        {
+          "heading": "Mihin arvonmääritysraportti auttaa — ja mihin se ei riitä?",
+          "paragraphs": [
+            "Arvonmääritysraportti voi auttaa ostajaa ja myyjää tunnistamaan, miten tulos-, kassavirta- ja velkaoletukset vaikuttavat arvioon sekä mitä kysymyksiä kannattaa selvittää lisää. Valuatumin [arvonmäärityslaskurilla](/laskuri) voi tarkastella laskennan lähtökohtia, ja [yrityskertoimien oppaassa](/kertoimet) käsitellään kertoimien tulkintaa. Laajempi käytännön katsaus on [yrityskaupan oppaassa](/yrityskauppa); raportin hinnan ja rajauksen löydät artikkelista [Yrityksen arvonmäärityksen hinta](/blogi/yrityksen-arvonmaarityksen-hinta).",
+            "Raportti auttaa jäsentämään oletuksia ja kysymyksiä. Se ei tarkasta sopimuksia tai kirjanpitoa, tee due diligence -tarkastusta eikä anna fairness opinionia tai oikeudellista lausuntoa. Se ei myöskään päätä, kannattaako tarjous hyväksyä tai hylätä. Kaupan ehdot ja päätös jäävät osapuolille sekä heidän neuvonantajilleen."
+          ]
+        },
+        {
+          "heading": "Lähteet ja rajaus",
+          "paragraphs": [
+            "Taloudellisten käsitteiden lähteinä ovat International Valuation Standards Councilin [sanasto](https://ivsc.org/standards-glossary/), CFA Instituten [EV-kertoimia](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples) ja [yksityisten yritysten arvonmääritystä](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/private-company-valuation) käsittelevät aineistot sekä IFRS Foundationin [IFRS 3](https://www.ifrs.org/issued-standards/list-of-standards/ifrs-3-business-combinations/). Kaupparakenteen yleiskuvauksessa on käytetty Verohallinnon [osakeyhtiön omistajanvaihdosta koskevaa ohjetta](https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/60519/osakeyhtion-sukupolvenvaihdos-verotuksessa2/). Tämä artikkeli on yleistä taustatietoa, ei vero-, sijoitus- tai oikeudellista neuvontaa."
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "yrityksen-arvonmaarityksen-hinta",
+      "seoTitle": "Yrityksen arvonmäärityksen hinta: mitä 79 € sisältää?",
+      "metaDescription": "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 € sisältäen 25,5 % ALV:n. Katso, mitä hinta sisältää ja milloin tarvitaan asiantuntijapalvelua.",
+      "h1": "Yrityksen arvonmäärityksen hinta – mitä 79 € sisältää?",
+      "date": "2026-10-02",
+      "excerpt": "Valuatumin AI-arvonmääritysraportti maksaa 79 € sisältäen Suomen 25,5 %:n ALV:n. Tässä kerromme, mitä kertahintaan sisältyy, kauanko raportti tavallisesti kestää ja milloin laajempi asiantuntijatyö kannattaa pyytää erikseen tarjouksena.",
+      "sections": [
+        {
+          "heading": "Mitä yrityksen arvonmääritys maksaa Valuatumilla?",
+          "paragraphs": [
+            "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 €. Hinta sisältää Suomen yleisen 25,5 %:n arvonlisäveron: veroton osuus on 62,95 € ja ALV 16,05 €. Verohallinnon [arvonlisäveroprosenttien sivulla](https://vero.fi/yritykset-ja-yhteisot/verot-ja-maksut/arvonlisaverotus/arvonlisaveroprosentit/) yleiseksi verokannaksi ilmoitetaan 25,5 %.",
+            "Kyseessä on kertamaksu yhdestä raportista. Siihen ei liity jatkuvaa tilausta, kuukausimaksua tai asiakastilin luomista. Voit ensin katsoa raportin rakenteen julkisesta [Heeros-esimerkkiraportista](/samples/heeros-oyj.pdf) ja päättää sen jälkeen, haluatko tilata raportin omasta yrityksestä tai tarkasteltavasta yhtiöstä."
+          ]
+        },
+        {
+          "heading": "Mitä raportin hinta sisältää?",
+          "paragraphs": [
+            "Raportti kokoaa arvonmäärityksen ja selittää, millaisiin taloustietoihin, menetelmiin ja oletuksiin arvio nojaa. Raportissa käsitellään myös arvioon vaikuttavia riskejä sekä käytettävissä olevan aineiston rajoitteita. Käytännössä voit käyttää sitä lähtökohtana, kun haluat ymmärtää, mitkä oletukset vaikuttavat arvioon tai mitä kannattaa kysyä yhtiön taloudesta ennen keskustelua.",
+            "Arvonmäärityksen menetelmä valitaan yhtiöstä ja saatavilla olevista tiedoista riippuen. Valuatumin [Heeros-esimerkissä](/samples/heeros-oyj.pdf) näet, miltä menetelmien perustelut, oletukset ja rajoitteet voivat näyttää yhdessä raportissa. Esimerkkiraportti kertoo kyseisestä yhtiöstä; se ei takaa, että jokaisen muun yhtiön lähdeaineisto olisi yhtä kattava."
+          ]
+        },
+        {
+          "heading": "Kauanko raportin saaminen kestää?",
+          "paragraphs": [
+            "Kun yhtiön taloustiedot ovat Valuatumin aineistossa, raportin muodostaminen kestää tavallisesti noin 10–20 minuuttia siitä, kun mahdollinen liikevaihto- ja EBIT-ennusteen tarkistus on tehty ja raportin luonti käynnistetty. Ennusteen tarkistus on valinnainen vaihe. Jos tarkistat lukuja, raportti odottaa, että olet valmis etenemään.",
+            "10–20 minuuttia on tyypillinen arvio, ei toimitusaikatakuu. Raportti perustuu käytettävissä olevaan aineistoon ja ilmoitettuihin oletuksiin; se ei itsenäisesti varmista kaikkea yhtiöstä annettua tietoa."
+          ]
+        },
+        {
+          "heading": "Milloin edullinen raportti voi olla sopiva lähtökohta?",
+          "paragraphs": [
+            "Yksittäinen raportti voi olla hyödyllinen, kun haluat alustavan näkymän yhtiön arvon ajureihin, vertailla omia oletuksia tai valmistella tarkempia kysymyksiä yrityskauppaa varten. Se voi sopia ostajan tai omistajan ensivaiheen selvitykseen ja antaa yhteisen keskustelupohjan ennen laajempaa toimeksiantoa.",
+            "Jos haluat harjoitella oletusten vaikutusta itse, kokeile [arvonmäärityslaskuria](/laskuri). [Yrityskertoimien opas](/kertoimet) puolestaan auttaa ymmärtämään, mitä kertoimilla voidaan ja ei voida päätellä. Yleisempi yrityskaupan valmistelun katsaus löytyy [yrityskaupan oppaasta](/yrityskauppa)."
+          ]
+        },
+        {
+          "heading": "Mitä 79 € raportti ei ole?",
+          "paragraphs": [
+            "Raportti ei ole due diligence -tarkastus, tilintarkastus, fairness opinion, veroarvon määritys eikä oikeudellinen käyvän arvon lausunto. Se ei käy läpi yhtiön sopimuksia, varmista ilmoitettuja tietoja tai anna suositusta tarjouksen hyväksymisestä. Kaupassa tarvitaan usein myös sopimus-, vero- ja rahoituskysymysten selvittäminen, jotka eivät sisälly tähän automaattisesti muodostettavaan raporttiin.",
+            "Jos tarvitset asiantuntijapalvelua, pyydä siitä erillinen tarjous. Tarjouksen sisältöön voi vaikuttaa esimerkiksi työn tarkoitus ja käyttäjät, arvonmäärityksen kohde ja omistusosuus, konserni- tai yhtiörakenteen monimutkaisuus, aineiston laajuus ja laatu, tarvittavat haastattelut tai lisäselvitykset sekä raportoinnin laajuus ja aikataulu. Nämä ovat työn rajaukseen vaikuttavia tekijöitä, eivät hintalupauksia."
+          ]
+        },
+        {
+          "heading": "Katso esimerkki tai etsi yritys",
+          "paragraphs": [
+            "Voit tutustua raportin rakenteeseen maksutta [Heeros-esimerkkiraportissa](/samples/heeros-oyj.pdf), lukea ensin [miten yrityksen arvo määritetään](/blogi/miten-yrityksen-arvo-maaritetaan) tai [tarkistaa hinnan ja tilausvaihtoehdot](/#hinnoittelu). Kun tiedät, minkä yhtiön tietoja haluat tarkastella, [hae yritys ja tilaa raportti](/yritys)."
+          ]
+        },
+        {
+          "heading": "Lähteet ja rajaus",
+          "paragraphs": [
+            "ALV-kannan lähde on Verohallinnon [arvonlisäveroprosenttien ohje](https://vero.fi/yritykset-ja-yhteisot/verot-ja-maksut/arvonlisaverotus/arvonlisaveroprosentit/). Arvonmäärityksen ja toteutuneen kauppahinnan eroista voi lukea International Valuation Standards Councilin [sanastosta](https://ivsc.org/standards-glossary/). Tuotteen hinta, toimitustapa ja raportin rajaus kuvaavat Valuatumin palvelua tämän artikkelin päiväyksen tilanteessa."
+          ]
+        }
+      ]
     }
   ]
 }

@@ -114,6 +114,16 @@
       "href": "/blogi"
     },
     {
+      "id": "foot-hinta",
+      "label": "Arvonmäärityksen hinta",
+      "href": "/blogi/yrityksen-arvonmaarityksen-hinta"
+    },
+    {
+      "id": "foot-ostotarjous",
+      "label": "Yrityksen ostotarjouksen arviointi",
+      "href": "/blogi/sain-ostotarjouksen-yrityksesta"
+    },
+    {
       "id": "foot-valuatum",
       "label": "Valuatum.com",
       "href": "https://www.valuatum.com"

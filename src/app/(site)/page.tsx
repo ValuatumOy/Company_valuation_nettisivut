@@ -1,8 +1,10 @@
 import type { Metadata } from 'next'
+import { Fragment } from 'react'
 import { getPageContent, getSiteSettings } from '@/content/server'
 import { safeJsonLd } from '@/lib/jsonld'
 import { SITE_URL } from '@/lib/site'
 import { ComparisonSection } from '@/components/sections/ComparisonSection'
+import { CompanyExamplesSection } from '@/components/sections/CompanyExamplesSection'
 import { FaqSection } from '@/components/sections/FaqSection'
 import { FeatureGridSection } from '@/components/sections/FeatureGridSection'
 import { FinalCtaSection } from '@/components/sections/FinalCtaSection'
@@ -80,7 +82,12 @@ export default async function HomePage() {
             case 'hero':
               return <HeroSection key={section.id} {...section} contactEmail={site.contactEmail} />
             case 'sampleReports':
-              return <SampleReportsSection key={section.id} {...section} />
+              return (
+                <Fragment key={section.id}>
+                  <SampleReportsSection {...section} />
+                  <CompanyExamplesSection />
+                </Fragment>
+              )
             case 'featureGrid':
               return <FeatureGridSection key={section.id} {...section} />
             case 'comparison':

@@ -11,7 +11,8 @@ export const yrityskauppaPage: ContentPageData = {
       "heading": "Miksi arvonmääritys kannattaa tehdä ennen hintaneuvotteluja?",
       "paragraphs": [
         "Perusteltu arvostusväli auttaa ostajaa ja myyjää vertaamaan odotuksia samoihin lähtötietoihin ja näkemään, mitkä oletukset selittävät eron. Se ei yksin määritä hintaa: kauppahinta syntyy osapuolten sopimuksesta ja kaupan ehdoista.",
-        "Raportti maksaa 79 € (sis. Suomen alv:n). Se tukee keskustelua, mutta ei korvaa due diligence -tarkastusta tai kauppakohtaista neuvonantoa. Katso [esimerkkiraportti](/#esimerkit) tai [tilaa raportti](/yritys)."
+        "Raportti maksaa 79 € (sis. Suomen alv:n). Se tukee keskustelua, mutta ei korvaa due diligence -tarkastusta tai kauppakohtaista neuvonantoa. Katso [esimerkkiraportti](/#esimerkit) tai [tilaa raportti](/yritys).",
+        "Jos olet jo saanut tarjouksen, aloita [ostotarjouksen arvioinnin tarkistuslistasta](/blogi/sain-ostotarjouksen-yrityksesta): selvitä, mitä hinta sisältää, kuinka paljon maksetaan heti ja mistä mahdollinen lisäkauppahinta riippuu. [Arvonmäärityksen hintaopas](/blogi/yrityksen-arvonmaarityksen-hinta) auttaa vertaamaan laskurin, raportin ja asiantuntijatyön käyttötarkoituksia."
       ],
       "listItems": [],
       "table": {
