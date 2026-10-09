@@ -69,23 +69,22 @@ export function BuyBox({
   }
 
   return (
-    <aside className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)]">
-      <div className="bg-forest p-6 text-white">
-        <p className="text-[12.5px] font-medium text-green-light">AI-arvonmääritysraportti</p>
-        <h2 className="mt-1 text-2xl font-light tracking-tight">
+    <aside className="rounded-2xl border border-mist bg-white">
+      <div className="border-b border-mist p-6 text-charcoal">
+        <h2 className="text-xl font-medium tracking-[-0.02em]">AI-arvonmääritysraportti</h2>
+        <p className="mt-2 break-words text-sm leading-relaxed text-charcoal-mid">
           {companyDisplayName({ name: companyName, isGroup })}
-        </h2>
-        <div className="mt-4 flex items-end gap-2">
-          <span className="text-[2.6rem] font-light leading-none tracking-tight">{eur(total)}</span>
-        </div>
-        <p className="mt-2 text-xs text-white/50">Kertamaksu per raportti, ei tilausta. Hinta sisältää alv:n 25,5 %.</p>
+        </p>
+        <p className="mt-5 text-4xl font-medium leading-none tracking-[-0.02em] tabular-nums">{eur(total)}</p>
+        <p className="mt-3 text-xs leading-relaxed text-charcoal-mid">Kertamaksu per raportti, ei tilausta. Hinta sisältää alv:n 25,5 %.</p>
       </div>
 
       <form onSubmit={checkout} className="p-6">
-        <p className="text-sm font-light leading-relaxed text-charcoal-mid">
+        <p className="text-sm leading-relaxed text-charcoal-mid">
           Tilinpäätöstiedot yritykselle {companyName} ovat jo hallussamme. Raportti
-          laaditaan automaattisesti maksun jälkeen ja valmistuu tyypillisesti 10–20
-          minuutissa.
+          laaditaan automaattisesti maksun jälkeen. Jos valitset ennusteiden tarkistuksen,
+          käynnistät raportin itse ennustenäkymästä. Raportti valmistuu tyypillisesti 10–20
+          minuutissa käynnistämisestä.
         </p>
 
         <label className="mt-5 block">
@@ -99,7 +98,7 @@ export function BuyBox({
             onChange={(e) => setEmail(e.target.value)}
             placeholder="nimi@yritys.fi"
             autoComplete="email"
-            className="mt-1.5 w-full rounded-xl border border-mist bg-white px-4 py-3 text-sm text-charcoal outline-none transition-colors placeholder:text-steel focus:border-green"
+            className="mt-2 w-full rounded-lg border border-mist bg-white px-3 py-3 text-sm text-charcoal caret-green-deep outline-none transition-colors placeholder:text-charcoal-mid focus:border-green-deep focus:ring-1 focus:ring-green-deep"
           />
         </label>
 
@@ -113,16 +112,16 @@ export function BuyBox({
             rows={3}
             maxLength={4000}
             placeholder="Tietoja joita tekoäly ei löydä itse julkisista lähteistä — esim. ajankohtainen konteksti, omat oletukset…"
-            className="mt-1.5 w-full rounded-xl border border-mist bg-white px-4 py-3 text-sm text-charcoal outline-none transition-colors placeholder:text-steel focus:border-green"
+            className="mt-2 w-full resize-y rounded-lg border border-mist bg-white px-3 py-3 text-sm text-charcoal caret-green-deep outline-none transition-colors placeholder:text-charcoal-mid focus:border-green-deep focus:ring-1 focus:ring-green-deep"
           />
         </label>
 
-        <label className="mt-4 flex cursor-pointer items-start gap-2.5 rounded-xl border border-mist bg-off-white px-3.5 py-3">
+        <label className="mt-5 flex cursor-pointer items-start gap-3 border-t border-mist pt-5">
           <input
             type="checkbox"
             checked={wantForecast}
             onChange={(e) => setWantForecast(e.target.checked)}
-            className="mt-0.5 h-4 w-4 shrink-0 accent-green"
+            className="mt-0.5 h-4 w-4 shrink-0 accent-green-deep focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-deep"
           />
           <span className="text-[13px] leading-relaxed text-charcoal-mid">
             <span className="font-medium text-charcoal">
@@ -130,7 +129,8 @@ export function BuyBox({
             </span>
             <br />
             Maksun jälkeen näet liikevaihto- ja EBIT-ennusteet ja voit muokata niitä
-            omilla näkemyksilläsi. Raportti luodaan vasta kun vahvistat ne. Jätä tyhjäksi,
+            omilla näkemyksilläsi. Paina ennustenäkymässä <strong className="font-medium">Luo raportti</strong>
+            {' '}myös silloin, kun jätät luvut ennalleen. Jätä valinta tyhjäksi,
             niin raportti syntyy suoraan meidän ennusteillamme.
           </span>
         </label>
@@ -138,17 +138,17 @@ export function BuyBox({
         <button
           type="submit"
           disabled={loading}
-          className="mt-5 w-full rounded-full bg-green px-5 py-3 text-[14.5px] font-medium text-white transition-colors hover:bg-green-deep disabled:pointer-events-none disabled:opacity-60"
+          className="mt-6 w-full rounded-xl bg-green-deep px-5 py-3.5 text-[14.5px] font-medium text-white transition-colors hover:bg-forest active:bg-forest focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-green-deep disabled:pointer-events-none disabled:opacity-60"
         >
           {loading ? 'Siirrytään maksuun…' : `Siirry maksamaan — ${eur(total)}`}
         </button>
 
         {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
 
-        <p className="mt-4 flex items-center justify-center gap-1.5 text-xs text-steel">
+        <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-charcoal-mid">
           <LockIcon /> Turvallinen maksu Stripen kautta. Ei vaadi käyttäjätiliä.
         </p>
-        <p className="mt-3 border-t border-mist pt-3 text-center text-[11.5px] leading-relaxed text-steel">
+        <p className="mt-4 border-t border-mist pt-4 text-xs leading-relaxed text-charcoal-mid">
           Raportti on analyysi päätöksenteon tueksi. Se ei ole tilintarkastus, fairness opinion
           eikä sijoitusneuvontaa.
         </p>
@@ -159,7 +159,7 @@ export function BuyBox({
 
 function LockIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden>
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden className="mt-0.5 shrink-0">
       <rect x="4" y="10" width="16" height="11" rx="2" stroke="currentColor" strokeWidth="2" />
       <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" strokeWidth="2" />
     </svg>

@@ -1,50 +1,57 @@
 # DESIGN.md — Valuatum Arvonmääritys
 
-Visual direction adapted from aiequityreports.com (Valuatum's own product) —
-premium financial research, dark/light contrast, disciplined palette.
+Professional financial research with restrained Apple-design principles:
+clear typography, related information grouped together, immediate feedback,
+and quiet functional surfaces. Keep Valuatum's forest/green identity and Inter.
+The homepage and company order page were simplified on 2026-10-09.
 
 ## Colors (CSS vars in globals.css, mapped to Tailwind via @theme)
 
-- `--green` #3D9E72 — primary actions, accents
-- `--green-deep` #2A7452 — hover, text on light green
+- `--green` #2E805B — primary actions, accents; contrast for white button text
+- `--green-deep` #246748 — hover, text on light green
 - `--green-light` #6DBFA0 — accents on dark
 - `--green-mist` #E3F5EE / `--green-faint` #F2FAF6 — tinted surfaces
 - `--forest` #1B3028 — dark hero/section background
 - `--charcoal` #1A2420 — text, footer; `--charcoal-mid` #2C3832 body text
-- `--steel` #8A9590 — muted text; `--mist` #E2E9E5 borders; `--off-white` #F4F7F5 alt sections
+- `--steel` #627069 — legible secondary text; `--mist` #E2E9E5 borders; `--off-white` #F4F7F5 alt sections
 - `--gold` #C8963E + `--gold-faint` #FDF6E8 — launch badge, honesty notes
 - `--lime` #C8FF31 — logo mark only
 
 ## Typography
 
-Inter (300–700). Headings font-light (300), tracking -0.02em.
-H1 ~3.4rem, H2 4xl–5xl. Body 15–17px font-light, relaxed leading.
-Eyebrows: 13px semibold uppercase tracking 0.14em, green-deep (light bg) /
-green-light (dark bg).
+Inter (300–700), optical sizing enabled. Use weight and spacing with size to
+make the hierarchy clear; body text 15–17px with relaxed leading. Headings
+have size-appropriate tracking around -0.02em. Avoid redundant uppercase
+eyebrows above headings; labels are for data or controls that need them.
 
 ## Components
 
-- Cards: rounded-3xl (24px), border mist, hover -translate-y-1 + soft shadow
-- Buttons/CTAs: pill (rounded-full), green bg → green-deep hover
-- Badges/chips: pill, green-mist bg + green-deep text
-- Dark sections: hero-pattern grid texture + hero-glow radial green
+- Prefer plain rows, lists and subtle separators for content and processes.
+- Reserve bordered surfaces for functional groups such as checkout and the
+  honestly labelled sample document. Do not nest decorative cards.
+- Buttons/CTAs: rounded-lg, green → green-deep, immediate press feedback.
+- Avoid decorative chips, icon tiles, tilted documents, glows and grid textures.
+- Fixed navigation uses a restrained translucent forest surface; reduced
+  transparency and increased contrast preferences use a solid background.
+- Desktop navigation starts at xl; smaller screens use an accessible menu with
+  44px targets and Escape dismissal. Preserve all existing destinations.
 
 ## Section rhythm
 
-py-24 lg:py-32, max-w-7xl px-6 lg:px-10. Background alternation:
-forest (hero) → off-white → white → forest (comparison) → white → off-white →
-white (pricing) → off-white (methodology) → white (FAQ) → forest (final CTA) → charcoal (footer).
+Use max-w-7xl px-6 lg:px-10 with generous section separation and tighter related
+groups. Forest hero and final CTA anchor the site; white/off-white reading
+surfaces let the content lead. Avoid a fixed repeating grid of identical cards.
 
 ## Motion
 
-Scroll reveal: opacity + translateY(24px), 0.8s cubic-bezier(0.4,0,0.2,1),
-staggered 80–120ms; IntersectionObserver in `Reveal.tsx`. Method bars animate
-width. FAQ accordion grid-rows transition 0.35s. Respect prefers-reduced-motion.
-No gimmicks.
+Content is visible on the first render; `Reveal` is a plain semantic wrapper
+that preserves callers' layout. No entrance staggering or hidden content.
+Use short color/press transitions for controls and a reversible FAQ accordion.
+Respect reduced motion, reduced transparency and increased contrast settings.
 
 ## Imagery
 
-- `/images/forest-fog.jpg` — hero bg, 25% opacity under forest gradient
-- `/images/contract.jpg` — final CTA bg, 20% opacity
-- `/images/boardroom.jpg` — methodology side image with forest gradient overlay
-- Logo `/logo.svg` — lime Valuatum mark
+- Logo `/logo.svg` — lime Valuatum mark.
+- Homepage/order flow use solid surfaces rather than decorative stock imagery.
+- Existing imagery elsewhere and metadata remain available; do not remove
+  public assets or report PDFs as a side effect of visual refinement.

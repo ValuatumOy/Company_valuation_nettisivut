@@ -1,77 +1,35 @@
-import Image from 'next/image'
 import type { PageSection } from '@/content/schema'
-import { Reveal } from '@/components/Reveal'
 
 type Props = Extract<PageSection, { type: 'methodology' }>
 
-export function MethodologySection({ eyebrow, title, intro, points, stats, disclaimer, image }: Props) {
+export function MethodologySection({ title, intro, points, stats, disclaimer }: Props) {
   return (
-    <section id="menetelma" className="bg-off-white py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid items-start gap-14 lg:grid-cols-[1.1fr_0.9fr]">
-          <div>
-            <Reveal>
-              <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">{eyebrow}</p>
-              <h2 className="mt-3 text-balance text-4xl font-light tracking-[-0.02em] text-charcoal lg:text-5xl">
-                {title}
-              </h2>
-              <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-charcoal-mid">
-                {intro}
-              </p>
-            </Reveal>
-
-            <div className="mt-10 space-y-6">
-              {points.map((point, index) => (
-                <Reveal key={point.id} delay={index * 100}>
-                  <div className="flex gap-4">
-                    <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-green" />
-                    <div>
-                      <h3 className="text-[16px] font-medium text-charcoal">{point.title}</h3>
-                      <p className="mt-1.5 text-[14.5px] font-light leading-relaxed text-charcoal-mid">
-                        {point.description}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-
-            <Reveal delay={300}>
-              <p className="mt-10 rounded-2xl border border-mist bg-white px-6 py-4 text-[13.5px] leading-relaxed text-steel">
-                {disclaimer}
-              </p>
-            </Reveal>
-          </div>
-
-          <div className="lg:sticky lg:top-28">
-            <Reveal delay={150}>
-              <div className="relative overflow-hidden rounded-3xl shadow-[0_24px_64px_rgba(26,36,32,0.18)]">
-                <Image
-                  src={image}
-                  alt="Analyytikkotiimi työskentelee neuvotteluhuoneessa"
-                  width={720}
-                  height={480}
-                  className="h-72 w-full object-cover lg:h-80"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-forest/80 via-forest/20 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 p-6">
-                  <p className="text-sm font-medium text-white">Valuatum Oy · Helsinki</p>
-                  <p className="text-[12.5px] text-white/70">Arvonmääritys- ja analyysijärjestelmiä vuodesta 2000</p>
-                </div>
+    <section id="menetelma" className="bg-off-white py-20 lg:py-24">
+      <div className="mx-auto max-w-6xl px-6 lg:px-10">
+        <h2 className="max-w-3xl text-balance text-3xl font-medium tracking-[-0.02em] text-charcoal sm:text-4xl">{title}</h2>
+        <p className="mt-5 max-w-3xl text-pretty text-base leading-relaxed text-charcoal-mid">{intro}</p>
+        <div className="mt-10 grid items-start gap-10 lg:grid-cols-[1.3fr_0.7fr] lg:gap-16">
+          <div className="divide-y divide-mist border-t border-mist">
+            {points.map((point) => (
+              <div key={point.id} className="py-6">
+                <h3 className="text-lg font-medium text-charcoal">{point.title}</h3>
+                <p className="mt-3 text-base leading-relaxed text-charcoal-mid">{point.description}</p>
               </div>
-            </Reveal>
-
-            <div className="mt-6 grid grid-cols-3 gap-4">
-              {stats.map((stat, index) => (
-                <Reveal key={stat.id} delay={200 + index * 100}>
-                  <div className="h-full rounded-2xl border border-mist bg-white p-5 text-center">
-                    <p className="text-[1.7rem] font-light tracking-tight text-green-deep">{stat.value}</p>
-                    <p className="mt-1 text-[11.5px] leading-snug text-steel">{stat.label}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            ))}
           </div>
+          <aside className="border-t border-mist pt-6">
+            <p className="text-lg font-medium text-charcoal">Valuatum Oy · Helsinki</p>
+            <p className="mt-2 text-sm leading-relaxed text-charcoal-mid">Arvonmääritys- ja analyysijärjestelmiä vuodesta 2000</p>
+            <dl className="mt-6 space-y-5">
+              {stats.map((stat) => (
+                <div key={stat.id} className="flex items-baseline gap-4">
+                  <dt className="w-14 shrink-0 text-lg font-medium tabular-nums text-green-deep">{stat.value}</dt>
+                  <dd className="text-sm leading-relaxed text-charcoal-mid">{stat.label}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-8 border-t border-mist pt-5 text-sm leading-relaxed text-charcoal-mid">{disclaimer}</p>
+          </aside>
         </div>
       </div>
     </section>
