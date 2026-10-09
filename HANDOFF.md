@@ -1,21 +1,3 @@
-# Handoff — 2026-10-09 — Apple-design refinement and approved production release
-
-- User explicitly approved production publication and requested less AI-slop design using the apple-design skill. This release includes the previous #3057 report-start copy fix.
-- Homepage and company order page now use clear type, plain rows/lists and separators. Removed repeated icon cards, uppercase section labels, decorative photos/grids/glows, pills, tilted mockup, hover elevation and entrance staggering. Real content, sample PDF links, anchors, 79 EUR price and checkout/model selection remain intact. Public sample placeholders remain unfilled.
-- `Reveal` is now a plain semantic wrapper: all content is visible on first render. Shared navigation has restrained translucent forest chrome, 44px targets, xl desktop breakpoint, Escape dismissal and reduced-transparency support. Green/secondary-text tokens were darkened for contrast; reduced motion disables decorative transitions. DESIGN.md records the updated direction.
-- Order-page refinement copy defers the included count to the report view instead of hardcoding one free round, in line with the existing backend-controlled cap rule below. No pricing or backend policy changed.
-- Validation: production build (40 pages) and changed-file ESLint pass; mechanical design detector returns no findings; independent review found no introduced blocker. Browser checks cover desktop, 390px mobile, 1024px tablet navigation, menu open/Escape/focus return, FAQ expansion, exact Heeros PDF link, forecast checkbox and native refinement details. Existing Turbopack tracing warning remains; dev-only hydration warning came from the browser extension's `cz-shortcut-listen` body attribute.
-- Production target verified: `company-valuation-site`, team `valuatum-dk`, aliases `www.arvonmaaritys.fi` and `arvonmaaritys.fi`. Publish through the normal main git integration; verify the deployment is READY for the exact commit. Baseline deployment: `dpl_5gNEiDMwGhYDc4UUfcAKCAAGrenX` / commit `14ef25ed131c9b1844a943302151eb575b85f1f5`.
-- No paid report generation, payment, Jenkins run, backend change or Ace publication. Screenshots and release evidence are in `C:/Users/Lauri H/Documents/Codex/2026-10-07/si/outputs/ace-3057/`.
-
-# Handoff — 2026-10-09 — Ace #3057: report start instructions (initial preparation)
-
-- Read all 44 comments on Ace #3057 (`TASK_ID=789050`) and Wiki `RaporttienMyyntiSivujenPäivitykset`. The process illustration already exists; Heeros is the public sample. Two other sample slots remain unfilled and require separately reviewed reports. This change does not complete all of #3057.
-- Clarified the existing `OrderProcess`, `BuyBox`, and homepage process copy: choosing forecast review means the customer must press "Luo raportti" even when keeping the numbers; 10–20 minutes starts when report generation is initiated. No checkout, forecast, pricing, or backend behavior changed.
-- Validation: changed-component ESLint, `git diff --check`, and `npm.cmd run build` pass; existing Turbopack tracing warning remains. Browser checked the real local Heeros order page and homepage text; 390px mobile has no horizontal overflow. Desktop/mobile proof images and patch are under `C:/Users/Lauri H/Documents/Codex/2026-10-07/si/outputs/ace-3057/`.
-- No paid run, Jenkins build, push, Ace publication, or production deployment. Local preview runs at `http://127.0.0.1:3057/yritys/15988680K`.
-- Existing PRODUCT.md contains outdated delivery/pricing claims; current HANDOFF, implementation, and live site take precedence. Updating the product record is a separate task.
-
 # Handoff — 2026-09-18 — Public company financial profiles
 
 - Added a separate static `/yritykset` directory and 14 allowlisted `/yritykset/[slug]` pages. The route uses generateStaticParams, force-static and dynamicParams=false; unknown slugs return 404. No page visit fetches financial data or generates a forecast/report.

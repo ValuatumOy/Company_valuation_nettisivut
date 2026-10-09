@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { SiteSettings } from '@/content/schema'
 
 type Props = {
@@ -10,44 +10,45 @@ type Props = {
 }
 
 export function Header({ site }: Props) {
+  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  const menuButton = useRef<HTMLButtonElement>(null)
 
   useEffect(() => {
-    if (!menuOpen) return
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setMenuOpen(false)
-        menuButton.current?.focus()
-      }
-    }
-    window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
-  }, [menuOpen])
+    const onScroll = () => setScrolled(window.scrollY > 8)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
 
   return (
-    <header className="site-header fixed inset-x-0 top-0 z-50">
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[background-color,box-shadow,backdrop-filter] duration-300 ${
+        scrolled || menuOpen
+          ? 'bg-forest/95 shadow-[0_8px_32px_rgba(0,0,0,0.25)] backdrop-blur-md'
+          : 'bg-transparent'
+      }`}
+    >
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-10">
-        <Link href="/" className="flex min-h-11 items-center gap-2.5" onClick={() => setMenuOpen(false)}>
+        <Link href="/" className="flex items-center gap-2.5" onClick={() => setMenuOpen(false)}>
           <Image src="/logo.svg" alt="" width={30} height={30} priority />
           <span className="text-[15px] font-medium tracking-tight text-white">
             Valuatum <span className="font-light text-white/70">Arvonmääritys</span>
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-6 xl:flex" aria-label="Päänavigaatio">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Päänavigaatio">
           {site.navLinks.map((link) => (
             <a
               key={link.id}
               href={link.href}
-              className="inline-flex min-h-11 items-center text-sm text-white/80 transition-colors duration-150 hover:text-white active:text-green-light"
+              className="text-sm font-normal text-white/70 transition-colors duration-200 hover:text-white"
             >
               {link.label}
             </a>
           ))}
           <a
             href={site.navCta.href}
-            className="inline-flex min-h-11 items-center rounded-lg bg-green px-5 py-2.5 text-sm font-medium text-white transition-[background-color,transform] duration-150 hover:bg-green-deep active:scale-[0.98]"
+            className="rounded-full bg-green px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-green-deep"
           >
             {site.navCta.label}
           </a>
@@ -55,10 +56,8 @@ export function Header({ site }: Props) {
 
         <button
           type="button"
-          ref={menuButton}
-          className="flex h-11 w-11 items-center justify-center rounded-lg text-white transition-colors active:bg-white/10 xl:hidden"
+          className="flex h-10 w-10 items-center justify-center text-white md:hidden"
           aria-expanded={menuOpen}
-          aria-controls="mobile-navigation"
           aria-label={menuOpen ? 'Sulje valikko' : 'Avaa valikko'}
           onClick={() => setMenuOpen((open) => !open)}
         >
@@ -69,7 +68,7 @@ export function Header({ site }: Props) {
       </div>
 
       {menuOpen && (
-        <nav id="mobile-navigation" className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto bg-forest px-6 pb-6 pt-2 xl:hidden" aria-label="Mobiilinavigaatio">
+        <nav className="border-t border-white/10 bg-forest px-6 pb-6 pt-2 md:hidden" aria-label="Mobiilinavigaatio">
           {site.navLinks.map((link) => (
             <a
               key={link.id}
@@ -82,7 +81,7 @@ export function Header({ site }: Props) {
           ))}
           <a
             href={site.navCta.href}
-            className="mt-5 block rounded-lg bg-green px-5 py-3 text-center text-[15px] font-medium text-white transition-[background-color,transform] duration-150 active:scale-[0.98]"
+            className="mt-5 block rounded-full bg-green px-5 py-3 text-center text-[15px] font-medium text-white"
             onClick={() => setMenuOpen(false)}
           >
             {site.navCta.label}

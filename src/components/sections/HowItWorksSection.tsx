@@ -1,19 +1,34 @@
 import type { PageSection } from '@/content/schema'
+import { Reveal } from '@/components/Reveal'
 
 type Props = Extract<PageSection, { type: 'howItWorks' }>
 
-export function HowItWorksSection({ title, steps }: Props) {
+export function HowItWorksSection({ eyebrow, title, steps }: Props) {
   return (
-    <section className="bg-off-white py-20 lg:py-24">
-      <div className="mx-auto max-w-6xl px-6 lg:px-10">
-        <h2 className="text-balance text-3xl font-medium tracking-[-0.02em] text-charcoal sm:text-4xl">{title}</h2>
-        <ol className="mt-10 divide-y divide-mist border-t border-mist">
+    <section className="bg-off-white py-24 lg:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+        <Reveal>
+          <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">{eyebrow}</p>
+          <h2 className="mt-3 text-balance text-4xl font-light tracking-[-0.02em] text-charcoal lg:text-5xl">
+            {title}
+          </h2>
+        </Reveal>
+
+        <ol className="mt-14 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {steps.map((step, index) => (
-            <li key={step.id} className="grid grid-cols-[1.5rem_1fr] gap-4 py-6 md:grid-cols-[1.5rem_0.7fr_1.3fr] md:gap-6">
-              <span aria-hidden className="text-lg font-medium tabular-nums text-green-deep">{index + 1}.</span>
-              <h3 className="text-lg font-medium leading-snug text-charcoal">{step.title}</h3>
-              <p className="col-start-2 text-base leading-relaxed text-charcoal-mid md:col-start-auto">{step.description}</p>
-            </li>
+            <Reveal key={step.id} delay={index * 120} as="li">
+              <div className="relative h-full">
+                {/* Connector stops at the end of each row, not just the last step. */}
+                {index < steps.length - 1 && (index + 1) % 3 !== 0 && (
+                  <span className="absolute left-12 top-6 hidden h-px w-[calc(100%-3rem)] bg-mist lg:block" aria-hidden />
+                )}
+                <span className="relative inline-flex h-12 w-12 items-center justify-center rounded-full border border-green/30 bg-white text-lg font-medium text-green-deep shadow-[0_4px_16px_rgba(61,158,114,0.15)]">
+                  {index + 1}
+                </span>
+                <h3 className="mt-5 text-[16px] font-medium leading-snug text-charcoal">{step.title}</h3>
+                <p className="mt-2.5 text-[14px] font-light leading-relaxed text-charcoal-mid">{step.description}</p>
+              </div>
+            </Reveal>
           ))}
         </ol>
       </div>

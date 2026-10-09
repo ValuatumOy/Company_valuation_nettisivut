@@ -303,7 +303,7 @@
         {
           "id": "step-5",
           "title": "Odota raportin valmistumista",
-          "description": "Raportti valmistuu tyypillisesti 10–20 minuutissa raportin luonnin käynnistämisestä. Jos valitsit ennusteiden tarkistuksen, paina ensin ennustenäkymässä Luo raportti — myös silloin, kun jätät luvut ennalleen. Käynnistämisen jälkeen voit sulkea välilehden ja odottaa raporttia sähköpostiisi."
+          "description": "Sivu näyttää missä vaiheessa ajo menee ja kestää tyypillisesti 10–20 minuuttia. Voit sulkea välilehden — raportti tulee joka tapauksessa sähköpostiisi."
         },
         {
           "id": "step-6",

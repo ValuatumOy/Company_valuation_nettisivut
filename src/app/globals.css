@@ -1,16 +1,16 @@
 @import "tailwindcss";
 
 :root {
-  --green: #2e805b;
+  --green: #3d9e72;
   --green-light: #6dbfa0;
   --green-mist: #e3f5ee;
-  --green-deep: #246748;
+  --green-deep: #2a7452;
   --green-faint: #f2faf6;
   --forest: #1b3028;
   --forest-mid: #243d30;
   --charcoal: #1a2420;
   --charcoal-mid: #2c3832;
-  --steel: #627069;
+  --steel: #8a9590;
   --mist: #e2e9e5;
   --off-white: #f4f7f5;
   --gold: #c8963e;
@@ -40,7 +40,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
 }
 
 body {
@@ -48,31 +47,6 @@ body {
   color: var(--charcoal);
   font-family: var(--font-inter), -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-optical-sizing: auto;
-}
-
-:where(a, button, input, textarea, select, summary):focus-visible {
-  outline: 2px solid var(--green-deep);
-  outline-offset: 4px;
-}
-
-:where(a, button, summary) {
-  -webkit-tap-highlight-color: rgb(109 191 160 / 20%);
-  touch-action: manipulation;
-}
-
-:where(a, button) {
-  text-underline-offset: 0.2em;
-}
-
-.site-header {
-  background: rgb(27 48 40 / 94%);
-  backdrop-filter: blur(20px) saturate(150%);
-}
-
-.site-header :focus-visible,
-.bg-forest :focus-visible {
-  outline-color: var(--green-light);
 }
 
 ::selection {
@@ -80,25 +54,51 @@ body {
   color: var(--green-deep);
 }
 
+/* Hero grid texture, borrowed from the reference design language */
+.hero-pattern {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+}
+
+.hero-glow {
+  background: radial-gradient(ellipse at center, rgba(61, 158, 114, 0.22) 0%, transparent 70%);
+}
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.8s var(--ease-smooth),
+    transform 0.8s var(--ease-smooth);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
-@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
-  .site-header {
-    background: var(--forest);
-    backdrop-filter: none;
-  }
-}
-
+/* Method weight bars animate when revealed */
 .method-bar {
+  width: 0;
+  transition: width 1.1s var(--ease-smooth) 0.4s;
+}
+
+.is-visible .method-bar {
   width: var(--bar-width);
 }
 

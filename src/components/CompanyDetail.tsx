@@ -109,31 +109,37 @@ export function CompanyDetail() {
   return (
     <>
       <section className="relative overflow-hidden bg-forest text-white">
+        <div className="hero-pattern absolute inset-0" />
         <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-32 lg:px-10 lg:pb-16 lg:pt-40">
           <Link
             href="/yritys"
-            className="text-sm text-white/80 underline-offset-4 transition-colors hover:text-white hover:underline"
+            className="text-sm text-white/50 transition-colors hover:text-white"
           >
             ← Takaisin hakuun
           </Link>
-          <div className="mt-6">
-            <h1 className="break-words text-balance text-4xl font-medium leading-[1.1] tracking-[-0.02em] lg:text-5xl">
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <h1 className="text-balance text-4xl font-light leading-[1.1] tracking-[-0.02em] lg:text-5xl">
               {companyDisplayName(company)}
             </h1>
             {company.hasFinancials && (
-              <p className="mt-4 text-sm text-green-light">
+              <span className="rounded-full border border-green-light/30 bg-green/15 px-3.5 py-1.5 text-[12.5px] font-medium text-green-light">
                 Tilinpäätöstiedot valmiina
-              </p>
+              </span>
             )}
           </div>
+          <p className="mt-4 text-[15px] font-light text-white/60">
+            {[`Y-tunnus ${company.businessIdFormatted}`, company.city, company.industry]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
         </div>
       </section>
 
-      <section className="bg-white py-10 lg:py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14 lg:px-10">
-          <div className="min-w-0">
+      <section className="bg-off-white py-16 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_400px] lg:px-10">
+          <div>
             <Reveal>
-              <dl className="grid gap-5 sm:grid-cols-[1fr_1fr_2fr]">
+              <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
                 <Fact label="Y-tunnus" value={company.businessIdFormatted} />
                 <Fact label="Kotipaikka" value={company.city || '–'} />
                 <Fact label="Toimiala" value={company.industry || '–'} />
@@ -145,20 +151,24 @@ export function CompanyDetail() {
             </Reveal>
 
             <Reveal delay={150}>
-              <div className="mt-10 border-t border-mist pt-8">
-                <h2 className="text-2xl font-medium tracking-[-0.02em] text-charcoal sm:text-3xl">
+              <div className="mt-8 rounded-3xl border border-mist bg-white p-8">
+                <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
+                  Raportin sisältö
+                </p>
+                <h2 className="mt-3 text-3xl font-light tracking-[-0.02em] text-charcoal">
                   Mitä raportti sisältää
                 </h2>
-                <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-charcoal-mid">
+                <p className="mt-4 max-w-2xl text-[15px] font-light leading-relaxed text-charcoal-mid">
                   Jäsennelty PDF-muotoinen arvonmääritysraportti yrityksestä {company.name} —
                   perusteltu analyysi, ei pelkkä tunnuslukukooste.
                 </p>
-                <ul className="mt-5 grid gap-x-6 border-t border-mist sm:grid-cols-2">
+                <ul className="mt-7 grid gap-3 sm:grid-cols-2">
                   {FEATURES.map((f) => (
                     <li
                       key={f}
-                      className="border-b border-mist py-3 text-sm leading-relaxed text-charcoal"
+                      className="flex gap-3 rounded-2xl border border-mist bg-off-white px-4 py-3 text-sm text-charcoal"
                     >
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-green" />
                       <span>{f}</span>
                     </li>
                   ))}
@@ -167,11 +177,11 @@ export function CompanyDetail() {
                   href="/samples/heeros-oyj.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex min-h-11 items-center text-sm font-medium text-green-deep underline-offset-4 transition-colors hover:text-forest hover:underline"
+                  className="mt-7 inline-flex items-center text-sm font-medium text-green-deep transition-colors hover:text-green"
                 >
                   Avaa esimerkkiraportti: Heeros Oyj →
                 </a>
-                <p className="mt-4 text-[13px] leading-relaxed text-charcoal-mid">
+                <p className="mt-7 border-t border-mist pt-4 text-[13px] leading-relaxed text-steel">
                   Raportti on analyysi päätöksenteon tueksi. Se ei ole tilintarkastus, fairness
                   opinion eikä sijoitusneuvontaa.
                 </p>
@@ -200,9 +210,9 @@ export function CompanyDetail() {
 
 function Fact({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <dt className="text-xs text-charcoal-mid">{label}</dt>
-      <dd className="mt-1 break-words text-sm font-medium text-charcoal">{value}</dd>
+    <div className="bg-white p-5">
+      <dt className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{label}</dt>
+      <dd className="mt-2 text-sm font-medium text-charcoal">{value}</dd>
     </div>
   )
 }
@@ -210,18 +220,19 @@ function Fact({ label, value }: { label: string; value: string }) {
 function NotFound({ reason }: { reason: 'missing' | 'error' }) {
   return (
     <section className="relative overflow-hidden bg-forest text-white">
+      <div className="hero-pattern absolute inset-0" />
       <div className="relative mx-auto max-w-7xl px-6 pb-32 pt-40 lg:px-10">
-        <h1 className="text-4xl font-medium tracking-[-0.02em] lg:text-5xl">
+        <h1 className="text-4xl font-light tracking-[-0.02em] lg:text-5xl">
           {reason === 'error' ? 'Haku ei ole juuri nyt käytettävissä' : 'Yritystä ei löytynyt'}
         </h1>
-        <p className="mt-4 max-w-xl text-[15px] text-white/80">
+        <p className="mt-4 max-w-xl text-[15px] font-light text-white/60">
           {reason === 'error'
             ? 'Yritä hetken kuluttua uudelleen, tai etsi yritys haun kautta.'
             : 'Tarkista y-tunnus tai etsi yritys nimellä.'}
         </p>
         <Link
           href="/yritys"
-          className="mt-8 inline-flex rounded-xl bg-white px-6 py-3 text-sm font-medium text-forest transition-colors hover:bg-white/90"
+          className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-sm font-medium text-forest transition-colors hover:bg-white/90"
         >
           Siirry hakuun
         </Link>
@@ -235,56 +246,65 @@ function NotFound({ reason }: { reason: 'missing' | 'error' }) {
 function CompanySkeleton() {
   return (
     <>
-      <section className="bg-forest text-white">
-        <div className="mx-auto max-w-7xl px-6 pb-14 pt-32 lg:px-10 lg:pb-16 lg:pt-40">
-          <span className="text-sm text-white/80">← Takaisin hakuun</span>
-          <div className="mt-6 h-11 w-80 max-w-full animate-pulse rounded-lg bg-white/10 motion-reduce:animate-none lg:h-12" />
-          <div className="mt-4 h-4 w-52 max-w-full animate-pulse rounded bg-white/10 motion-reduce:animate-none" />
+      <section className="relative overflow-hidden bg-forest text-white">
+        <div className="hero-pattern absolute inset-0" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-14 pt-32 lg:px-10 lg:pb-16 lg:pt-40">
+          <span className="text-sm text-white/50">← Takaisin hakuun</span>
+          <div className="mt-6 flex flex-wrap items-center gap-4">
+            <div className="h-11 w-80 max-w-full animate-pulse rounded-lg bg-white/10 lg:h-12" />
+            <div className="h-8 w-52 animate-pulse rounded-full bg-white/[0.07]" />
+          </div>
+          <div className="mt-5 h-4 w-64 max-w-full animate-pulse rounded bg-white/10" />
         </div>
       </section>
 
-      <section className="bg-white py-10 lg:py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14 lg:px-10">
-          <div className="min-w-0">
-            <div className="grid gap-5 sm:grid-cols-[1fr_1fr_2fr]">
+      <section className="bg-off-white py-16 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-10 px-6 lg:grid-cols-[1fr_400px] lg:px-10">
+          <div>
+            <div className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i}>
-                  <div className="h-3 w-16 animate-pulse rounded bg-mist motion-reduce:animate-none" />
-                  <div className="mt-2 h-4 w-24 animate-pulse rounded bg-mist motion-reduce:animate-none" />
+                <div key={i} className="bg-white p-5">
+                  <div className="h-3 w-16 animate-pulse rounded bg-mist" />
+                  <div className="mt-3 h-4 w-24 animate-pulse rounded bg-mist" />
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 border-t border-mist pt-8">
-              <div className="h-8 w-72 max-w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-4 h-4 w-full max-w-2xl animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <ul className="mt-6 divide-y divide-mist border-y border-mist">
-                {Array.from({ length: 3 }).map((_, i) => (
-                  <li key={i} className="py-5">
-                    <div className="h-4 w-48 max-w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-                    <div className="mt-3 h-4 w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-                    <div className="mt-2 h-4 w-4/5 animate-pulse rounded bg-mist motion-reduce:animate-none" />
+            <div className="mt-8 rounded-3xl border border-mist bg-white p-8">
+              <div className="h-3 w-32 animate-pulse rounded bg-green-mist" />
+              <div className="mt-4 h-8 w-72 max-w-full animate-pulse rounded bg-mist" />
+              <div className="mt-5 h-4 w-full max-w-2xl animate-pulse rounded bg-mist" />
+              <div className="mt-2 h-4 w-4/5 max-w-xl animate-pulse rounded bg-mist" />
+              <ul className="mt-7 grid gap-3 sm:grid-cols-2">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <li
+                    key={i}
+                    className="flex gap-3 rounded-2xl border border-mist bg-off-white px-4 py-3"
+                  >
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-mist" />
+                    <span className="h-4 flex-1 animate-pulse rounded bg-mist" />
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          <aside className="rounded-2xl border border-mist bg-white lg:sticky lg:top-28 lg:self-start">
-            <div className="border-b border-mist p-6">
-              <div className="h-6 w-56 max-w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-3 h-4 w-40 animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-5 h-10 w-32 animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-3 h-3 w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
+          <aside className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)] lg:sticky lg:top-28 lg:self-start">
+            <div className="bg-forest p-6">
+              <div className="h-3 w-40 animate-pulse rounded bg-white/10" />
+              <div className="mt-3 h-7 w-56 max-w-full animate-pulse rounded bg-white/10" />
+              <div className="mt-5 h-10 w-32 animate-pulse rounded bg-white/10" />
+              <div className="mt-3 h-3 w-52 max-w-full animate-pulse rounded bg-white/[0.07]" />
             </div>
             <div className="p-6">
-              <div className="h-4 w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-2 h-4 w-3/4 animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-6 h-3 w-56 max-w-full animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-2 h-12 w-full animate-pulse rounded-lg bg-off-white motion-reduce:animate-none" />
-              <div className="mt-5 h-3 w-48 animate-pulse rounded bg-mist motion-reduce:animate-none" />
-              <div className="mt-2 h-20 w-full animate-pulse rounded-lg bg-off-white motion-reduce:animate-none" />
-              <div className="mt-5 h-12 w-full animate-pulse rounded-xl bg-mist motion-reduce:animate-none" />
+              <div className="h-4 w-full animate-pulse rounded bg-mist" />
+              <div className="mt-2 h-4 w-3/4 animate-pulse rounded bg-mist" />
+              <div className="mt-6 h-3 w-56 max-w-full animate-pulse rounded bg-mist" />
+              <div className="mt-2 h-12 w-full animate-pulse rounded-xl bg-off-white" />
+              <div className="mt-5 h-3 w-48 animate-pulse rounded bg-mist" />
+              <div className="mt-2 h-20 w-full animate-pulse rounded-xl bg-off-white" />
+              <div className="mt-5 h-12 w-full animate-pulse rounded-full bg-mist" />
+              <div className="mt-4 h-3 w-64 max-w-full animate-pulse rounded bg-mist" />
             </div>
           </aside>
         </div>
