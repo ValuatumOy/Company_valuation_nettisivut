@@ -76,6 +76,7 @@ const OWN_KINDS = new Set(['existing', 'import', 'creditsafe'])
  * set `kind`).
  */
 function isOwnSession(m: Stripe.Metadata): boolean {
+  if (m.country && m.country !== 'FI') return false
   return m.product === VALUATION_PRODUCT_TAG || OWN_KINDS.has(m.kind ?? '')
 }
 
