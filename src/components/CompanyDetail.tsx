@@ -27,10 +27,9 @@ import { Reveal } from '@/components/Reveal'
 // robots-disallowed, so it never ranked and never will. It exists purely as a
 // step in the buy funnel.
 
-// Mirrors the section list of the actual delivered report — see the sample PDF
-// at /samples/heeros-oyj.pdf before changing this.
+// Mirrors the section list of the delivered report and current public samples.
 const FEATURES = [
-  'Tiivistelmä, avainluvut ja luottamustaso',
+  'Tiivistelmä, avainluvut ja keskeiset oletukset',
   'Datan laatuluokka, lähteet ja rajoitteet',
   'Liiketoimintaprofiili, markkina ja kilpailijat',
   'Markkinasignaalit ja strateginen arvo',

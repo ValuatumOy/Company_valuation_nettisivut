@@ -60,40 +60,44 @@
       "type": "sampleReports",
       "eyebrow": "Esimerkkiraportit",
       "title": "Katso laatu ennen tilaamista.",
-      "subtitle": "Avaa julkisiin tilinpäätös- ja lähdetietoihin perustuva Heeros Oyj -esimerkkiraportti kokonaisuudessaan. Näet raportin rakenteen, menetelmävalinnan ja lähderajaukset.",
+      "subtitle": "Avaa Harvia Oyj:n, Gofore Oyj:n ja Fiskars Oyj Abp:n esimerkkiraportit kokonaisuudessaan. Näet raportin rakenteen, ennusteoletukset, menetelmävalinnan ja lähderajaukset.",
       "ctaLabel": "Avaa esimerkkiraportti",
       "reports": [
         {
           "id": "sample-free",
-          "name": "Heeros Oyj",
-          "tag": "Todellinen esimerkkiraportti",
-          "description": "Julkisiin tietoihin perustuva Heeros Oyj -raportti. Tässä esimerkissä DCF on päämenetelmä 100 %:n painolla ja EVA täsmäytys 0 %:n painolla; P/E, EV/EBITDA ja tasearvo hylätään perusteluineen.",
+          "name": "Harvia Oyj",
+          "tag": "Sauna- ja hyvinvointituotteet",
+          "description": "Sauna- ja hyvinvointituotteiden yhtiö. Konsernitason raportti näyttää vuoden 2025 tilinpäätöstiedot, arvonmäärityksen oletukset ja keskeiset riskit.",
           "features": [
-            "DCF ja EVA-täsmäytys",
-            "Skenaariot ja odotusarvo",
+            "Konsernidataa 2025 asti",
+            "Ennusteet ja skenaariot",
             "Arvon ajurit ja riskit"
           ],
-          "pdfUrl": "/samples/heeros-oyj.pdf"
+          "pdfUrl": "/samples/harvia-oyj.pdf"
         },
         {
           "id": "sample-services",
-          "name": "Vakaa palveluyhtiö",
-          "tag": "Tulossa",
-          "description": "Esimerkki siitä, miten raportti käsittelee tasaisesti kannattavaa yhtiötä, jolle kassavirtapohjainen arvo on selkeästi hallitseva.",
+          "name": "Gofore Oyj",
+          "tag": "Digitaaliset palvelut",
+          "description": "Digitaalisten palvelujen ja konsultoinnin yhtiö. Konsernitason raportti näyttää taloushistorian, ennusteiden oletukset ja arvon herkkyyden niiden muutoksille.",
           "features": [
-            "Kassavirtapainotteinen tapaus"
+            "Konsernidataa 2025 asti",
+            "Ennusteiden oletukset",
+            "Herkkyysanalyysi"
           ],
-          "pdfUrl": "#esimerkit"
+          "pdfUrl": "/samples/gofore-oyj.pdf"
         },
         {
           "id": "sample-holding",
-          "name": "Tappiollinen tai omaisuusvaltainen yhtiö",
-          "tag": "Tulossa",
-          "description": "Esimerkki siitä, miten raportti käsittelee tapauksen, jossa tulos ei kanna arvoa ja tase nousee ratkaisevaan rooliin.",
+          "name": "Fiskars Oyj Abp",
+          "tag": "Kuluttajatuotteet",
+          "description": "Kansainvälinen kuluttajatuotteiden brändiyhtiö. Konsernitason raportista näet, miten kannattavuus, pääoman tarve ja riskit vaikuttavat arvioon.",
           "features": [
-            "Tasepainotteinen tapaus"
+            "Konsernidataa 2025 asti",
+            "Pääoman tarve ja kannattavuus",
+            "Arvon ajurit ja riskit"
           ],
-          "pdfUrl": "#esimerkit"
+          "pdfUrl": "/samples/fiskars-oyj-abp.pdf"
         }
       ]
     },
@@ -107,7 +111,7 @@
       "items": [
         {
           "id": "feat-summary",
-          "title": "Tiivistelmä, avainluvut ja luottamustaso",
+          "title": "Tiivistelmä, avainluvut ja keskeiset oletukset",
           "group": "Arvo"
         },
         {
@@ -394,7 +398,7 @@
         {
           "id": "point-method-selection",
           "title": "Menetelmät pisteytetään, hylkäys perustellaan",
-          "description": "Raportti perustelee menetelmien soveltuvuuden ja näyttää niiden painot. Julkisessa Heeros-esimerkissä DCF:n paino on 100 % ja EVA toimii 0 %:n täsmäytyksenä; verrokkikertoimet ja tasearvo hylätään tässä tapauksessa. Tutustu Heeros-esimerkkiraporttiin esimerkkiraporttien osiossa."
+          "description": "Raportti perustelee menetelmien soveltuvuuden ja näyttää niiden roolit. DCF on päämenetelmä, ja EVA toimii saman ennusteen ja WACCin täsmäytysnäkymänä. Tutustu Harvian, Goforen ja Fiskarsin raportteihin esimerkkiraporttien osiossa."
         },
         {
           "id": "point-crosscheck",
@@ -404,7 +408,7 @@
         {
           "id": "point-limitations",
           "title": "Rajoitteet näkyvät raportissa",
-          "description": "Raportti antaa datan laatuluokan ja luottamustason, listaa tunnistetut rajoitteet ja kertoo mikä kaataisi arvion — ei pienellä präntätyllä."
+          "description": "Raportti kertoo datan laatuluokan, käytetyt lähteet ja tunnistetut rajoitteet. Näet myös, mitkä tekijät voivat muuttaa arviota."
         }
       ],
       "stats": [
@@ -442,7 +446,7 @@
         {
           "id": "faq-basis",
           "question": "Mihin raportin arvo perustuu?",
-          "answer": "Raportin päämenetelmä on DCF eli diskontattu kassavirta. EVA lasketaan samasta ennusteesta ja WACCista täsmäytyksenä, eikä sen tulosta keskiarvoisteta DCF:n kanssa. Muut menetelmät, kuten verrokkikertoimet ja tasearvo, otetaan mukaan vain, jos aineisto ja yhtiö tukevat niitä; hylkäyksen syyt näytetään. Julkisessa Heeros-esimerkissä DCF:n paino on 100 % ja EVA:n 0 %."
+          "answer": "Raportin päämenetelmä on DCF eli diskontattu kassavirta. EVA lasketaan samasta ennusteesta ja WACCista täsmäytyksenä, eikä sen tulosta keskiarvoisteta DCF:n kanssa. Muut menetelmät, kuten verrokkikertoimet ja tasearvo, otetaan mukaan vain, jos aineisto ja yhtiö tukevat niitä; hylkäyksen syyt näytetään. Näet menetelmien perustelut esimerkkiraporteista."
         },
         {
           "id": "faq-coverage",
@@ -457,7 +461,7 @@
         {
           "id": "faq-data-quality",
           "question": "Mitä jos data ei riitä luotettavaan arvonmääritykseen?",
-          "answer": "Raportti näyttää, mitä aineistoa käytettiin ja mitä tietoja puuttuu tai ei voitu varmentaa. Julkisesta Heeros-esimerkistä näet, miltä lähteiden ja rajoitteiden kuvaus näyttää. Tarkista raportin rajaukset ennen kuin käytät arviota päätöksenteossa."
+          "answer": "Raportti näyttää, mitä aineistoa käytettiin ja mitä tietoja puuttuu tai ei voitu varmentaa. Esimerkkiraporteista näet, miten lähteet ja rajoitteet kuvataan. Tarkista raportin rajaukset ennen kuin käytät arviota päätöksenteossa."
         },
         {
           "id": "faq-mna",

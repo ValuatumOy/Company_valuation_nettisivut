@@ -1,3 +1,12 @@
+# Handoff — 2026-10-14 — Current public report examples
+
+- Replaced the homepage's old Heeros example and two coming-soon cards with full Harvia, Gofore and Fiskars consolidated reports. Public paths: `/samples/harvia-oyj.pdf`, `/samples/gofore-oyj.pdf`, `/samples/fiskars-oyj-abp.pdf`. Historical Heeros PDFs and articles retain their URLs.
+- Generated through the current backend main pipeline locally in isolated SQLite, using actuals through 2025. Each report has 16 sections and 26 tables; Harvia/Gofore/Fiskars have 7/7/8 SVG charts and 34/34/36 pages. Three authorized runs cost USD 1.655158; no Railway production run or backend change.
+- Reviewed public copies remove obsolete confidence-grade wording while retaining substantive limitations. Manual corrections align scenario prose and discount horizons with deterministic calculations, restore the Gofore peer-revenue range, and include Harvia's missing EVA adjustment. Visible notes explain Fiskars's historical EBITDA source gap and differences between source-model and published company ratios, without claiming an unverified cause. Originals and repair manifests remain private outside this repository. Independent financial and PDF review passed.
+- Do not regenerate public snapshots from the original JSON without repeating these checks. The current renderer can rewrite peer ranges and leave stale scenario prose despite updating scenario tables. These sample-specific corrections do not imply a production generator fix.
+- Removed confidence-level promises and obsolete Heeros-specific example descriptions from the homepage and ordering summary. Updated Next.js and its ESLint config from 16.2.9 to 16.4.0 to resolve the production dependency advisory; production npm audit has zero findings.
+- Production build and changed-file ESLint passed. Local homepage/PDF checks passed at 375/768/1440px without horizontal overflow or page errors. Full-repository lint retains 23 pre-existing errors in CompanySearch/report app files; the existing Turbopack tracing warning remains. Existing tablet-header label overlap is outside this report update.
+
 # Handoff — 2026-09-18 — Public company financial profiles
 
 - Added a separate static `/yritykset` directory and 14 allowlisted `/yritykset/[slug]` pages. The route uses generateStaticParams, force-static and dynamicParams=false; unknown slugs return 404. No page visit fetches financial data or generates a forecast/report.

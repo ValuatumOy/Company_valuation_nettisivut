@@ -54,7 +54,6 @@ const sampleReportsSectionSchema = sectionBaseSchema.extend({
       tag: z.string(),
       description: z.string(),
       features: z.array(z.string()),
-      // TODO(backend): replace with real sample report PDF URLs
       pdfUrl: z.string(),
     })
   ),
