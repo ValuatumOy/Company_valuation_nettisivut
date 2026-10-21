@@ -105,17 +105,22 @@ export function ValuationCalculator() {
           </div>
 
           <div className="mt-7 rounded-2xl bg-green-faint p-5">
+            <p className="text-sm font-medium text-green-deep">79 € (sis. alv), kertamaksu</p>
             <p className="text-sm leading-relaxed text-charcoal/80">
-              Tulos on suuntaa-antava haarukka — se ei korvaa varsinaista arvonmääritysraporttia.
-              Raportti on analyysi päätöksenteon tueksi, ei tilintarkastus, fairness opinion tai
+              Laskurin tulos on suuntaa-antava haarukka. Raportti näyttää DCF-laskelman
+              taustaoletukset, perustelee menetelmävalinnat ja kokoaa riskit sekä aineiston rajoitteet.
+              Se tukee päätöksentekoa, mutta ei ole tilintarkastus, fairness opinion tai
               sijoitusneuvontaa.
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-charcoal/65">
+              Raportin saatavuus riippuu siitä, löytyvätkö yhtiön taloustiedot Valuatumin aineistosta.
             </p>
             <div className="mt-4 flex flex-wrap gap-3">
               <Link
                 href="/yritys"
                 className="rounded-full bg-green px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-deep"
               >
-                Tilaa arvonmääritysraportti
+                Hae yritys · 79 € sis. alv
               </Link>
               <Link
                 href="/kertoimet"
@@ -123,6 +128,25 @@ export function ValuationCalculator() {
               >
                 Katso kertoimien taustat
               </Link>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <span className="text-charcoal/65">Tutustu raportteihin:</span>
+              <a
+                href="/samples/harvia-oyj.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-green-deep underline underline-offset-2 hover:text-green"
+              >
+                Harvia Oyj
+              </a>
+              <a
+                href="/samples/gofore-oyj.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-medium text-green-deep underline underline-offset-2 hover:text-green"
+              >
+                Gofore Oyj
+              </a>
             </div>
           </div>
         </div>

@@ -51,8 +51,11 @@ export function HeroSection({
             <Reveal delay={300}>
               <div className="mt-8">
                 <CompanySearch variant="dark" />
-                <p className="mt-3 text-[13px] font-light text-white/55">
-                  Hae yritys nimellä tai Y-tunnuksella → näet hinnan ja tilaat raportin.
+                <p className="mt-3 text-sm text-white/80">
+                  Arvonmääritysraportti <strong className="font-medium text-white">79 € (sis. alv)</strong>.
+                </p>
+                <p className="mt-1 text-[13px] font-light text-white/55">
+                  Hae yritys nimellä tai Y-tunnuksella ja tutustu raportin sisältöön ennen tilausta.
                 </p>
                 <div className="mt-4 text-[13px] text-white/55">
                   <a

@@ -12,7 +12,7 @@
       "visible": true,
       "type": "hero",
       "title": "Yrityksen arvonmääritys selkeästi ja perustellusti.",
-      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Saat AI-avusteisen arvonmääritysraportin, joka näyttää arvion, skenaariot, yhtiölle soveltuvat ja hylätyt menetelmät perusteluineen sekä keskeiset oletukset, riskit ja datan rajoitteet.",
+      "subtitle": "Syötä yrityksen nimi tai Y-tunnus. Raportti esittää arvion ja arvohaarukan perusteluineen sekä kertoo menetelmävalinnoista, keskeisistä oletuksista ja aineiston rajoitteista.",
       "trustLine": "Rakennettu Valuatumin 25+ vuoden arvonmääritys-, credit risk- ja equity research -osaamisen päälle.",
       "secondaryCta": {
         "label": "Katso esimerkkiraportti",
@@ -243,7 +243,7 @@
           "id": "case-seller",
           "icon": "handshake",
           "title": "Yrityksen myyntiä harkitsevalle yrittäjälle",
-          "description": "Tiedät realistisen hintahaarukan ja arvoon vaikuttavat tekijät ennen kuin istut neuvottelupöytään."
+          "description": "Näet arvion ja sen taustalla olevat oletukset ennen myyntineuvotteluja."
         },
         {
           "id": "case-buyer",
@@ -255,7 +255,7 @@
           "id": "case-accountant",
           "icon": "calculator",
           "title": "Tilitoimistolle tai konsultille asiakastyöhön",
-          "description": "Tarjoa asiakkaalle analyytikkotasoinen arvonmääritys ilman viikkojen manuaalista työtä."
+          "description": "Tarkastele asiakkaan yrityksen arvoa, arvon ajureita ja laskennan oletuksia yhdessä raportissa."
         },
         {
           "id": "case-lawyer",
@@ -267,13 +267,13 @@
           "id": "case-board",
           "icon": "board",
           "title": "Hallitukselle ja omistajille strategiseen päätöksentekoon",
-          "description": "Arvon ajurit ja herkkyysanalyysi näyttävät, mitkä päätökset kasvattavat omistaja-arvoa eniten."
+          "description": "Arvon ajurit ja herkkyysanalyysi näyttävät, miten oletusten muutokset vaikuttavat laskelmaan."
         },
         {
           "id": "case-funding",
           "icon": "chart",
           "title": "Rahoitus- ja sijoittajakeskusteluihin",
-          "description": "Perusteltu arvostusväli ja skenaariot antavat uskottavan pohjan rahoitusneuvotteluille."
+          "description": "Arvostusväli ja skenaariot auttavat valmistautumaan rahoitus- ja sijoittajakeskusteluihin."
         }
       ]
     },
@@ -307,7 +307,7 @@
         {
           "id": "step-5",
           "title": "Odota raportin valmistumista",
-          "description": "Sivu näyttää missä vaiheessa ajo menee ja kestää tyypillisesti 10–20 minuuttia. Voit sulkea välilehden — raportti tulee joka tapauksessa sähköpostiisi."
+          "description": "Raportin luonti kestää tyypillisesti 10–20 minuuttia käynnistyttyään. Jos tarkistat ennusteet, luonti alkaa vasta vahvistettuasi ne. Näet etenemisen selaimessa ja saat valmiin PDF:n sähköpostiin."
         },
         {
           "id": "step-6",
@@ -352,7 +352,7 @@
             "Arvo, skenaariohaarukka ja odotusarvo",
             "Yhtiökohtainen menetelmävalinta ja perustelut",
             "Riskit, arvon ajurit ja herkkyysanalyysi",
-            "Valmis 10–20 minuutissa, näet edistymisen selaimessa",
+            "Raportti valmistuu tyypillisesti 10–20 minuutissa luonnin käynnistymisestä",
             "Halutessasi tarkistat liikevaihto- ja EBIT-ennusteet ennen raporttia",
             "Tarkentavat kysymykset ja päivitetty versio"
           ],
@@ -456,7 +456,7 @@
         {
           "id": "faq-delivery",
           "question": "Kuinka nopeasti raportti toimitetaan?",
-          "answer": "Raportti alkaa syntyä automaattisesti heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa — näet edistymisen suoraan selaimessa ja saat raportin myös sähköpostiisi PDF:nä. Jos valitset tilatessasi ennusteiden tarkistuksen, generointi käynnistyy vasta kun olet vahvistanut ennusteet."
+          "answer": "Ilman ennusteiden tarkistusta raportin luonti alkaa maksun jälkeen. Jos valitset tarkistuksen, luonti käynnistyy vasta vahvistettuasi ennusteet. Luonti kestää tyypillisesti 10–20 minuuttia käynnistyttyään. Näet etenemisen selaimessa ja saat valmiin PDF:n sähköpostiin."
         },
         {
           "id": "faq-data-quality",
@@ -466,7 +466,7 @@
         {
           "id": "faq-mna",
           "question": "Voiko raporttia käyttää yrityskaupassa?",
-          "answer": "Kyllä, neuvottelun ja päätöksenteon tukena. Raportti antaa perustellun arvostusvälin, riskit ja arvon ajurit — hyvän pohjan hintaneuvotteluille. Lopullisessa kaupassa kannattaa käyttää myös omaa juridista ja taloudellista neuvonantajaa."
+          "answer": "Raporttia voi käyttää yhtenä tietolähteenä neuvotteluissa. Se esittää arvion, sen oletukset, riskit ja arvon ajurit. Se ei korvaa kauppaa varten tarvittavaa taloudellista tai juridista neuvonantoa."
         },
         {
           "id": "faq-multiple",

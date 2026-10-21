@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { companyDisplayName, MIN_QUERY_LENGTH, type Company } from '@/lib/companies'
+import { trackCompanySearch, trackCompanySelection } from '@/lib/analytics'
 
 type Props = {
   variant?: 'dark' | 'light'
@@ -33,6 +34,7 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
       try {
         const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`)
         const data = (await res.json()) as { companies: Company[] }
+        if (res.ok) trackCompanySearch(data.companies?.length ?? 0)
         setResults(data.companies ?? [])
         setSearched(true)
         setOpen(true)
@@ -61,6 +63,7 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
   // a client-side RSC fetch.
   function submitSearch() {
     if (results[0]) {
+      trackCompanySelection()
       window.location.assign(`/yritys/${results[0].id}`)
     }
   }
@@ -124,6 +127,7 @@ export function CompanySearch({ variant = 'dark', autoFocus = false }: Props) {
                       before turning this back into a <Link>. */}
                   <a
                     href={`/yritys/${c.id}`}
+                    onClick={trackCompanySelection}
                     className="flex w-full items-center justify-between gap-4 border-b border-mist/70 px-4 py-3 text-left transition-colors last:border-b-0 hover:bg-green-faint"
                   >
                     <span className="min-w-0">

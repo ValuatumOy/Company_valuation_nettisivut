@@ -1,3 +1,10 @@
+# Handoff — 2026-10-21 — SEO and conversion measurement
+
+- Restored the canonical gtag Arguments queue. Public pageviews and company search/selection/checkout events use sanitized paths; private report/checkout URLs, raw queries, company identifiers and customer input are excluded. Dynamic public pages are grouped for privacy; use Search Console for individual SEO landing pages. All Enhanced Measurement options are disabled on GA4 stream 15377948030; do not re-enable automatic history/form/search tracking without repeating privacy checks.
+- Signed Stripe webhooks send GA4 purchase events only for this product's live, paid, positive EUR existing-company orders. Revenue excludes Stripe tax; transaction/client fallbacks are stable hashes. Production server secret `GA_MEASUREMENT_PROTOCOL_API_SECRET` was added to Vercel. No thank-you-page purchase pixel. Delivery is best effort (2-second timeout); a transport failure logs an error and needs manual replay, without failing fulfillment. Zero-euro discounted sessions are excluded.
+- Homepage search and calculator result now show 79 € including VAT, with report benefits and current Harvia/Gofore examples. Updated generic sample links, contextual SEO links, multiplier-page search intent and actual modification dates. No new company profiles or report/forecast generation.
+- Verification: installed locked Next 16.4.0 dependencies; production build and mocked analytics/payment checks pass. Google MP strict debug validator returned no validation messages (no event recorded). Independent analytics review found no blocking issue. Production dependency audit has zero findings; existing CompanySearch lint error and checkout warning remain. Mobile/desktop views checked; external payment/report calls were mocked or avoided.
+
 # Handoff — 2026-10-14 — Current public report examples
 
 - Replaced the homepage's old Heeros example and two coming-soon cards with full Harvia, Gofore and Fiskars consolidated reports. Public paths: `/samples/harvia-oyj.pdf`, `/samples/gofore-oyj.pdf`, `/samples/fiskars-oyj-abp.pdf`. Historical Heeros PDFs and articles retain their URLs.

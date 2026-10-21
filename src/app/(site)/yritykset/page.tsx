@@ -106,6 +106,12 @@ export default function CompanyProfilesPage() {
                 >
                   Lue raportin hinnasta
                 </Link>
+                <Link
+                  href="/blogi/sain-ostotarjouksen-yrityksesta"
+                  className="text-sm font-medium text-green-deep underline decoration-green/40 underline-offset-4 transition-colors hover:text-green"
+                >
+                  Tarkista yrityksen ostotarjous
+                </Link>
               </div>
             </div>
           </div>

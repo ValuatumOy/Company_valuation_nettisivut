@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from 'react'
 import { eur, quote } from '@/lib/pricing'
 import { companyDisplayName } from '@/lib/companies'
+import { getCheckoutAnalyticsIdentity, trackBeginCheckout } from '@/lib/analytics'
 
 type Props = {
   companyId: string
@@ -41,6 +42,8 @@ export function BuyBox({
     setLoading(true)
     setError(null)
     try {
+      trackBeginCheckout(total)
+      const analytics = await getCheckoutAnalyticsIdentity()
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -53,11 +56,12 @@ export function BuyBox({
           customerEmail: email,
           userInput: userInput.trim() || undefined,
           wantForecast,
+          analytics,
         }),
       })
       const data = (await res.json()) as { url?: string; error?: string }
       if (data.url) {
-        window.location.href = data.url
+        window.location.assign(data.url)
       } else {
         setError(data.error ?? 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.')
         setLoading(false)

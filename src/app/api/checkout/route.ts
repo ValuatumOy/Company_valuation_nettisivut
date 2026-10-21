@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server'
 import { getStripe, siteUrl, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
 import { userInputMetadata } from '@/lib/userInputMetadata'
 import { quote, type ReportKind } from '@/lib/pricing'
+import { analyticsIdentity } from '@/lib/analytics'
 
 const STRIPE_AI_REPORT_PRICE_ID =
   process.env.STRIPE_AI_REPORT_PRICE_ID ?? 'price_1Ty8Pt2FVkKDgcuUD2fzJ8Fk'
@@ -21,6 +22,7 @@ interface CheckoutBody {
   customerEmail?: string
   userInput?: string
   wantForecast?: boolean
+  analytics?: unknown
 }
 
 export async function POST(req: Request) {
@@ -53,6 +55,7 @@ export async function POST(req: Request) {
   // import/creditsafe still go through the operator, so ignore it there.
   const wantForecast = kind === 'existing' && Boolean(body.wantForecast)
   const q = quote(kind, shareData)
+  const analytics = analyticsIdentity(body.analytics)
 
   // Confirmation page: starts generation and/or posts the order to the backend.
   const successPath = `/kassa/valmis?session_id={CHECKOUT_SESSION_ID}&kind=${kind}`
@@ -144,6 +147,10 @@ export async function POST(req: Request) {
         customerEmail,
         shareData: String(shareData),
         forecast: String(wantForecast),
+        ...(analytics ? {
+          ga_client_id: analytics.clientId,
+          ...(analytics.sessionId ? { ga_session_id: analytics.sessionId } : {}),
+        } : {}),
         // A metadata value caps at 500 chars, so a longer description travels
         // in numbered keys (see userInputMetadata) and is joined back on the
         // fulfilment side. Slicing to 500 here dropped the rest at the moment

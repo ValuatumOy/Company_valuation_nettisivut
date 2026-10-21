@@ -382,12 +382,12 @@ export function CompanyProfilePage({ profile }: { profile: CompanyProfile }) {
                   Seuraavaksi annat sähköpostin ja siirryt turvalliseen Stripe-maksuun.
                 </p>
                 <a
-                  href="/samples/heeros-oyj.pdf"
+                  href="/samples/harvia-oyj.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 block border-t border-mist pt-4 text-center text-sm font-medium text-green-deep underline underline-offset-2 hover:text-green"
                 >
-                  Esimerkkiraportti: Heeros Oyj (PDF)
+                  Esimerkkiraportti: Harvia Oyj (PDF)
                 </a>
                 <p className="mt-4 text-[11px] leading-relaxed text-steel">
                   Raportti tukee päätöksentekoa. Se ei ole virallinen käyvän arvon lausunto.

@@ -4,6 +4,7 @@ import { getStripe, VALUATION_PRODUCT_TAG } from '@/lib/stripe'
 import { postOrder, postCheckoutGenerate } from '@/lib/orders'
 import { readUserInput } from '@/lib/userInputMetadata'
 import { eur } from '@/lib/pricing'
+import { sendPurchaseAnalytics } from '@/lib/purchaseAnalytics'
 
 // Stripe SDK needs Node.js (crypto), not the edge runtime.
 export const runtime = 'nodejs'
@@ -52,6 +53,7 @@ export async function POST(req: Request) {
         // these logs are the operator's signal.
         console.error('stripe webhook fulfilment threw', session.id, err)
       }
+      await sendPurchaseAnalytics(session)
     }
   }
 

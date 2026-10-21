@@ -24,7 +24,7 @@ const data = {
       "metaDescription": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii ja miksi yksi piste-estimaatti ei riitä yrityksen arvoksi.",
       "h1": "Miten yrityksen arvo määritetään? Menetelmät selkokielellä",
       "date": "2026-07-02",
-      "updatedDate": "2026-09-18",
+      "updatedDate": "2026-10-21",
       "excerpt": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii — ja miksi luotettava arvonmääritys hylkää osan menetelmistä ja antaa välin, ei yhtä lukua.",
       "sections": [
         {
@@ -123,7 +123,7 @@ const data = {
         {
           "heading": "Missä näitä menetelmiä voi nähdä käytännössä?",
           "paragraphs": [
-            "Valuatumin raportti näyttää yhtiökohtaisen arvion, skenaariot, käytetyt ja hylätyt menetelmät sekä datan rajoitteet. Julkisessa Heeros-esimerkissä DCF on päämenetelmä ja EVA täsmäytys; menetelmätaulukosta näet myös painot ja hylkäysperusteet. Avaa [Heeros-esimerkkiraportti](/samples/heeros-oyj.pdf), katso [hinta](/#hinnoittelu) tai [hae yritys](/yritys). Tekoälyn rajat käsittelemme kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
+            "Valuatumin raportti näyttää yhtiökohtaisen arvion, skenaariot, käytetyt ja hylätyt menetelmät sekä datan rajoitteet. Katso [Harvian esimerkkiraportti (PDF)](/samples/harvia-oyj.pdf) tai vertaa sitä [Goforen raporttiin (PDF)](/samples/gofore-oyj.pdf). Lue [mitä 79 € sisältää](/blogi/yrityksen-arvonmaarityksen-hinta) tai [hae yritys](/yritys). Tekoälyn rajat käsittelemme kirjoituksessa [Tekoäly yrityksen arvonmäärityksessä](/blogi/tekoaly-yrityksen-arvonmaarityksessa)."
           ],
           "listItems": []
         },
@@ -154,7 +154,7 @@ const data = {
       "metaDescription": "Selvitä, miten tekoälyä käytetään yrityksen arvonmäärityksessä, mihin laskenta perustuu ja mitä raportti ei voi korvata.",
       "h1": "Tekoäly yrityksen arvonmäärityksessä — mihin se pystyy ja mihin ei",
       "date": "2026-07-02",
-      "updatedDate": "2026-09-18",
+      "updatedDate": "2026-10-21",
       "excerpt": "Tekoäly voi auttaa aineiston tulkinnassa ja analyysin kirjoittamisessa, mutta arvio riippuu lähdetiedoista ja oletuksista. Tässä kerromme, mitä Valuatumin raportin laskentamoottori tekee, mihin tekoälyä käytetään ja mitä raportti ei voi korvata.",
       "sections": [
         {
@@ -181,7 +181,7 @@ const data = {
           "heading": "Mitä tekoälyn ei pidä antaa tehdä arvonmäärityksessä?",
           "paragraphs": [
             "Keksiä lukuja. Kielimalli on rakennettu tuottamaan uskottavan kuuloista tekstiä — ja se tuottaa yhtä sujuvasti myös uskottavan kuuloisia lukuja. Tavallisessa tekstissä tämä on harmi; arvonmäärityksessä se tekee koko raportista arvottoman, koska yksikin keksitty euromäärä vie pohjan kaikilta muilta.",
-            "Arvonmäärityksessä kielimallin tekstiä ei pidä tulkita itsenäiseksi taloudelliseksi näytöksi. Siksi lukijan kannattaa tarkistaa raportin lähderekisteri, oletukset ja tiedon rajoitteet. Heeros-esimerkissä nämä näkyvät raportin omissa osioissa; esimerkki kertoo yhdestä yhtiöstä eikä takaa kaikkien yhtiöiden aineiston samanlaista kattavuutta."
+            "Arvonmäärityksessä kielimallin tekstiä ei pidä tulkita itsenäiseksi taloudelliseksi näytöksi. Siksi lukijan kannattaa tarkistaa raportin lähderekisteri, oletukset ja tiedon rajoitteet. [Harvian esimerkkiraportissa (PDF)](/samples/harvia-oyj.pdf) nämä näkyvät raportin omissa osioissa. Esimerkki kertoo yhdestä yhtiöstä eikä takaa kaikkien yhtiöiden aineiston samanlaista kattavuutta."
           ],
           "listItems": []
         },
@@ -229,7 +229,7 @@ const data = {
         {
           "heading": "Mitä AI-arvonmääritysraportti maksaa ja miten sen saa?",
           "paragraphs": [
-            "Raportin rakennetta voi tarkastella maksuttomasta, julkisista tiedoista laaditusta [Heeros-esimerkkiraportista](/samples/heeros-oyj.pdf). Yksittäinen raportti maksaa [79 € (sis. Suomen alv:n)](/#hinnoittelu) ja valmistuu tyypillisesti 10–20 minuutissa, kun yhtiön tilinpäätöstiedot ovat aineistossa. [Hae yritys ja tilaa raportti](/yritys). Jos menetelmät ovat vieraita, aloita artikkelista [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)."
+            "Raportin rakennetta voi tarkastella maksuttomasta, julkisista tiedoista laaditusta [Goforen esimerkkiraportista (PDF)](/samples/gofore-oyj.pdf). Yksittäinen raportti maksaa [79 € (sis. Suomen alv:n)](/blogi/yrityksen-arvonmaarityksen-hinta). Raportin muodostaminen kestää tyypillisesti 10–20 minuuttia mahdollisen ennustetarkistuksen jälkeen. [Hae yritys ja tilaa raportti](/yritys). Jos menetelmät ovat vieraita, aloita artikkelista [Miten yrityksen arvo määritetään?](/blogi/miten-yrityksen-arvo-maaritetaan)."
           ],
           "listItems": []
         },
@@ -254,6 +254,7 @@ const data = {
       "metaDescription": "Tarkista yrityksen ostotarjouksesta kaupan kohde, nettovelka, normalisoitu tulos, kassavirta ja ehdollinen lisäkauppahinta ennen neuvottelua.",
       "h1": "Sain ostotarjouksen yrityksestä – mitä kannattaa tarkistaa?",
       "date": "2026-10-02",
+      "updatedDate": "2026-10-21",
       "excerpt": "Ostotarjouksen otsikkohinta ei yksin kerro, mitä ostaja maksaa heti tai mitä yrityksestä lopulta siirtyy. Näillä kysymyksillä saat tarjouksen luvut ja ehdot samaan kehykseen.",
       "sections": [
         {
@@ -310,7 +311,7 @@ const data = {
         {
           "heading": "Mihin arvonmääritysraportti auttaa — ja mihin se ei riitä?",
           "paragraphs": [
-            "Arvonmääritysraportti voi auttaa ostajaa ja myyjää tunnistamaan, miten tulos-, kassavirta- ja velkaoletukset vaikuttavat arvioon sekä mitä kysymyksiä kannattaa selvittää lisää. Valuatumin [arvonmäärityslaskurilla](/laskuri) voi tarkastella laskennan lähtökohtia, ja [yrityskertoimien oppaassa](/kertoimet) käsitellään kertoimien tulkintaa. Laajempi käytännön katsaus on [yrityskaupan oppaassa](/yrityskauppa); raportin hinnan ja rajauksen löydät artikkelista [Yrityksen arvonmäärityksen hinta](/blogi/yrityksen-arvonmaarityksen-hinta).",
+            "Arvonmääritysraportti voi auttaa ostajaa ja myyjää tunnistamaan, miten tulos-, kassavirta- ja velkaoletukset vaikuttavat arvioon sekä mitä kysymyksiä kannattaa selvittää lisää. Valuatumin [arvonmäärityslaskurilla](/laskuri) voi tarkastella laskennan lähtökohtia, ja [yrityskertoimien oppaassa](/kertoimet) käsitellään kertoimien tulkintaa. Voit myös tarkastella [maksuttomia yritysten taloustietoja lähteineen](/yritykset) ennen tulevaisuuden oletusten arviointia. Laajempi käytännön katsaus on [yrityskaupan oppaassa](/yrityskauppa); raportin hinnan ja rajauksen löydät artikkelista [Yrityksen arvonmäärityksen hinta](/blogi/yrityksen-arvonmaarityksen-hinta).",
             "Raportti auttaa jäsentämään oletuksia ja kysymyksiä. Se ei tarkasta sopimuksia tai kirjanpitoa, tee due diligence -tarkastusta eikä anna fairness opinionia tai oikeudellista lausuntoa. Se ei myöskään päätä, kannattaako tarjous hyväksyä tai hylätä. Kaupan ehdot ja päätös jäävät osapuolille sekä heidän neuvonantajilleen."
           ]
         },
@@ -328,20 +329,21 @@ const data = {
       "metaDescription": "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 € sisältäen 25,5 % ALV:n. Katso, mitä hinta sisältää ja milloin tarvitaan asiantuntijapalvelua.",
       "h1": "Yrityksen arvonmäärityksen hinta – mitä 79 € sisältää?",
       "date": "2026-10-02",
+      "updatedDate": "2026-10-21",
       "excerpt": "Valuatumin AI-arvonmääritysraportti maksaa 79 € sisältäen Suomen 25,5 %:n ALV:n. Tässä kerromme, mitä kertahintaan sisältyy, kauanko raportti tavallisesti kestää ja milloin laajempi asiantuntijatyö kannattaa pyytää erikseen tarjouksena.",
       "sections": [
         {
           "heading": "Mitä yrityksen arvonmääritys maksaa Valuatumilla?",
           "paragraphs": [
             "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 €. Hinta sisältää Suomen yleisen 25,5 %:n arvonlisäveron: veroton osuus on 62,95 € ja ALV 16,05 €. Verohallinnon [arvonlisäveroprosenttien sivulla](https://vero.fi/yritykset-ja-yhteisot/verot-ja-maksut/arvonlisaverotus/arvonlisaveroprosentit/) yleiseksi verokannaksi ilmoitetaan 25,5 %.",
-            "Kyseessä on kertamaksu yhdestä raportista. Siihen ei liity jatkuvaa tilausta, kuukausimaksua tai asiakastilin luomista. Voit ensin katsoa raportin rakenteen julkisesta [Heeros-esimerkkiraportista](/samples/heeros-oyj.pdf) ja päättää sen jälkeen, haluatko tilata raportin omasta yrityksestä tai tarkasteltavasta yhtiöstä."
+            "Kyseessä on kertamaksu yhdestä raportista. Siihen ei liity jatkuvaa tilausta, kuukausimaksua tai asiakastilin luomista. Voit ensin katsoa raportin rakenteen julkisesta [Harvian esimerkkiraportista (PDF)](/samples/harvia-oyj.pdf) ja päättää sen jälkeen, haluatko tilata raportin omasta yrityksestä tai tarkasteltavasta yhtiöstä."
           ]
         },
         {
           "heading": "Mitä raportin hinta sisältää?",
           "paragraphs": [
             "Raportti kokoaa arvonmäärityksen ja selittää, millaisiin taloustietoihin, menetelmiin ja oletuksiin arvio nojaa. Raportissa käsitellään myös arvioon vaikuttavia riskejä sekä käytettävissä olevan aineiston rajoitteita. Käytännössä voit käyttää sitä lähtökohtana, kun haluat ymmärtää, mitkä oletukset vaikuttavat arvioon tai mitä kannattaa kysyä yhtiön taloudesta ennen keskustelua.",
-            "Arvonmäärityksen menetelmä valitaan yhtiöstä ja saatavilla olevista tiedoista riippuen. Valuatumin [Heeros-esimerkissä](/samples/heeros-oyj.pdf) näet, miltä menetelmien perustelut, oletukset ja rajoitteet voivat näyttää yhdessä raportissa. Esimerkkiraportti kertoo kyseisestä yhtiöstä; se ei takaa, että jokaisen muun yhtiön lähdeaineisto olisi yhtä kattava."
+            "Arvonmäärityksen menetelmä valitaan yhtiöstä ja saatavilla olevista tiedoista riippuen. Valuatumin [Goforen esimerkkiraportissa (PDF)](/samples/gofore-oyj.pdf) näet, miltä menetelmien perustelut, oletukset ja rajoitteet voivat näyttää yhdessä raportissa. Esimerkkiraportti kertoo kyseisestä yhtiöstä; se ei takaa, että jokaisen muun yhtiön lähdeaineisto olisi yhtä kattava."
           ]
         },
         {
@@ -368,7 +370,8 @@ const data = {
         {
           "heading": "Katso esimerkki tai etsi yritys",
           "paragraphs": [
-            "Voit tutustua raportin rakenteeseen maksutta [Heeros-esimerkkiraportissa](/samples/heeros-oyj.pdf), lukea ensin [miten yrityksen arvo määritetään](/blogi/miten-yrityksen-arvo-maaritetaan) tai [tarkistaa hinnan ja tilausvaihtoehdot](/#hinnoittelu). Kun tiedät, minkä yhtiön tietoja haluat tarkastella, [hae yritys ja tilaa raportti](/yritys)."
+            "Voit tutustua raporttien rakenteeseen maksutta: [Harvia (PDF)](/samples/harvia-oyj.pdf), [Gofore (PDF)](/samples/gofore-oyj.pdf) ja [Fiskars (PDF)](/samples/fiskars-oyj-abp.pdf). Jos valmistelet yrityskauppaa, lue myös [mitä ostotarjouksesta kannattaa tarkistaa](/blogi/sain-ostotarjouksen-yrityksesta).",
+            "Katso [yritysten maksuttomat taloustiedot lähteineen](/yritykset) tai kokeile [arvonmäärityslaskuria](/laskuri). Näistä ei veloiteta raportin hintaa. Kun haluat yrityskohtaisen analyysin, [hae yritys ja tarkista raportin saatavuus](/yritys)."
           ]
         },
         {

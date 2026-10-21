@@ -4,12 +4,12 @@ import { Reveal } from '@/components/Reveal'
 import { SECTOR_RANGES, WISDOM_PEERS } from '@/lib/marketMultiples'
 
 export const metadata: Metadata = {
-  title: 'Arvostuskertoimet toimialoittain – EV/EBITDA ja EV/Liikevaihto',
+  title: 'Arvostuskertoimet toimialoittain: EV/EBITDA ja laskukaava',
   description:
-    'Tutustu Valuatumin kiinteisiin, suuntaa-antaviin kerroinoletuksiin ja listattujen verrokkien tunnuslukuihin. Lue, miten EV/EBITDA- ja EV/Liikevaihto-kertoimia tulkitaan.',
+    'Miten EV/EBITDA kertoo yrityksen arvosta? Katso laskukaava, toimialojen suuntaa-antavat oletushaarukat ja nettovelan vaikutus. Kokeile maksutonta laskuria.',
   alternates: { canonical: '/kertoimet' },
   openGraph: {
-    title: 'Arvostuskertoimet toimialoittain – EV/EBITDA ja EV/Liikevaihto',
+    title: 'Arvostuskertoimet toimialoittain: EV/EBITDA ja laskukaava',
     description:
       'Valuatumin kiinteät, suuntaa-antavat kerroinoletukset ja niistä erilliset listattujen verrokkien tunnusluvut arvonmäärityksen tueksi.',
     type: 'article',
@@ -42,10 +42,18 @@ export default function KertoimetPage() {
               Arvostuskertoimet toimialoittain
             </h1>
             <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-white/75">
-              Listattujen verrokkien tunnusluvut antavat vertailukohtia, mutta eivät sellaisinaan
-              kerro listaamattoman yrityksen arvoa. Laskurin kiinteät oletushaarukat ovat tästä
-              erillinen karkea lähtökohta.
+              EV/EBITDA-kerroin suhteuttaa yritysarvon käyttökatteeseen. Tältä sivulta löydät
+              laskukaavan ja toimialojen suuntaa-antavat oletushaarukat. Osakkeiden arvoa
+              arvioitaessa huomioidaan myös nettovelka.
             </p>
+            <div className="mt-7 flex flex-wrap items-center gap-5">
+              <Link href="/laskuri" className="rounded-full bg-green px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-green-deep">
+                Kokeile maksutonta arvonmäärityslaskuria
+              </Link>
+              <a href="#toimialahaarukat" className="text-sm text-white/90 underline underline-offset-4 hover:text-white">
+                Katso toimialojen oletushaarukat
+              </a>
+            </div>
           </Reveal>
         </div>
       </section>
@@ -158,7 +166,7 @@ export default function KertoimetPage() {
         </div>
       </section>
 
-      <section className="bg-off-white py-16 lg:py-24">
+      <section id="toimialahaarukat" className="scroll-mt-24 bg-off-white py-16 lg:py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal className="max-w-2xl">
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
@@ -209,12 +217,13 @@ export default function KertoimetPage() {
               Listatut verrokit
             </p>
             <h2 className="mt-3 text-balance text-3xl font-light tracking-[-0.02em] text-charcoal lg:text-4xl">
-              Esimerkkejä haarukoiden taustalla olevista yhtiöistä.
+              Erillinen otos listattujen yhtiöiden tunnusluvuista.
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Verrokkiotos perustuu Valuatum Wisdom -konsensusennusteisiin ja pörssikursseihin.
+              Historiallinen verrokkiotos perustuu Valuatum Wisdom -konsensusennusteisiin ja pörssikursseihin.
               Alla on kolme listattua esimerkkiyhtiötä, ei kattava toimialan markkinakeskiarvo.
-              2026e-luvut ovat ennusteita; jokaisen rivin päivityspäivä näkyy taulukossa. Luvut
+              Otos ei ole ajantasainen markkinakatsaus. 2026e-luvut ovat ennusteita;
+              jokaisen rivin päivityspäivä näkyy taulukossa. Luvut
               miljoonina euroina, osakekurssit euroina.
             </p>
           </Reveal>
@@ -258,10 +267,10 @@ export default function KertoimetPage() {
               Listattu yhtiö voi poiketa listaamattomasta koon, likviditeetin, riskin ja
               raportoinnin osalta, joten kerroin ei siirry suoraan toiseen yhtiöön. Valuatumin
               yrityskohtainen raportti voi hylätä markkinakertoimet, jos vertailutietoa ei ole tai
-              se ei sovi kohteeseen — näin käy myös {` `}
-              <Link href="/samples/heeros-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
-                julkisessa Heeros-esimerkissä
-              </Link>
+              se ei sovi kohteeseen. Tutustu menetelmien perusteluihin {` `}
+              <a href="/samples/harvia-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
+                Harvian esimerkkiraportissa (PDF)
+              </a>
               . Lue lisää {` `}
               <Link href="/blogi/miten-yrityksen-arvo-maaritetaan" className="text-green-deep underline underline-offset-2 hover:text-green">
                 arvonmääritysmenetelmistä
