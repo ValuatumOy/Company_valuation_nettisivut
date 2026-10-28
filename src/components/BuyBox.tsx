@@ -1,9 +1,16 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { eur, quote } from '@/lib/pricing'
 import { companyDisplayName } from '@/lib/companies'
-import { getCheckoutAnalyticsIdentity, trackBeginCheckout } from '@/lib/analytics'
+import {
+  getCheckoutAnalyticsIdentity,
+  observeBuyBoxVisibility,
+  trackBeginCheckout,
+  trackBuyBoxView,
+  trackCheckoutFailure,
+  type CheckoutFailureType,
+} from '@/lib/analytics'
 
 type Props = {
   companyId: string
@@ -34,16 +41,45 @@ export function BuyBox({
   const [wantForecast, setWantForecast] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const cardRef = useRef<HTMLElement | null>(null)
+  const viewedPage = useRef<string | null>(null)
 
   const { total } = quote('existing', false)
+
+  useEffect(() => {
+    const card = cardRef.current
+    if (!card) return
+    const page = window.location.pathname
+    if (viewedPage.current === page) return
+
+    let active = true
+    const stopObserving = observeBuyBoxVisibility(card, () => {
+      if (!active || window.location.pathname !== page || viewedPage.current === page) return
+      viewedPage.current = page
+      try { trackBuyBoxView(total) } catch {}
+    })
+    return () => {
+      active = false
+      stopObserving()
+    }
+  }, [companyId, fid, total])
 
   async function checkout(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setLoading(true)
     setError(null)
+
+    // Analytics is best-effort: a broken gtag callback must never stop checkout.
+    try { trackBeginCheckout(total) } catch {}
+    let analytics
     try {
-      trackBeginCheckout(total)
-      const analytics = await getCheckoutAnalyticsIdentity()
+      analytics = await getCheckoutAnalyticsIdentity()
+    } catch {
+      analytics = undefined
+    }
+
+    let failureStage: CheckoutFailureType = 'network_exception'
+    try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -59,21 +95,34 @@ export function BuyBox({
           analytics,
         }),
       })
+
+      failureStage = res.ok ? 'response_exception' : 'http_rejection'
       const data = (await res.json()) as { url?: string; error?: string }
-      if (data.url) {
-        window.location.assign(data.url)
-      } else {
+      if (!res.ok) {
+        try { trackCheckoutFailure('http_rejection') } catch {}
         setError(data.error ?? 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.')
         setLoading(false)
+        return
       }
+
+      if (!data.url) {
+        try { trackCheckoutFailure('missing_checkout_url') } catch {}
+        setError(data.error ?? 'Maksun käynnistäminen epäonnistui. Yritä uudelleen.')
+        setLoading(false)
+        return
+      }
+
+      failureStage = 'navigation_exception'
+      window.location.assign(data.url)
     } catch {
+      try { trackCheckoutFailure(failureStage) } catch {}
       setError('Verkkovirhe. Yritä uudelleen.')
       setLoading(false)
     }
   }
 
   return (
-    <aside className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)]">
+    <aside ref={cardRef} className="overflow-hidden rounded-3xl border border-mist bg-white shadow-[0_20px_60px_rgba(26,36,32,0.1)]">
       <div className="bg-forest p-6 text-white">
         <p className="text-[12.5px] font-medium text-green-light">AI-arvonmääritysraportti</p>
         <h2 className="mt-1 text-2xl font-light tracking-tight">
@@ -87,9 +136,9 @@ export function BuyBox({
 
       <form onSubmit={checkout} className="p-6">
         <p className="text-sm font-light leading-relaxed text-charcoal-mid">
-          Tilinpäätöstiedot yritykselle {companyName} ovat jo hallussamme. Raportti
-          laaditaan automaattisesti maksun jälkeen ja valmistuu tyypillisesti 10–20
-          minuutissa.
+          Tilinpäätöstiedot yritykselle {companyName} ovat jo hallussamme. Raportin
+          laadinta alkaa maksun jälkeen tai valintasi mukaan ennusteiden tarkistuksen
+          jälkeen. Raportti valmistuu tyypillisesti 10–20 minuutissa aloituksesta.
         </p>
 
         <label className="mt-5 block">

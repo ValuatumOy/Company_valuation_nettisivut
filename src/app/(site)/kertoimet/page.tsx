@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Reveal } from '@/components/Reveal'
-import { SECTOR_RANGES, WISDOM_PEERS } from '@/lib/marketMultiples'
+import { SECTOR_RANGES } from '@/lib/marketMultiples'
 
 export const metadata: Metadata = {
   title: 'Arvostuskertoimet toimialoittain: EV/EBITDA ja laskukaava',
   description:
-    'Miten EV/EBITDA kertoo yrityksen arvosta? Katso laskukaava, toimialojen suuntaa-antavat oletushaarukat ja nettovelan vaikutus. Kokeile maksutonta laskuria.',
+    'EV/EBITDA-kaava, kuvitteellinen laskuesimerkki ja Valuatumin laskurin toimialaoletukset. Lue, mitä kerroin kertoo ja miten nettovelka vaikuttaa.',
   alternates: { canonical: '/kertoimet' },
   openGraph: {
     title: 'Arvostuskertoimet toimialoittain: EV/EBITDA ja laskukaava',
     description:
-      'Valuatumin kiinteät, suuntaa-antavat kerroinoletukset ja niistä erilliset listattujen verrokkien tunnusluvut arvonmäärityksen tueksi.',
+      'EV/EBITDA-kaava ja Valuatumin laskurin kiinteät toimialaoletukset. Lue esimerkki ja kertoimen rajat.',
     type: 'article',
   },
 }
@@ -42,8 +42,9 @@ export default function KertoimetPage() {
               Arvostuskertoimet toimialoittain
             </h1>
             <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-white/75">
-              EV/EBITDA-kerroin suhteuttaa yritysarvon käyttökatteeseen. Tältä sivulta löydät
-              laskukaavan ja toimialojen suuntaa-antavat oletushaarukat. Osakkeiden arvoa
+              EV/EBITDA suhteuttaa yritysarvon käyttökatteeseen. Tältä sivulta löydät
+              laskukaavan, kuvitteellisen laskuesimerkin ja Valuatumin laskurissa käytetyt
+              toimialaoletukset. Oletukset eivät ole markkinatilastoja; osakkeiden arvoa
               arvioitaessa huomioidaan myös nettovelka.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-5">
@@ -176,11 +177,11 @@ export default function KertoimetPage() {
               Laskurin käyttämät toimialahaarukat.
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Haarukat on tarkoituksella pidetty leveinä ja ne havainnollistavat vain laskurin
-              käyttämää yksinkertaistusta. Ne ovat Valuatumin kiinteitä oletuksia, eivät ajantasaisia
-              markkinakertoimia tai yrityskauppojen hintoja. Ne eivät päivity automaattisesti alla
-              olevan listattujen yhtiöiden taulukon luvuista. Varsinainen raportti tarkastelee
-              yritystä yksilöllisesti.
+              Haarukat ovat Valuatumin laskurin kiinteitä, suuntaa-antavia oletuksia. Ne eivät
+              perustu tällä sivulla julkaistuun markkinadataan, toteutuneiden yrityskauppojen
+              otokseen tai ajantasaiseen listayhtiövertailuun. Oletuksille ei ilmoiteta
+              markkinahavaintojen päivää, koska kyse ei ole mitatusta markkina-aineistosta.
+              Varsinainen raportti tarkastelee yritystä yksilöllisesti.
             </p>
           </Reveal>
 
@@ -207,6 +208,14 @@ export default function KertoimetPage() {
               </Reveal>
             ))}
           </div>
+          <Reveal delay={150}>
+            <p className="mt-8 max-w-4xl rounded-2xl border border-mist bg-white p-5 text-[13px] leading-relaxed text-charcoal/70">
+              Laskurin haarukat ovat laskennan oletuksia, eivät Valuatumin mitattuja toimialakertoimia.
+              Niistä ei voi päätellä yrityksen markkina-arvoa tai yrityskaupan hintaa. Valitse
+              vertailukerroin vasta, kun verrokkien liiketoiminta, kasvu, kannattavuus ja riskit
+              vastaavat arvioitavaa yritystä.
+            </p>
+          </Reveal>
         </div>
       </section>
 
@@ -214,78 +223,60 @@ export default function KertoimetPage() {
         <div className="mx-auto max-w-7xl px-6 lg:px-10">
           <Reveal className="max-w-2xl">
             <p className="text-[13px] font-semibold uppercase tracking-[0.14em] text-green-deep">
-              Listatut verrokit
+              Verrokkien arviointi
             </p>
             <h2 className="mt-3 text-balance text-3xl font-light tracking-[-0.02em] text-charcoal lg:text-4xl">
-              Erillinen otos listattujen yhtiöiden tunnusluvuista.
+              Mitä tarvitset vertailukelpoiseen EV/EBITDA-kertoimeen?
             </h2>
             <p className="mt-5 text-pretty text-[16px] font-light leading-relaxed text-charcoal-mid">
-              Historiallinen verrokkiotos perustuu Valuatum Wisdom -konsensusennusteisiin ja pörssikursseihin.
-              Alla on kolme listattua esimerkkiyhtiötä, ei kattava toimialan markkinakeskiarvo.
-              Otos ei ole ajantasainen markkinakatsaus. 2026e-luvut ovat ennusteita;
-              jokaisen rivin päivityspäivä näkyy taulukossa. Luvut
-              miljoonina euroina, osakekurssit euroina.
+              Listayhtiön markkinakerroin riippuu sekä osakekurssista että valitusta tulosluvusta.
+              Ne pitää yhdistää samalla määritelmällä ja näkyvällä ajankohdalla. Yksittäinen
+              kurssi tai konsensusennuste ei vielä muodosta vertailukelpoista yrityskaupan kerrointa.
             </p>
           </Reveal>
 
-          <Reveal delay={100}>
-            <div className="mt-10 overflow-x-auto rounded-3xl border border-mist bg-white">
-              <table className="w-full min-w-[760px] border-collapse text-left text-sm">
-                <thead className="bg-forest text-white">
-                  <tr>
-                    <Th>Yhtiö</Th>
-                    <Th>Toimiala</Th>
-                    <Th>Kurssi</Th>
-                    <Th>Liikevaihto 2026e</Th>
-                    <Th>EBITDA 2026e</Th>
-                    <Th>EBITDA-%</Th>
-                    <Th>Päivitetty</Th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {WISDOM_PEERS.map((p) => (
-                    <tr key={p.ticker} className="border-t border-mist">
-                      <Td>
-                        <span className="font-medium text-charcoal">{p.company}</span>
-                        <span className="mt-1 block text-xs text-steel">{p.ticker}</span>
-                      </Td>
-                      <Td>{p.sector}</Td>
-                      <Td>{p.price}</Td>
-                      <Td>{p.sales2026.toLocaleString('fi-FI', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</Td>
-                      <Td>{p.ebitda2026.toLocaleString('fi-FI', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}</Td>
-                      <Td>{p.ebitdaMargin.toLocaleString('fi-FI', { minimumFractionDigits: 1, maximumFractionDigits: 1 })} %</Td>
-                      <Td>{p.updated}</Td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Reveal>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {[
+              {
+                title: '1. Määritä yritysarvo',
+                text: 'Listatulla yhtiöllä markkina-arvo lasketaan osakekurssista ja osakemäärästä. EV:hen lisätään velka ja vähennetään kassa valitun määritelmän mukaisesti.',
+              },
+              {
+                title: '2. Valitse sama EBITDA-jakso',
+                text: 'Kerro, onko EBITDA toteutunut vai ennuste ja mitä tilikautta se koskee. Oikaise kertaluonteiset erät perustellusti ja käytä verrokeille samaa laskentatapaa.',
+              },
+              {
+                title: '3. Arvioi vertailukelpoisuus',
+                text: 'Koko, kasvu, katteet, investoinnit, asiakasrakenne, velka ja osakkeiden likviditeetti voivat muuttaa tulkintaa. Pörssiyhtiön kerroin ei siirry sellaisenaan listaamattomaan kohteeseen.',
+              },
+            ].map((item) => (
+              <article key={item.title} className="rounded-3xl border border-mist bg-off-white p-6">
+                <h3 className="text-[16px] font-medium text-forest">{item.title}</h3>
+                <p className="mt-3 text-[14px] font-light leading-relaxed text-charcoal/75">{item.text}</p>
+              </article>
+            ))}
+          </div>
 
           <Reveal delay={150}>
-            <p className="mt-6 max-w-3xl text-[13px] font-light leading-relaxed text-charcoal/60">
-              Listattu yhtiö voi poiketa listaamattomasta koon, likviditeetin, riskin ja
-              raportoinnin osalta, joten kerroin ei siirry suoraan toiseen yhtiöön. Valuatumin
-              yrityskohtainen raportti voi hylätä markkinakertoimet, jos vertailutietoa ei ole tai
-              se ei sovi kohteeseen. Tutustu menetelmien perusteluihin {` `}
-              <a href="/samples/harvia-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
-                Harvian esimerkkiraportissa (PDF)
+            <p className="mt-6 max-w-4xl text-[13px] font-light leading-relaxed text-charcoal/60">
+              Kirjaa vertailuun osakekurssin päivä, osakemäärä ja nettovelka sekä se, onko EBITDA
+              toteutunut vai ennuste ja mitä tilikautta se koskee. Käytä kaikille yhtiöille samaa
+              velan ja kassan määritelmää; vuokravastuut ja muut velanluonteiset erät voivat muuttaa
+              yritysarvoa. Lisätietoa yritysarvon kertoimista antaa {` `}
+              <a href="https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples" target="_blank" rel="noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">
+                CFA Institute
               </a>
-              . Lue lisää {` `}
+              . Tutustu myös {` `}
+              <a href="/samples/harvia-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
+                Harvian esimerkkiraporttiin (PDF)
+              </a>
+              , lue {` `}
               <Link href="/blogi/miten-yrityksen-arvo-maaritetaan" className="text-green-deep underline underline-offset-2 hover:text-green">
                 arvonmääritysmenetelmistä
               </Link>
-              . Tutustu myös {` `}
-              <Link href="/blogi/yrityksen-arvonmaarityksen-hinta" className="text-green-deep underline underline-offset-2 hover:text-green">
-                arvonmääritysraportin hintaan
-              </Link>
-              {` `}tai lue, mitä kannattaa huomioida, kun olet {` `}
+              {` `}tai katso {` `}
               <Link href="/blogi/sain-ostotarjouksen-yrityksesta" className="text-green-deep underline underline-offset-2 hover:text-green">
-                saanut ostotarjouksen yrityksestä
-              </Link>
-              . Kokeile myös {` `}
-              <Link href="/laskuri" className="text-green-deep underline underline-offset-2 hover:text-green">
-                laskuria
+                mitä ostotarjouksesta kannattaa tarkistaa
               </Link>
               .
             </p>
@@ -302,6 +293,17 @@ export default function KertoimetPage() {
             <h2 className="mt-3 text-3xl font-light tracking-[-0.02em] text-charcoal">
               Kokeile laskuria — ja tilaa sitten varsinainen raportti.
             </h2>
+            <p className="mt-3 max-w-2xl text-[14px] font-light leading-relaxed text-charcoal/70">
+              Yrityskohtainen raportti maksaa 79 € (sis. Suomen alv:n). Katso ensin {` `}
+              <Link href="/samples/harvia-oyj.pdf" className="text-green-deep underline underline-offset-2 hover:text-green">
+                maksuton esimerkkiraportti (PDF)
+              </Link>
+              {` `}ja lue {` `}
+              <Link href="/blogi/yrityksen-arvonmaarityksen-hinta" className="text-green-deep underline underline-offset-2 hover:text-green">
+                mitä hinta sisältää
+              </Link>
+              .
+            </p>
           </Reveal>
           <Reveal delay={100}>
             <div className="flex flex-wrap gap-3">
@@ -323,16 +325,4 @@ export default function KertoimetPage() {
       </section>
     </>
   )
-}
-
-function Th({ children }: { children: React.ReactNode }) {
-  return (
-    <th className="px-5 py-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/70">
-      {children}
-    </th>
-  )
-}
-
-function Td({ children }: { children: React.ReactNode }) {
-  return <td className="px-5 py-4 align-top text-charcoal/75">{children}</td>
 }

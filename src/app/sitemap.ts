@@ -6,9 +6,9 @@ import { listCompanyProfiles } from '@/lib/companyProfiles'
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/`, lastModified: new Date('2026-10-21'), changeFrequency: 'weekly', priority: 1 },
-    { url: `${SITE_URL}/yrityskauppa`, lastModified: new Date('2026-10-02'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${SITE_URL}/yrityskauppa`, lastModified: new Date('2026-10-28'), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/sukupolvenvaihdos`, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/yritys`, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${SITE_URL}/yritys`, lastModified: new Date('2026-10-28'), changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE_URL}/yritykset`, lastModified: new Date('2026-10-21'), changeFrequency: 'weekly', priority: 0.8 },
     ...listCompanyProfiles().map((company) => ({
       url: `${SITE_URL}/yritykset/${company.slug}`,
@@ -16,8 +16,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
     })),
     { url: `${SITE_URL}/laskuri`, lastModified: new Date('2026-10-21'), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${SITE_URL}/kertoimet`, lastModified: new Date('2026-10-21'), changeFrequency: 'monthly', priority: 0.6 },
-    { url: `${SITE_URL}/blogi`, lastModified: new Date('2026-10-02'), changeFrequency: 'weekly', priority: 0.6 },
+    { url: `${SITE_URL}/kertoimet`, lastModified: new Date('2026-10-28'), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${SITE_URL}/blogi`, lastModified: new Date('2026-10-28'), changeFrequency: 'weekly', priority: 0.6 },
     ...blogPosts.map((p) => ({
       url: `${SITE_URL}/blogi/${p.slug}`,
       lastModified: new Date(p.updatedDate ?? p.date),

@@ -1,11 +1,14 @@
 import type { Metadata } from 'next'
 import { CompanySearch } from '@/components/CompanySearch'
 import { Reveal } from '@/components/Reveal'
+import { eur, quote } from '@/lib/pricing'
+
+const price = eur(quote('existing', false).total)
 
 export const metadata: Metadata = {
   title: 'Yrityshaku — tilaa arvonmääritysraportti | Valuatum',
   description:
-    'Hae yritys nimellä tai Y-tunnuksella ja tilaa tekoälyavusteinen arvonmääritysraportti. DCF, EVA-täsmäytys, skenaariot ja riskiarvio yhdessä PDF-raportissa.',
+    `Hae yritys nimellä tai Y-tunnuksella ja tilaa tekoälyavusteinen arvonmääritysraportti ${price} (sis. alv). Tutustu raportin sisältöön ennen tilaamista.`,
   alternates: { canonical: '/yritys' },
 }
 
@@ -23,7 +26,7 @@ const STEPS = [
   {
     number: '03',
     title: 'Saat PDF-raportin sähköpostiisi',
-    text: 'Generointi käynnistyy heti maksun jälkeen ja valmistuu tyypillisesti 10–20 minuutissa. Valmiin raportin yhteydessä voit vielä vastata tekoälyn tarkentaviin kysymyksiin.',
+    text: 'Raportin luonti alkaa maksun jälkeen tai halutessasi vasta, kun olet tarkistanut ennusteet. Luonti kestää tyypillisesti 10–20 minuuttia käynnistyttyään.',
   },
 ]
 
@@ -50,13 +53,20 @@ export default function YritysPage() {
           </Reveal>
           <Reveal delay={200}>
             <p className="mt-5 max-w-2xl text-pretty text-[17px] font-light leading-relaxed text-white/75">
-              Etsi yritys nimellä tai Y-tunnuksella. Haku käyttää Valuatumin omaa
-              yritysaineistoa — löytyneelle yhtiölle raportti voidaan laatia heti.
+              Etsi yritys nimellä tai Y-tunnuksella ja tarkista, löytyykö sen
+              talousaineisto Valuatumilta. Voit tutustua raporttiin ennen tilaamista.
             </p>
           </Reveal>
           <Reveal delay={300}>
             <div className="mt-8 max-w-2xl">
               <CompanySearch variant="dark" autoFocus />
+              <p className="mt-3 text-sm text-white/80">
+                Arvonmääritysraportti <strong className="font-medium text-white">{price} (sis. alv)</strong>, kertamaksu.
+                Yrityshaku on maksuton.
+              </p>
+              <a href="/samples/harvia-oyj.pdf" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block text-sm font-medium text-green-light transition-colors hover:text-white">
+                Katso esimerkkiraportti (PDF) →
+              </a>
             </div>
           </Reveal>
         </div>

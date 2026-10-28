@@ -254,8 +254,8 @@ const data = {
       "metaDescription": "Tarkista yrityksen ostotarjouksesta kaupan kohde, nettovelka, normalisoitu tulos, kassavirta ja ehdollinen lisäkauppahinta ennen neuvottelua.",
       "h1": "Sain ostotarjouksen yrityksestä – mitä kannattaa tarkistaa?",
       "date": "2026-10-02",
-      "updatedDate": "2026-10-21",
-      "excerpt": "Ostotarjouksen otsikkohinta ei yksin kerro, mitä ostaja maksaa heti tai mitä yrityksestä lopulta siirtyy. Näillä kysymyksillä saat tarjouksen luvut ja ehdot samaan kehykseen.",
+      "updatedDate": "2026-10-28",
+      "excerpt": "Ostotarjouksen otsikkohinta ei kerro, kuinka paljon maksetaan kaupanteossa tai mitä ostaja saa. Tarkista kaupan kohde, nettovelka, tulos ja ehdot ennen vastaamista.",
       "sections": [
         {
           "heading": "Ostotarjouksen hinta ja yrityksen arvo ovat eri asioita",
@@ -274,7 +274,7 @@ const data = {
         {
           "heading": "Vertaa yritysarvoa oman pääoman arvoon",
           "paragraphs": [
-            "Tarjouksessa käytetty yritysarvo eli EV ja osakkeista maksettava hinta eivät ole sama luku. Yksinkertaistettuna oman pääoman arvo saadaan vähentämällä yritysarvosta nettovelka: korolliset velat vähennettynä kassalla. Esimerkiksi 1,2 miljoonan euron yritysarvosta ja 0,2 miljoonan nettovelasta saadaan 1,0 miljoonan euron oman pääoman arvo ennen käyttöpääomaa ja muita kauppakohtaisia oikaisuja. CFA Instituten [EV-kertoimia käsittelevä katsaus](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples) kuvaa EV:n velan, oman pääoman ja muiden pääomaerien kokonaisarvona vähennettynä kassavaroilla.",
+            "Tarjouksessa käytetty yritysarvo eli EV ja osakkeista maksettava hinta eivät ole sama luku. Yksinkertaistettuna oman pääoman arvo saadaan vähentämällä yritysarvosta nettovelka: korolliset velat vähennettynä kassalla. Kuvitteellisessa esimerkissä 1,2 miljoonan euron yritysarvosta ja 0,2 miljoonan nettovelasta saadaan 1,0 miljoonan euron oman pääoman arvo ennen käyttöpääomaa ja muita kauppakohtaisia oikaisuja. CFA Instituten [EV-kertoimia käsittelevä katsaus](https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/market-based-valuation-price-enterprise-value-multiples) kuvaa EV:n velan, oman pääoman ja muiden pääomaerien kokonaisarvona vähennettynä kassavaroilla.",
             "Lue sopimuksesta, miten kassa, korolliset velat, käyttöpääoma, vuokravastuut ja mahdolliset velanluonteiset erät määritellään. Laskukaava on hyödyllinen lähtökohta, mutta se ei korvaa ostotarjouksen tai kauppakirjan tarkkojen määritelmien läpikäyntiä."
           ]
         },
@@ -329,14 +329,14 @@ const data = {
       "metaDescription": "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 € sisältäen 25,5 % ALV:n. Katso, mitä hinta sisältää ja milloin tarvitaan asiantuntijapalvelua.",
       "h1": "Yrityksen arvonmäärityksen hinta – mitä 79 € sisältää?",
       "date": "2026-10-02",
-      "updatedDate": "2026-10-21",
-      "excerpt": "Valuatumin AI-arvonmääritysraportti maksaa 79 € sisältäen Suomen 25,5 %:n ALV:n. Tässä kerromme, mitä kertahintaan sisältyy, kauanko raportti tavallisesti kestää ja milloin laajempi asiantuntijatyö kannattaa pyytää erikseen tarjouksena.",
+      "updatedDate": "2026-10-28",
+      "excerpt": "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 € (sis. 25,5 % ALV). Katso mitä hinta sisältää, kenelle raportti sopii ja milloin tarvitset erillistä asiantuntijatyötä.",
       "sections": [
         {
           "heading": "Mitä yrityksen arvonmääritys maksaa Valuatumilla?",
           "paragraphs": [
             "Valuatumin yrityskohtainen AI-arvonmääritysraportti maksaa 79 €. Hinta sisältää Suomen yleisen 25,5 %:n arvonlisäveron: veroton osuus on 62,95 € ja ALV 16,05 €. Verohallinnon [arvonlisäveroprosenttien sivulla](https://vero.fi/yritykset-ja-yhteisot/verot-ja-maksut/arvonlisaverotus/arvonlisaveroprosentit/) yleiseksi verokannaksi ilmoitetaan 25,5 %.",
-            "Kyseessä on kertamaksu yhdestä raportista. Siihen ei liity jatkuvaa tilausta, kuukausimaksua tai asiakastilin luomista. Voit ensin katsoa raportin rakenteen julkisesta [Harvian esimerkkiraportista (PDF)](/samples/harvia-oyj.pdf) ja päättää sen jälkeen, haluatko tilata raportin omasta yrityksestä tai tarkasteltavasta yhtiöstä."
+            "Kyseessä on kertamaksu yhdestä raportista, ei kuukausimaksua tai jatkuvaa tilausta. Voit ensin katsoa raportin rakennetta maksuttomasta [Harvian esimerkkiraportista (PDF)](/samples/harvia-oyj.pdf) ja päättää sen jälkeen, haluatko tilata raportin omasta yrityksestä tai tarkasteltavasta yhtiöstä."
           ]
         },
         {
@@ -356,8 +356,8 @@ const data = {
         {
           "heading": "Milloin edullinen raportti voi olla sopiva lähtökohta?",
           "paragraphs": [
-            "Yksittäinen raportti voi olla hyödyllinen, kun haluat alustavan näkymän yhtiön arvon ajureihin, vertailla omia oletuksia tai valmistella tarkempia kysymyksiä yrityskauppaa varten. Se voi sopia ostajan tai omistajan ensivaiheen selvitykseen ja antaa yhteisen keskustelupohjan ennen laajempaa toimeksiantoa.",
-            "Jos haluat harjoitella oletusten vaikutusta itse, kokeile [arvonmäärityslaskuria](/laskuri). [Yrityskertoimien opas](/kertoimet) puolestaan auttaa ymmärtämään, mitä kertoimilla voidaan ja ei voida päätellä. Yleisempi yrityskaupan valmistelun katsaus löytyy [yrityskaupan oppaasta](/yrityskauppa)."
+            "Raportti voi sopia ostajalle, joka haluaa ennen neuvottelua yrityskohtaisen lähtöarvion sekä näkyviin keskeiset oletukset, riskit ja aineiston rajat. Se voi myös auttaa omistajaa valmistautumaan myyntiin. Käytä sitä alustavana analyysina ja kysymysten pohjana: se ei tarkasta kohdeyrityksen taloustietoja tai kaupan ehtoja.",
+            "Jos haluat kokeilla omia oletuksia, aloita [maksuttomasta arvonmäärityslaskurista](/laskuri). [Yrityskertoimien opas](/kertoimet) selittää kertoimien tulkintaa, ja [yrityskaupan opas](/yrityskauppa) kokoaa ostajan ja myyjän valmistelukysymyksiä. Jos tarvitset tarjoukseen, verotukseen tai due diligenceen asiantuntijan arvion, pyydä siitä erillinen tarjous."
           ]
         },
         {

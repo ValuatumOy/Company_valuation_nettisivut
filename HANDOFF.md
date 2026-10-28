@@ -1,3 +1,11 @@
+# Handoff — 2026-10-28 — Mobile purchase path and funnel
+
+- Company detail pages show the existing 79 € price and an anchor to the order card near the company identity on mobile; the full order process and desktop card remain. `/yritys` shows the price and a current sample earlier. Order copy distinguishes report generation time from the optional forecast review.
+- GA4 `view_item` fires when at least 20% of the order card is visible; `checkout_error` reports only a fixed failure category. Both retain the public-path allowlist and never send company IDs, queries, user input or raw error messages. Checkout is not blocked if analytics fails. Keep Enhanced Measurement disabled as described below.
+- Updated the company-sale and pricing content and their links to reviewed Harvia, Gofore and Fiskars examples. `/kertoimet` now labels calculator sector ranges as assumptions and replaces the stale, inconsistently dated peer table with instructions for constructing a comparable multiple. No new company pages, forecasts or paid report runs.
+- Next.js and eslint-config-next were updated from 16.4.0 to 16.4.3 for the published security fixes. As of 2026-10-28, `npm audit --omit=dev` still reports a high-severity Zod array-validation advisory and a moderate `qs` advisory; Zod arrays in this app are used for checked-in content, not the checkout request. Assess remaining exposure and dependency updates separately.
+- Validation: production build and mocked analytics/checkout tests passed; focused ESLint and TypeScript passed. The mobile card anchor and desktop layout were checked without initiating payment. The existing Turbopack file-tracing warning remains.
+
 # Handoff — 2026-10-21 — SEO and conversion measurement
 
 - Restored the canonical gtag Arguments queue. Public pageviews and company search/selection/checkout events use sanitized paths; private report/checkout URLs, raw queries, company identifiers and customer input are excluded. Dynamic public pages are grouped for privacy; use Search Console for individual SEO landing pages. All Enhanced Measurement options are disabled on GA4 stream 15377948030; do not re-enable automatic history/form/search tracking without repeating privacy checks.

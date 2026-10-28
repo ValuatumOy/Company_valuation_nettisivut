@@ -8,6 +8,18 @@ const SENSITIVE_PARAMS = new Set([
   'key', 'token', 'access_token', 'api_key', 'session_id', 'email',
   'customeremail', 'userinput',
 ])
+const BUYBOX_VISIBILITY_RATIO = 0.2
+const CHECKOUT_FAILURE_TYPES = new Set([
+  'http_rejection', 'missing_checkout_url', 'network_exception',
+  'response_exception', 'navigation_exception',
+])
+
+export type CheckoutFailureType =
+  | 'http_rejection'
+  | 'missing_checkout_url'
+  | 'network_exception'
+  | 'response_exception'
+  | 'navigation_exception'
 
 declare global {
   interface Window {
@@ -61,6 +73,7 @@ export function analyticsIdentity(input: unknown): { clientId: string; sessionId
 
 let initialized = false
 let lastPage: string | null = null
+let lastBuyBoxViewPage: string | null = null
 
 function initialize(context: NonNullable<ReturnType<typeof analyticsContext>>) {
   if (initialized) return
@@ -94,11 +107,13 @@ export function trackPageView() {
   const context = currentContext()
   if (!context) {
     lastPage = null
+    lastBuyBoxViewPage = null
     return
   }
   initialize(context)
   const key = window.location.pathname
   if (lastPage === key) return
+  if (lastBuyBoxViewPage !== key) lastBuyBoxViewPage = null
   lastPage = key
   window.gtag?.('set', context)
   window.gtag?.('event', 'page_view', { ...context, send_to: GA_ID })
@@ -124,6 +139,84 @@ export function trackBeginCheckout(totalCents: number) {
     currency: 'EUR', value: totalCents / 100,
     items: [{ item_id: 'ai_valuation_report', item_name: 'AI-arvonmääritysraportti', quantity: 1 }],
   })
+}
+
+export function trackBuyBoxView(totalCents: number) {
+  const context = currentContext()
+  if (!context) return
+  const page = window.location.pathname
+  if (lastBuyBoxViewPage === page) return
+  lastBuyBoxViewPage = page
+  initialize(context)
+  window.gtag?.('event', 'view_item', {
+    currency: 'EUR', value: totalCents / 100,
+    items: [{ item_id: 'ai_valuation_report', item_name: 'AI-arvonmääritysraportti', quantity: 1 }],
+    ...context, send_to: GA_ID,
+  })
+}
+
+export function trackCheckoutFailure(failureType: CheckoutFailureType) {
+  if (!CHECKOUT_FAILURE_TYPES.has(failureType)) return
+  trackEvent('checkout_error', { failure_type: failureType })
+}
+
+// A card counts as visible when at least 20% of its area intersects the
+// viewport. The fallback checks immediately, then on scroll/resize, for older
+// browsers without IntersectionObserver.
+export function observeBuyBoxVisibility(element: Element, onVisible: () => void) {
+  if (typeof window === 'undefined') return () => {}
+
+  let active = true
+  let reported = false
+  let fallbackListening = false
+  let observer: IntersectionObserver | undefined
+
+  const onScroll = () => checkFallback()
+  const onResize = () => checkFallback()
+  const removeFallbackListeners = () => {
+    if (!fallbackListening) return
+    window.removeEventListener('scroll', onScroll, true)
+    window.removeEventListener('resize', onResize)
+    fallbackListening = false
+  }
+  const report = () => {
+    if (!active || reported) return
+    reported = true
+    observer?.disconnect()
+    removeFallbackListeners()
+    onVisible()
+  }
+
+  if (typeof IntersectionObserver === 'function') {
+    observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.target === element
+        && entry.isIntersecting
+        && entry.intersectionRatio >= BUYBOX_VISIBILITY_RATIO)) report()
+    }, { threshold: [0, BUYBOX_VISIBILITY_RATIO] })
+    observer.observe(element)
+    return () => {
+      active = false
+      observer?.disconnect()
+    }
+  }
+
+  function checkFallback() {
+    if (!active || reported) return
+    const rect = element.getBoundingClientRect()
+    if (rect.width <= 0 || rect.height <= 0) return
+    const visibleWidth = Math.max(0, Math.min(rect.right, window.innerWidth) - Math.max(rect.left, 0))
+    const visibleHeight = Math.max(0, Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0))
+    if (visibleWidth * visibleHeight / (rect.width * rect.height) >= BUYBOX_VISIBILITY_RATIO) report()
+  }
+
+  window.addEventListener('scroll', onScroll, true)
+  window.addEventListener('resize', onResize)
+  fallbackListening = true
+  checkFallback()
+  return () => {
+    active = false
+    removeFallbackListeners()
+  }
 }
 
 export async function getCheckoutAnalyticsIdentity() {

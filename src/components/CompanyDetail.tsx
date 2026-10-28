@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { companyDisplayName, matchCompany, type Company } from '@/lib/companies'
+import { eur, quote } from '@/lib/pricing'
 import { BuyBox } from '@/components/BuyBox'
 import { OrderProcess } from '@/components/OrderProcess'
 import { Reveal } from '@/components/Reveal'
@@ -104,6 +105,7 @@ export function CompanyDetail() {
   if (state.status !== 'found') return <NotFound reason={state.status} />
 
   const company = state.company
+  const reportPrice = eur(quote('existing', false).total)
 
   return (
     <>
@@ -131,6 +133,18 @@ export function CompanyDetail() {
               .filter(Boolean)
               .join(' · ')}
           </p>
+          <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-3 lg:hidden">
+            <div>
+              <p className="text-3xl font-light leading-none tracking-tight">{reportPrice}</p>
+              <p className="mt-1.5 text-xs text-white/60">Kertamaksu, sis. alv:n</p>
+            </div>
+            <a
+              href="#company-purchase"
+              className="inline-flex min-h-12 items-center justify-center rounded-full bg-green px-6 text-sm font-medium text-white transition-colors hover:bg-green-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-light"
+            >
+              Tilaa raportti
+            </a>
+          </div>
         </div>
       </section>
 
@@ -173,12 +187,12 @@ export function CompanyDetail() {
                   ))}
                 </ul>
                 <a
-                  href="/samples/heeros-oyj.pdf"
+                  href="/samples/harvia-oyj.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-7 inline-flex items-center text-sm font-medium text-green-deep transition-colors hover:text-green"
                 >
-                  Avaa esimerkkiraportti: Heeros Oyj →
+                  Avaa esimerkkiraportti: Harvia Oyj →
                 </a>
                 <p className="mt-7 border-t border-mist pt-4 text-[13px] leading-relaxed text-steel">
                   Raportti on analyysi päätöksenteon tueksi. Se ei ole tilintarkastus, fairness
@@ -189,17 +203,19 @@ export function CompanyDetail() {
           </div>
 
           <Reveal delay={200} className="lg:sticky lg:top-28 lg:self-start">
-            <BuyBox
-              companyId={company.id}
-              // Name and businessId stay raw here — they are forwarded to
-              // checkout and on to the backend. fid rides along and is what
-              // actually decides konserni vs emo there (the backend's own
-              // lookup drops the K suffix). isGroup only drives the label.
-              companyName={company.name}
-              businessId={company.businessId}
-              fid={company.fid}
-              isGroup={company.isGroup}
-            />
+            <div id="company-purchase" tabIndex={-1} className="scroll-mt-24 lg:scroll-mt-28">
+              <BuyBox
+                companyId={company.id}
+                // Name and businessId stay raw here — they are forwarded to
+                // checkout and on to the backend. fid rides along and is what
+                // actually decides konserni vs emo there (the backend's own
+                // lookup drops the K suffix). isGroup only drives the label.
+                companyName={company.name}
+                businessId={company.businessId}
+                fid={company.fid}
+                isGroup={company.isGroup}
+              />
+            </div>
           </Reveal>
         </div>
       </section>
