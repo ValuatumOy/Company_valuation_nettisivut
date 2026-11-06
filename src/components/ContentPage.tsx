@@ -23,23 +23,27 @@ export type ContentPageData = {
 }
 
 export function contentPageJsonLd(page: ContentPageData) {
+  const url = `${SITE_URL}/${page.slug}`
   return {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Article',
+        '@id': `${url}#article`,
+        url,
+        mainEntityOfPage: url,
         headline: page.h1,
         description: page.metaDescription,
         inLanguage: 'fi',
-        author: { '@type': 'Organization', name: 'Valuatum Oy' },
-        publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: SITE_URL },
+        author: { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'Valuatum Oy', url: SITE_URL },
+        publisher: { '@id': `${SITE_URL}/#organization` },
       },
       {
         '@type': 'FAQPage',
         mainEntity: page.faq.map((i) => ({
           '@type': 'Question',
           name: i.question,
-          acceptedAnswer: { '@type': 'Answer', text: i.answer },
+          acceptedAnswer: { '@type': 'Answer', text: i.answer.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1') },
         })),
       },
     ],
@@ -113,7 +117,7 @@ export function ContentPage({ page }: { page: ContentPageData }) {
           {page.faq.map((i) => (
             <div key={i.question}>
               <dt className="font-medium text-charcoal">{i.question}</dt>
-              <dd className="mt-2 text-[15px] leading-relaxed text-charcoal/75">{i.answer}</dd>
+              <dd className="mt-2 text-[15px] leading-relaxed text-charcoal/75"><InlineMd text={i.answer} /></dd>
             </div>
           ))}
         </dl>

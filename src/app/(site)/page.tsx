@@ -24,13 +24,14 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-function jsonLd(page: Awaited<ReturnType<typeof getPageContent>>) {
-  const faq = page.sections.find((s) => s.type === 'faq') as
+function jsonLd(page: Awaited<ReturnType<typeof getPageContent>>, siteName: string) {
+  const faq = page.sections.find((s) => s.type === 'faq' && s.visible) as
     | { items?: { question: string; answer: string }[] }
     | undefined
   const graph: object[] = [
     {
       '@type': 'Organization',
+      '@id': `${SITE_URL}/#organization`,
       name: 'Valuatum Oy',
       url: SITE_URL,
       logo: `${SITE_URL}/logo.svg`,
@@ -38,11 +39,18 @@ function jsonLd(page: Awaited<ReturnType<typeof getPageContent>>) {
       sameAs: ['https://www.valuatum.com'],
     },
     {
+      '@type': 'WebSite',
+      '@id': `${SITE_URL}/#website`,
+      name: siteName,
+      url: SITE_URL,
+      publisher: { '@id': `${SITE_URL}/#organization` },
+    },
+    {
       '@type': 'Service',
       name: 'AI-arvonmääritysraportti',
       serviceType: 'Yrityksen arvonmääritys',
       areaServed: 'FI',
-      provider: { '@type': 'Organization', name: 'Valuatum Oy' },
+      provider: { '@id': `${SITE_URL}/#organization` },
       description:
         'AI-avusteinen yrityksen arvonmääritysraportti suomalaiselle yritykselle: arvio yrityksen arvosta, arvostusväli, käytetyt ja hylätyt menetelmät, skenaariot, riskit ja arvon ajurit PDF-muodossa.',
       offers: {
@@ -73,7 +81,7 @@ export default async function HomePage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd(page)) }}
+        dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd(page, site.name)) }}
       />
       {page.sections
         .filter((section) => section.visible)

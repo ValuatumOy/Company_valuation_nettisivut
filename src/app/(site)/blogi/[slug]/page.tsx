@@ -29,27 +29,50 @@ export default async function BlogPostPage({ params }: Params) {
   const post = blogPosts.find((p) => p.slug === slug)
   if (!post) notFound()
 
+  const url = `${SITE_URL}/blogi/${post.slug}`
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.h1,
-    description: post.metaDescription,
-    datePublished: post.date,
-    dateModified: post.updatedDate ?? post.date,
-    inLanguage: 'fi',
-    author: { '@type': 'Organization', name: 'Valuatum Oy' },
-    publisher: { '@type': 'Organization', name: 'Valuatum Oy', url: SITE_URL },
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        '@id': `${url}#article`,
+        url,
+        mainEntityOfPage: url,
+        headline: post.h1,
+        description: post.metaDescription,
+        datePublished: post.date,
+        dateModified: post.updatedDate ?? post.date,
+        inLanguage: 'fi',
+        author: { '@type': 'Organization', '@id': `${SITE_URL}/#organization`, name: 'Valuatum Oy', url: SITE_URL },
+        publisher: { '@id': `${SITE_URL}/#organization` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Blogi', item: `${SITE_URL}/blogi` },
+          { '@type': 'ListItem', position: 2, name: post.h1, item: url },
+        ],
+      },
+    ],
   }
 
   return (
     <article className="mx-auto max-w-3xl px-6 py-20 lg:px-0">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(jsonLd) }} />
-      <Link href="/blogi" className="text-sm text-green-deep transition-colors hover:text-green">
-        ← Blogi
-      </Link>
-      <h1 className="mt-4 text-balance text-4xl font-light tracking-[-0.02em] text-charcoal lg:text-5xl">
-        {post.h1}
-      </h1>
+      <nav aria-label="Murupolku">
+        <ol>
+          <li>
+            <Link href="/blogi" className="text-sm text-green-deep transition-colors hover:text-green">
+              <span aria-hidden="true">← </span>Blogi
+            </Link>
+          </li>
+          <li aria-current="page">
+            <h1 className="mt-4 text-balance text-4xl font-light tracking-[-0.02em] text-charcoal lg:text-5xl">
+              {post.h1}
+            </h1>
+          </li>
+        </ol>
+      </nav>
       <div className="mt-4 flex flex-wrap gap-x-2 text-[13px] text-charcoal-mid">
         <time dateTime={post.date}>
           Julkaistu {new Date(post.date).toLocaleDateString('fi-FI', { day: 'numeric', month: 'long', year: 'numeric' })}
