@@ -9,7 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/yrityskauppa`, lastModified: new Date('2026-10-28'), changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/sukupolvenvaihdos`, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${SITE_URL}/yritys`, lastModified: new Date('2026-10-28'), changeFrequency: 'weekly', priority: 0.9 },
-    { url: `${SITE_URL}/yritykset`, lastModified: new Date('2026-10-21'), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${SITE_URL}/yritykset`, lastModified: new Date('2026-11-06'), changeFrequency: 'weekly', priority: 0.8 },
     ...listCompanyProfiles().map((company) => ({
       url: `${SITE_URL}/yritykset/${company.slug}`,
       changeFrequency: 'monthly' as const,
