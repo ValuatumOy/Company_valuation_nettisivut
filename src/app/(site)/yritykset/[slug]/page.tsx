@@ -20,13 +20,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!profile) notFound()
 
   const canonical = `/yritykset/${profile.slug}`
+  const subject = `${profile.name}${profile.isGroup ? ' (konserni)' : ''}`
   return {
-    title: `${profile.name} – taloustiedot ja arvonmääritys | Valuatum`,
-    description: `${profile.name}: tilikausittainen liikevaihto- ja liiketuloshistoria lähteineen. Tutustu lukuihin ja tilauksesta laadittavan raportin sisältöön.`,
+    title: `${subject} – taloustiedot ja arvonmääritys | Valuatum`,
+    description: `${subject}: tilikausittainen liikevaihto- ja liiketuloshistoria lähteineen. Tutustu lukuihin ja tilauksesta laadittavan raportin sisältöön.`,
     alternates: { canonical },
     openGraph: {
-      title: `${profile.name} – taloustiedot ja arvonmääritys`,
-      description: `Lähteistetty tilinpäätöshistoria yritykselle ${profile.name}.`,
+      title: `${subject} – taloustiedot ja arvonmääritys`,
+      description: `Lähteistetty tilinpäätöshistoria: ${subject}.`,
       url: canonical,
       type: 'website',
     },
@@ -35,6 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function jsonLd(profile: NonNullable<ReturnType<typeof getCompanyProfileBySlug>>) {
   const url = `${SITE_URL}/yritykset/${profile.slug}`
+  const subject = `${profile.name}${profile.isGroup ? ' (konserni)' : ''}`
   return {
     '@context': 'https://schema.org',
     '@graph': [
@@ -49,10 +51,21 @@ function jsonLd(profile: NonNullable<ReturnType<typeof getCompanyProfileBySlug>>
         '@type': 'WebPage',
         '@id': `${url}#webpage`,
         url,
-        name: `${profile.name} – taloustiedot ja arvonmääritys`,
-        description: `Lähteistetty tilikausittainen taloushistoria yritykselle ${profile.name}.`,
+        name: `${subject} – taloustiedot ja arvonmääritys`,
+        description: `Lähteistetty tilikausittainen taloushistoria: ${subject}.`,
         inLanguage: 'fi-FI',
         publisher: { '@id': `${SITE_URL}/#organization` },
+        about: { '@id': `${url}#company` },
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${url}#company`,
+        name: profile.name,
+        identifier: {
+          '@type': 'PropertyValue',
+          propertyID: 'Y-tunnus',
+          value: profile.businessId,
+        },
       },
       {
         '@type': 'BreadcrumbList',

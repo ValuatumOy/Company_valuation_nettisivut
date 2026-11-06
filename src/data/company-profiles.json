@@ -252,5 +252,137 @@
       { "year": 2023, "revenueEur": 2354000, "ebitEur": -167000, "netDebtEur": null },
       { "year": 2024, "revenueEur": 2482000, "ebitEur": -246000, "netDebtEur": null }
     ]
+  },
+  {
+    "slug": "helsingin-ktk-0116492-0",
+    "businessId": "0116492-0",
+    "fid": 117247,
+    "name": "Helsingin KTK Oy",
+    "isGroup": false,
+    "city": "Helsinki",
+    "industry": "Rahtiliikennettä koskevat välityspalvelut",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0116492-0/helsingin-ktk-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "0116492-0",
+    "years": [
+      { "year": 2023, "revenueEur": 48974000, "ebitEur": -931000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 46395000, "ebitEur": -121000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 41905000, "ebitEur": -178000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "laanin-kuljetus-konserni-0141217-0",
+    "businessId": "0141217-0",
+    "fid": 209131,
+    "name": "Läänin Kuljetus Oy",
+    "isGroup": true,
+    "city": "Turku",
+    "industry": "Tieliikenteen tavarankuljetus",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0141217-0/laanin-kuljetus-oy/konserni/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "01412170K",
+    "years": [
+      { "year": 2023, "revenueEur": 72274885, "ebitEur": 3689812, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 69971154, "ebitEur": -3913, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 68787593, "ebitEur": -2159468, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "akun-tehdas-2238644-2",
+    "businessId": "2238644-2",
+    "fid": 120749,
+    "name": "Akun Tehdas Oy",
+    "isGroup": false,
+    "city": "Tampere",
+    "industry": "90.392 Taiteen ja kulttuurin live-tapahtumien esitystekniikan palvelut",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2238644-2/akun-tehdas-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "2238644-2",
+    "years": [
+      { "year": 2023, "revenueEur": 9392000, "ebitEur": 148000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 8893257, "ebitEur": 353833, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 10321000, "ebitEur": 119000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "napapiirin-kuljetus-0195373-5",
+    "businessId": "0195373-5",
+    "fid": 14334,
+    "name": "Napapiirin Kuljetus Oy",
+    "isGroup": false,
+    "city": "Rovaniemi",
+    "industry": "52.310 Rahtiliikennettä koskevat välityspalvelut",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0195373-5/napapiirin-kuljetus-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "0195373-5",
+    "years": [
+      { "year": 2023, "revenueEur": 70792000, "ebitEur": 445000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 76188000, "ebitEur": 886000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 78724000, "ebitEur": 1752000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "kavora-2647566-1",
+    "businessId": "2647566-1",
+    "fid": 280190,
+    "name": "Kavora Oy",
+    "isGroup": false,
+    "industry": "Rautateiden ja metrolinjojen rakentaminen",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/2647566-1/kavora-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "2647566-1",
+    "years": [
+      { "year": 2022, "revenueEur": 805000, "ebitEur": 227000, "netDebtEur": null },
+      { "year": 2023, "revenueEur": 464000, "ebitEur": 222000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 918000, "ebitEur": 398000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "imatran-seudun-sahko-0159029-2",
+    "businessId": "0159029-2",
+    "fid": 98676,
+    "name": "Imatran Seudun Sähkö Oy",
+    "isGroup": false,
+    "city": "Imatra",
+    "industry": "Sähkön jakelu",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0159029-2/imatran-seudun-sahko-oy/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "0159029-2",
+    "years": [
+      { "year": 2023, "revenueEur": 16401000, "ebitEur": -1415000, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 14079000, "ebitEur": -828000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 14430000, "ebitEur": -1220000, "netDebtEur": null }
+    ]
+  },
+  {
+    "slug": "lounea-konserni-0139471-8",
+    "businessId": "0139471-8",
+    "fid": 209117,
+    "name": "Lounea Oy",
+    "isGroup": true,
+    "city": "Salo",
+    "industry": "61.100 Kiinteän puhelinverkon ja langattoman verkon hallinta ja palvelut sekä satelliittiviestintä",
+    "sourceLabel": "Valuatumin talousaineisto · vertailulähde Luottoriskit.fi",
+    "sourceUrl": "https://luottoriskit.fi/fi/yritykset/0139471-8/lounea-oy/konserni/",
+    "sourceUnit": "MEUR",
+    "retrievedAt": "2026-11-06",
+    "orderId": "01394718K",
+    "years": [
+      { "year": 2023, "revenueEur": 66658199, "ebitEur": 3043463, "netDebtEur": null },
+      { "year": 2024, "revenueEur": 72710000, "ebitEur": 4520000, "netDebtEur": null },
+      { "year": 2025, "revenueEur": 77386000, "ebitEur": 6611000, "netDebtEur": null }
+    ]
   }
 ]

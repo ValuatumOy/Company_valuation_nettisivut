@@ -154,7 +154,7 @@ export function CompanyDetail() {
             <Reveal>
               <dl className="grid gap-px overflow-hidden rounded-3xl border border-mist bg-mist sm:grid-cols-3">
                 <Fact label="Y-tunnus" value={company.businessIdFormatted} />
-                <Fact label="Kotipaikka" value={company.city || '–'} />
+                <Fact label="Paikkakunta" value={company.city || '–'} />
                 <Fact label="Toimiala" value={company.industry || '–'} />
               </dl>
             </Reveal>

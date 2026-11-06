@@ -21,9 +21,11 @@ function formatTableEur(value: number) {
 }
 
 function formatPercent(value: number, withSign = false) {
-  const number = new Intl.NumberFormat('fi-FI', {
-    maximumFractionDigits: 1,
-  }).format(Math.abs(value))
+  const absolute = Math.abs(value)
+  const number = new Intl.NumberFormat(
+    'fi-FI',
+    absolute > 0 && absolute < 0.05 ? { maximumSignificantDigits: 2 } : { maximumFractionDigits: 1 },
+  ).format(absolute)
   const sign = value < 0 ? '−' : withSign && value > 0 ? '+' : ''
   return `${sign}${number} %`
 }
@@ -253,7 +255,7 @@ export function CompanyProfilePage({ profile }: { profile: CompanyProfile }) {
                     <div>
                       <h3 className="font-medium text-charcoal">Liikevaihdon muutos</h3>
                       <p className="mt-1.5 text-sm leading-relaxed text-charcoal-mid">
-                        Liikevaihto {revenueChange > 0 ? 'kasvoi' : revenueChange < 0 ? 'laski' : 'pysyi ennallaan'} {formatPercent(revenueChange)} edellisestä ilmoitetusta tilikaudesta. Vertailu perustuu kirjattuihin tilikausilukuihin.
+                        Liikevaihto {revenueChange > 0 ? `kasvoi ${formatPercent(revenueChange)}` : revenueChange < 0 ? `laski ${formatPercent(-revenueChange)}` : 'pysyi ennallaan'} edellisestä ilmoitetusta tilikaudesta. Vertailu perustuu kirjattuihin tilikausilukuihin.
                       </p>
                     </div>
                   </li>
@@ -317,6 +319,16 @@ export function CompanyProfilePage({ profile }: { profile: CompanyProfile }) {
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-green-deep">Usein kysyttyä</p>
               <h2 id="faq-heading" className="mt-2 text-2xl font-light tracking-tight text-charcoal">Ennen kuin tilaat</h2>
               <div className="mt-5 divide-y divide-mist">
+                <details className="group py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-charcoal [&::-webkit-details-marker]:hidden">
+                    Miten yksittäisen osakkeen arvoa voi arvioida?
+                    <span aria-hidden="true" className="text-green-deep transition-transform group-open:rotate-180">⌄</span>
+                  </summary>
+                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-charcoal-mid">
+                    Jos osakkeet tuottavat samat oikeudet, suuntaa-antavaa osakekohtaista arvoa voi arvioida jakamalla osakekannan arvioidun arvon ulkona olevien osakkeiden määrällä. Osakelajien oikeudet ja yhtiöjärjestyksen ehdot voivat vaikuttaa arvioon. Tämä sivu ei näytä osakekohtaista arvoa. Verohallinnon{' '}
+                    <a href="https://www.vero.fi/syventavat-vero-ohjeet/ohje-hakusivu/152995/yritysvarallisuuden-arvostaminen-perinto--ja-lahjaverotuksessa2/" target="_blank" rel="noopener noreferrer" className="text-green-deep underline underline-offset-2 hover:text-green">arvostamisohje</a> koskee perintö- ja lahjaverotusta eikä yksin määritä kauppahintaa.
+                  </p>
+                </details>
                 <details className="group py-4">
                   <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium text-charcoal [&::-webkit-details-marker]:hidden">
                     Mitä tämä sivu kertoo?
