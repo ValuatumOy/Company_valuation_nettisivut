@@ -24,7 +24,7 @@ const data = {
       "metaDescription": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii ja miksi yksi piste-estimaatti ei riitä yrityksen arvoksi.",
       "h1": "Miten yrityksen arvo määritetään? Menetelmät selkokielellä",
       "date": "2026-07-02",
-      "updatedDate": "2026-10-21",
+      "updatedDate": "2026-11-06",
       "excerpt": "Substanssiarvo, DCF, EVA ja verrokkikertoimet selkokielellä: mitä kukin mittaa, milloin mikäkin sopii — ja miksi luotettava arvonmääritys hylkää osan menetelmistä ja antaa välin, ei yhtä lukua.",
       "sections": [
         {
@@ -71,7 +71,9 @@ const data = {
         {
           "heading": "Mitä eroa on yritysarvolla (EV) ja oman pääoman arvolla?",
           "paragraphs": [
-            "Yritysarvo (EV) kuvaa liiketoiminnan arvoa kaikille pääoman rahoittajille. Oman pääoman arvo kuvaa osakkeenomistajille kuuluvaa osuutta. Yksinkertaistettu laskukaava on oman pääoman arvo = yritysarvo − nettovelka, jossa nettovelka = korolliset velat − kassa. Esimerkiksi 6 M€:n yritysarvosta ja 1 M€:n nettovelasta seuraa 5 M€:n oman pääoman arvo ennen muita kauppakohtaisia oikaisuja.",
+            "Yritysarvo (EV) kuvaa liiketoiminnan arvoa kaikille pääoman rahoittajille. Oman pääoman arvo kuvaa osakkeenomistajille kuuluvaa osuutta. Yksinkertaistettu laskukaava on oman pääoman arvo = yritysarvo − nettovelka, jossa nettovelka = korolliset velat − kassa.",
+            "Yrityksen oman pääoman arvo ei ole sama kuin taseen oma pääoma: tase-erä on kirjanpidollinen varojen ja velkojen erotus, kun taas arvonmäärityksessä arvioidaan osakekannan arvoa valittujen menetelmien ja oletusten perusteella.",
+            "Kuvitteellisessa esimerkissä 6 M€:n yritysarvoon liittyy 1,5 M€ korollista velkaa ja 0,5 M€ käytettävissä olevaa kassaa. Nettovelkaa on siten 1 M€ ja oman pääoman arvo on 5 M€ ennen muita kauppakohtaisia oikaisuja; laskelma olettaa, ettei muita velanluonteisia eriä tai käyttöpääomaoikaisua ole.",
             "EV/EBITDA-kerrointa käytetään yritysarvon arviointiin, joten sitä ei pidä verrata sellaisenaan osakkeista maksettavaan hintaan. [Yrityskaupan opas](/yrityskauppa) ja [arvonmäärityslaskuri](/laskuri) havainnollistavat eroa."
           ],
           "listItems": []

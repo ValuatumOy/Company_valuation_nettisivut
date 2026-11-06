@@ -8,6 +8,12 @@ const SENSITIVE_PARAMS = new Set([
   'key', 'token', 'access_token', 'api_key', 'session_id', 'email',
   'customeremail', 'userinput',
 ])
+const REFERRAL_CAMPAIGN = {
+  utm_source: 'luottoriskit.fi',
+  utm_medium: 'referral',
+  utm_campaign: 'arvonmaaritys',
+} as const
+const REFERRAL_CONTENT = new Set(['landing_inline', 'landing_bottom', 'landing_search'])
 const BUYBOX_VISIBILITY_RATIO = 0.2
 const CHECKOUT_FAILURE_TYPES = new Set([
   'http_rejection', 'missing_checkout_url', 'network_exception',
@@ -38,6 +44,22 @@ export function publicAnalyticsPath(url: URL): string | null {
   if (/^\/yritykset\/[^/]+$/.test(pathname)) return '/yritykset/profile'
   if (/^\/blogi\/[^/]+$/.test(pathname)) return '/blogi/article'
   return null
+}
+
+function isApprovedReferralCampaign(url: URL): boolean {
+  const utmKeys = Array.from(url.searchParams.keys()).filter(key => key.toLowerCase().startsWith('utm_'))
+  if (utmKeys.some(key => !['utm_source', 'utm_medium', 'utm_campaign', 'utm_content'].includes(key))) return false
+
+  const hasExactValue = (key: string, value: string) => {
+    const values = url.searchParams.getAll(key)
+    return values.length === 1 && values[0] === value
+  }
+  if (!hasExactValue('utm_source', REFERRAL_CAMPAIGN.utm_source)
+    || !hasExactValue('utm_medium', REFERRAL_CAMPAIGN.utm_medium)
+    || !hasExactValue('utm_campaign', REFERRAL_CAMPAIGN.utm_campaign)) return false
+
+  const content = url.searchParams.getAll('utm_content')
+  return content.length <= 1 && (content.length === 0 || REFERRAL_CONTENT.has(content[0]))
 }
 
 export function analyticsContext(url: URL, referrer: string) {
@@ -74,6 +96,7 @@ export function analyticsIdentity(input: unknown): { clientId: string; sessionId
 let initialized = false
 let lastPage: string | null = null
 let lastBuyBoxViewPage: string | null = null
+let referralArrivalReported = false
 
 function initialize(context: NonNullable<ReturnType<typeof analyticsContext>>) {
   if (initialized) return
@@ -117,6 +140,10 @@ export function trackPageView() {
   lastPage = key
   window.gtag?.('set', context)
   window.gtag?.('event', 'page_view', { ...context, send_to: GA_ID })
+  if (!referralArrivalReported && isApprovedReferralCampaign(new URL(window.location.href))) {
+    referralArrivalReported = true
+    window.gtag?.('event', 'luottoriskit_referral', { ...context, send_to: GA_ID })
+  }
 }
 
 function trackEvent(name: string, params: Record<string, unknown>) {

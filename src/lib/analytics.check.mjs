@@ -43,9 +43,74 @@ const analytics = load('lib/analytics.ts', { window: browser, document })
 analytics.trackPageView()
 assert.equal(scripts.length, 0, 'private initial page must not load gtag')
 
-for (const url of ['/raportti', '/raportti/sub', '/testi?key=x', '/kassa/valmis?session_id=x', '/api/search?q=secret', '/?KEY=secret', '/?customerEmail=user@example.com', '/unknown/secret']) {
+for (const url of ['/raportti', '/raportti/sub', '/testi?key=x', '/kassa/valmis?session_id=x', '/raportti?utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys', '/api/search?q=secret', '/?KEY=secret', '/?customerEmail=user@example.com', '/unknown/secret']) {
   assert.equal(analytics.publicAnalyticsPath(new URL(url, 'https://www.arvonmaaritys.fi')), null, url)
 }
+
+const allowedContent = ['landing_inline', 'landing_bottom', 'landing_search']
+function runLanding(query) {
+  const browser = { location: new URL(`https://www.arvonmaaritys.fi/?${query}`) }
+  const analyticsApi = load('lib/analytics.ts', {
+    window: browser,
+    document: { referrer: '', head: { appendChild() {} }, createElement: () => ({}) },
+  })
+  analyticsApi.trackPageView()
+  analyticsApi.trackPageView()
+  return { browser, analyticsApi, calls: () => browser.dataLayer.map(entry => Array.from(entry)) }
+}
+for (const content of [...allowedContent, null]) {
+  const query = `utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys${content ? `&utm_content=${content}` : ''}`
+  const landing = runLanding(query)
+  const events = landing.calls().filter(entry => entry[0] === 'event')
+  assert.equal(events.filter(entry => entry[1] === 'page_view').length, 1, 'StrictMode duplicate page-view calls are deduped')
+  assert.equal(events.filter(entry => entry[1] === 'luottoriskit_referral').length, 1, `recognized landing sends one referral event (${content ?? 'no content'})`)
+  const referral = events.find(entry => entry[1] === 'luottoriskit_referral')[2]
+  assert.equal(referral.page_location, 'https://www.arvonmaaritys.fi/')
+  assert.deepEqual(Object.keys(referral).sort(), ['page_location', 'page_referrer', 'page_title', 'send_to'])
+  assert.ok(!/utm_|landing_inline|landing_bottom|landing_search|campaign_/.test(JSON.stringify(landing.calls())), 'campaign fields and raw query values are not sent')
+}
+
+const campaignBrowser = { location: new URL('https://www.arvonmaaritys.fi/?utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys&utm_content=landing_inline') }
+const campaignAnalytics = load('lib/analytics.ts', {
+  window: campaignBrowser,
+  document: { referrer: '', head: { appendChild() {} }, createElement: () => ({}) },
+})
+campaignAnalytics.trackPageView()
+campaignAnalytics.trackPageView()
+campaignAnalytics.trackCompanySearch(1)
+const campaignCalls = () => campaignBrowser.dataLayer.map(entry => Array.from(entry))
+campaignBrowser.location = new URL('https://www.arvonmaaritys.fi/yritys/private-company?fid=1234567-8')
+campaignAnalytics.trackPageView()
+campaignAnalytics.trackPageView()
+campaignAnalytics.trackCompanySearch(1)
+const spaEvents = campaignCalls().filter(entry => entry[0] === 'event')
+assert.equal(spaEvents.filter(entry => entry[1] === 'luottoriskit_referral').length, 1, 'SPA navigation cannot repeat the referral arrival event')
+assert.equal(spaEvents.filter(entry => entry[1] === 'page_view').length, 2, 'SPA navigation gets one sanitized pageview per path')
+assert.equal(spaEvents.filter(entry => entry[1] === 'company_search').length, 2)
+assert.ok(campaignCalls().every(entry => !JSON.stringify(entry).includes('campaign_')), 'campaign fields are absent from set, config, pageviews and funnel events')
+assert.ok(!/utm_|landing_inline|private-company|1234567-8/.test(JSON.stringify(campaignCalls())), 'raw campaign values and private company identifiers never reach GA')
+
+for (const query of [
+  'utm_source=buyer%40example.com&utm_medium=referral&utm_campaign=arvonmaaritys&utm_content=landing_inline',
+  'utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=buyer%40example.com&utm_content=landing_inline',
+  'utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys&utm_content=buyer%40example.com',
+  'utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys&utm_term=buyer%40example.com',
+  'utm_source=luottoriskit.fi&utm_source=buyer%40example.com&utm_medium=referral&utm_campaign=arvonmaaritys',
+]) {
+  const unknown = runLanding(query)
+  unknown.analyticsApi.trackCompanySearch(1)
+  const calls = unknown.calls()
+  assert.equal(calls.filter(entry => entry[0] === 'event' && entry[1] === 'luottoriskit_referral').length, 0, `unrecognized campaign is not counted: ${query}`)
+  assert.ok(!/buyer@example\.com|utm_|campaign_/.test(JSON.stringify(calls)), 'unrecognized or personal campaign parameters never reach GA')
+}
+
+const privateCampaignBrowser = { location: new URL('https://www.arvonmaaritys.fi/raportti?utm_source=luottoriskit.fi&utm_medium=referral&utm_campaign=arvonmaaritys') }
+const privateCampaignAnalytics = load('lib/analytics.ts', {
+  window: privateCampaignBrowser,
+  document: { referrer: '', head: { appendChild() {} }, createElement: () => ({}) },
+})
+privateCampaignAnalytics.trackPageView()
+assert.equal(privateCampaignBrowser.dataLayer, undefined, 'private campaign landing does not initialize GA or emit referral events')
 
 browser.location = new URL('https://www.arvonmaaritys.fi/?utm_term=PRIVATE#SECRET')
 analytics.trackPageView()

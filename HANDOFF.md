@@ -1,3 +1,10 @@
+# Handoff — 2026-11-06 — Campaign attribution and SEO check
+
+- Luottoriskit.fi's existing valuation-page links use `rel=noreferrer` and a known set of UTM values. Public-page analytics now emits a separate `luottoriskit_referral` event only for that exact approved campaign. If the UTM content parameter is present, it must be one of three known link values; the event does not identify which link was used. Raw query strings, company IDs, unknown campaign values and private pages remain excluded. This measures future arrivals; it does not change GA4's standard session-source dimension or reclassify past direct traffic.
+- Google Search Console showed 15 clicks and 1,934 impressions on 28.10.–3.11., versus 18 and 2,045 in the preceding week (final data, Pacific Time). Nine clicks went to blocked legacy `/yritys/` URLs and five to `/yritykset/` company profiles. Those groups target different searches and are not an A/B test. GA4 recorded 19 users, 20 sessions, three order-card viewers and zero checkout starts on 30.10.–5.11. (Helsinki time); Stripe had zero positive paid, product-tagged checkouts.
+- Expanded the existing valuation-methods article to distinguish accounting equity from estimated equity value and clarify its net-debt example. The article was appearing for related queries, but the data is too sparse to infer an SEO effect.
+- Requested reindexing of `/yrityskauppa` on 6.11. because the indexed copy had last been crawled on 20.10., before its update. A request is not a guarantee of recrawling. Existing WAF challenge on `/yritys/` protects against a bot that previously caused usage overages; a browser check encountered the challenge. Assess user impact before changing it. No changes were made to Luottoriskit.fi.
+
 # Handoff — 2026-10-28 — Mobile purchase path and funnel
 
 - Company detail pages show the existing 79 € price and an anchor to the order card near the company identity on mobile; the full order process and desktop card remain. `/yritys` shows the price and a current sample earlier. Order copy distinguishes report generation time from the optional forecast review.
