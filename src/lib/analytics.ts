@@ -19,6 +19,12 @@ const CHECKOUT_FAILURE_TYPES = new Set([
   'http_rejection', 'missing_checkout_url', 'network_exception',
   'response_exception', 'navigation_exception',
 ])
+const SAMPLE_REPORTS = new Map([
+  ['/samples/harvia-oyj.pdf', 'harvia'],
+  ['/samples/gofore-oyj.pdf', 'gofore'],
+  ['/samples/fiskars-oyj-abp.pdf', 'fiskars'],
+  ['/samples/heeros-oyj.pdf', 'heeros'],
+])
 
 export type CheckoutFailureType =
   | 'http_rejection'
@@ -159,6 +165,19 @@ export function trackCompanySearch(resultCount: number) {
 
 export function trackCompanySelection() {
   trackEvent('select_company', { item_list_id: 'company_search' })
+}
+
+export function trackSampleReportClick(href: string) {
+  if (typeof window === 'undefined') return
+  let url: URL
+  try {
+    url = new URL(href, window.location.href)
+  } catch {
+    return
+  }
+  if (url.origin !== window.location.origin) return
+  const report = SAMPLE_REPORTS.get(url.pathname)
+  if (report) trackEvent('sample_report_click', { sample_report: report })
 }
 
 export function trackBeginCheckout(totalCents: number) {

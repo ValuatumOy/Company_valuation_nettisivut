@@ -150,6 +150,68 @@ assert.equal(analytics.analyticsIdentity({ clientId: 'user@example.com' }), unde
 assert.equal(analytics.analyticsIdentity({ clientId: '123.456', sessionId: 'private' }).sessionId, undefined)
 assert.equal(await analytics.getCheckoutAnalyticsIdentity(), undefined, 'blocked GA callbacks must time out without blocking checkout')
 
+const sampleListeners = new Map()
+const sampleWindow = { location: new URL('https://www.arvonmaaritys.fi/yritys/private-company?fid=1234567-8&q=buyer@example.com') }
+const sampleDocument = {
+  referrer: 'https://www.arvonmaaritys.fi/raportti?key=SECRET',
+  head: { appendChild() {} }, createElement: () => ({}),
+  addEventListener(type, listener, capture) {
+    assert.equal(capture, true)
+    sampleListeners.set(type, [...(sampleListeners.get(type) || []), listener])
+  },
+  removeEventListener(type, listener, capture) {
+    assert.equal(capture, true)
+    sampleListeners.set(type, (sampleListeners.get(type) || []).filter(item => item !== listener))
+  },
+  dispatch(type, event) { for (const listener of sampleListeners.get(type) || []) listener({ type, ...event }) },
+}
+class SampleLinkTarget {
+  constructor(href) { this.href = href }
+  closest(selector) {
+    assert.equal(selector, 'a[href]')
+    return this.href == null ? null : { getAttribute: () => this.href }
+  }
+}
+const sampleAnalytics = load('lib/analytics.ts', { window: sampleWindow, document: sampleDocument })
+const sampleEffects = []
+const sampleComponent = load('components/GoogleAnalytics.tsx', { document: sampleDocument, Element: SampleLinkTarget }, {
+  react: { useEffect: effect => sampleEffects.push(effect) },
+  'next/navigation': { usePathname: () => '/yritys/private-company' },
+  '@/lib/analytics': sampleAnalytics,
+})
+sampleComponent.GoogleAnalytics()
+assert.equal(sampleEffects.length, 2)
+sampleEffects[1]()() // React StrictMode setup and cleanup
+const stopSampleTracking = sampleEffects[1]()
+const sampleEvents = () => (sampleWindow.dataLayer || []).map(entry => Array.from(entry)).filter(entry => entry[0] === 'event' && entry[1] === 'sample_report_click')
+let navigationPrevented = false
+const activate = (type, href, button = 0) => sampleDocument.dispatch(type, {
+  button, target: new SampleLinkTarget(href), preventDefault() { navigationPrevented = true },
+})
+activate('click', '/samples/harvia-oyj.pdf?token=DESTSECRET')
+activate('auxclick', 'https://www.arvonmaaritys.fi/samples/gofore-oyj.pdf#SECRET', 1)
+activate('click', '/samples/fiskars-oyj-abp.pdf')
+activate('click', '/samples/heeros-oyj.pdf')
+activate('click', 'https://outside.example/samples/harvia-oyj.pdf')
+activate('click', '/samples/private.pdf')
+activate('click', '/yritys')
+activate('auxclick', '/samples/harvia-oyj.pdf', 2)
+assert.deepEqual(Array.from(sampleEvents(), entry => entry[2].sample_report), ['harvia', 'gofore', 'fiskars', 'heeros'])
+assert.equal(navigationPrevented, false, 'analytics never prevents a sample link from opening')
+for (const entry of sampleEvents()) {
+  assert.equal(entry[2].page_location, 'https://www.arvonmaaritys.fi/yritys/detail')
+  assert.equal(entry[2].page_referrer, '')
+  assert.deepEqual(Object.keys(entry[2]).sort(), ['page_location', 'page_referrer', 'page_title', 'sample_report', 'send_to'])
+}
+assert.ok(!/private-company|1234567-8|buyer@example|DESTSECRET|SECRET|\?/.test(JSON.stringify(sampleWindow.dataLayer)), 'sample events cannot contain URLs, identifiers or query values')
+sampleWindow.location = new URL('https://www.arvonmaaritys.fi/raportti?key=SECRET')
+activate('click', '/samples/harvia-oyj.pdf')
+assert.equal(sampleEvents().length, 4, 'private report pages emit no sample events')
+sampleWindow.location = new URL('https://www.arvonmaaritys.fi/blogi/miten-yrityksen-arvo-maaritetaan')
+stopSampleTracking()
+activate('click', '/samples/harvia-oyj.pdf')
+assert.equal(sampleEvents().length, 4, 'listeners are removed on cleanup')
+
 browser.location = new URL('https://www.arvonmaaritys.fi/yritys/private-company?fid=1234567-8')
 analytics.trackPageView()
 analytics.trackBuyBoxView(7900)

@@ -47,8 +47,8 @@ export default function YritysPage() {
             </p>
           </Reveal>
           <Reveal delay={100}>
-            <h1 className="mt-3 max-w-3xl text-balance text-4xl font-light leading-[1.1] tracking-[-0.02em] lg:text-5xl">
-              Hae yritys ja tilaa arvonmääritysraportti
+            <h1 className="mt-3 max-w-3xl break-words text-balance text-4xl font-light leading-[1.1] tracking-[-0.02em] lg:text-5xl">
+              Hae yritys ja tilaa arvonmääritys&shy;raportti
             </h1>
           </Reveal>
           <Reveal delay={200}>
