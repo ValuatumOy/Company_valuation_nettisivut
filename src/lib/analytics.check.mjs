@@ -533,13 +533,15 @@ await webhook.POST(webhookRequest('valid'))
 assert.equal(JSON.parse(requests.at(-1).options.body).events[0].params.transaction_id, payload.events[0].params.transaction_id, 'duplicate verified webhook has same GA dedupe key')
 
 let created
-const checkout = load('app/api/checkout/route.ts', {}, {
+const checkout = load('app/api/checkout/route.ts', {
+  fetch: async () => Response.json({ ready: true }),
+}, {
   '@/lib/stripe': { VALUATION_PRODUCT_TAG: session.metadata.product, siteUrl: () => 'https://example.com', getStripe: () => ({
     prices: { retrieve: async () => ({ id: 'mock-price', active: true }) },
     checkout: { sessions: { create: async input => { created = input; return { url: 'https://checkout.stripe.com/mock' } } } },
   }) },
 })
-const checkoutRequest = identity => new Request('https://example.com/api/checkout', { method: 'POST', body: JSON.stringify({ kind: 'existing', analytics: identity, customerEmail: 'buyer@example.com' }) })
+const checkoutRequest = identity => new Request('https://example.com/api/checkout', { method: 'POST', body: JSON.stringify({ kind: 'existing', fid: 123, businessId: '1234567-8', analytics: identity, customerEmail: 'buyer@example.com' }) })
 await checkout.POST(checkoutRequest({ clientId: '123.456', sessionId: '1800000000' }))
 assert.equal(created.metadata.ga_client_id, '123.456')
 assert.equal(created.metadata.ga_session_id, '1800000000')

@@ -9,6 +9,8 @@ const STRIPE_AI_REPORT_PRICE_ID =
   process.env.STRIPE_AI_REPORT_PRICE_ID ?? 'price_1Ty8Pt2FVkKDgcuUD2fzJ8Fk'
 const DEMO_CHECKOUT_ENABLED =
   process.env.NODE_ENV !== 'production' || process.env.STRIPE_DEMO_CHECKOUT === '1'
+const ORDERS_API =
+  process.env.NEXT_PUBLIC_ORDERS_API ?? 'https://valu-pipeline-production-88f2.up.railway.app'
 
 export const runtime = 'nodejs'
 
@@ -56,6 +58,32 @@ export async function POST(req: Request) {
   const wantForecast = kind === 'existing' && Boolean(body.wantForecast)
   const q = quote(kind, shareData)
   const analytics = analyticsIdentity(body.analytics)
+
+  if (kind === 'existing') {
+    const reviewRequired = () => NextResponse.json(
+      { error: 'Yrityksen tiedot vaativat tarkistuksen ennen tilaamista. Ota yhteyttä asiakaspalveluumme.' },
+      { status: 409 },
+    )
+    if (!fid || !businessId.trim()) return reviewRequired()
+    try {
+      const response = await fetch(`${ORDERS_API.replace(/\/$/, '')}/api/public/valuation-preflight`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fid: Number(fid), business_id: businessId }),
+        cache: 'no-store',
+        signal: AbortSignal.timeout(20000),
+      })
+      if (response.status === 409 || response.status === 422) return reviewRequired()
+      if (response.status !== 200 || (await response.json()).ready !== true) {
+        throw new Error('Company preflight unavailable')
+      }
+    } catch {
+      return NextResponse.json(
+        { error: 'Yrityksen tietojen tarkistus ei juuri nyt onnistu. Yritä hetken kuluttua uudelleen.' },
+        { status: 503 },
+      )
+    }
+  }
 
   // Confirmation page: starts generation and/or posts the order to the backend.
   const successPath = `/kassa/valmis?session_id={CHECKOUT_SESSION_ID}&kind=${kind}`
